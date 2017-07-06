@@ -6,15 +6,14 @@
 #   edit:rprompt=chain:rprompt
 
 # Initialize glyphs to be used in the prompt.
-prompt_glyph=">"
-git_branch_glyph="⎇"
-git_dirty_glyph="±"
-chain_su_glyph="⚡"
+prompt_glyph = ">"
+git_branch_glyph = "⎇"
+git_dirty_glyph = "±"
+chain_su_glyph = "⚡"
 
-fn prompt_segment {
-   color @rest = $@args
-   text = "["(echo $@rest)"]-"
-   edit:styled $text $color
+fn prompt_segment [style @texts]{
+   text = "["(joins ' ' $texts)"]-"
+   edit:styled $text $style
 }
 
 fn is_git_repo {
@@ -23,19 +22,19 @@ fn is_git_repo {
 
 fn git_branch_name {
    if (is_git_repo) {
-     echo (git symbolic-ref HEAD 2>/dev/null | sed -e "s|^refs/heads/||")
+     git symbolic-ref HEAD 2>/dev/null | sed -e "s|^refs/heads/||"
    } else {
      echo ""
    }
 }
 
 fn is_git_dirty {
-   put (and (is_git_repo) (not (eq "" (command git status -s --ignore-submodules=dirty 2>/dev/null))))
+   and (is_git_repo) (not (eq "" (git status -s --ignore-submodules=dirty 2>/dev/null)))
 }
 
 fn prompt_root {
-   uid=(id -u $E:USER)
-   if (eq (id -u $E:USER) 0) {
+   uid = (id -u)
+   if (eq $uid 0) {
      prompt_segment yellow $chain_su_glyph
    } else {
      put ""
@@ -72,10 +71,10 @@ fn prompt_arrow {
 # end
 
 fn prompt {
-   chain:prompt_root
-   chain:prompt_dir
-   chain:prompt_git
-   chain:prompt_arrow
+   prompt_root
+   prompt_dir
+   prompt_git
+   prompt_arrow
 }
 
 fn rprompt {
