@@ -1,3 +1,10 @@
+# Chain prompt theme, based on the fish theme at https://github.com/oh-my-fish/theme-chain
+# Ported to Elvish by Diego Zamboni <diego@zzamboni.org>
+# To use, put this file in ~/.elvish/lib/ and add the following to your ~/.elvish/rc.elv file:
+#   use chain
+#   edit:prompt=chain:prompt
+#   edit:rprompt=chain:rprompt
+
 # Initialize glyphs to be used in the prompt.
 prompt_glyph=">"
 git_branch_glyph="⎇"
