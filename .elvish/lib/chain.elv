@@ -10,6 +10,8 @@ prompt_glyph = ">"
 git_branch_glyph = "⎇"
 git_dirty_glyph = "±"
 chain_su_glyph = "⚡"
+# To how many letters to abbreviate directories in the path - 0 to show in full
+prompt_pwd_dir_length = 1
 
 fn prompt_segment [style @texts]{
    text = "["(joins ' ' $texts)"]-"
@@ -41,8 +43,17 @@ fn prompt_root {
    }
 }
 
+fn prompt_pwd {
+  tmp = (tilde-abbr $pwd)
+  if (== $prompt_pwd_dir_length 0) {
+    put $tmp
+  } else {
+    re:replace '(\.?[^/]{'$prompt_pwd_dir_length'})[^/]*/' '$1/' $tmp
+  }
+}
+
 fn prompt_dir {
-   prompt_segment cyan (tilde-abbr $pwd)
+   prompt_segment cyan (prompt_pwd)
 }
 
 fn prompt_git {
