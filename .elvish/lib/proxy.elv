@@ -22,7 +22,7 @@ host = ""
 test = { put $false }
 
 # Whether to print notifications when setting/unsetting the proxy
-notify = $false
+notify = $true
 
 # Internal variable to avoid notifying more than once.
 has_been_set = $false
