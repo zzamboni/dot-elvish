@@ -9,12 +9,16 @@
 prompt_glyph = ">"
 git_branch_glyph = "⎇"
 git_dirty_glyph = "±"
-chain_su_glyph = "⚡"
+su_glyph = "⚡"
+chain_glyph = "─"
+
 # To how many letters to abbreviate directories in the path - 0 to show in full
 prompt_pwd_dir_length = 1
 
+root_id=0
+
 fn prompt_segment [style @texts]{
-   text = "["(joins ' ' $texts)"]-"
+   text = "["(joins ' ' $texts)"]"$chain_glyph
    edit:styled $text $style
 }
 
@@ -36,8 +40,8 @@ fn is_git_dirty {
 
 fn prompt_root {
    uid = (id -u)
-   if (eq $uid 0) {
-     prompt_segment yellow $chain_su_glyph
+   if (eq $uid $root_id) {
+     prompt_segment yellow $su_glyph
    } else {
      put ""
    }
