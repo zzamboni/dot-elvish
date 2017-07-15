@@ -13,7 +13,7 @@
 # Built-in notifiers:
 #
 # - `$long-running-notifications:macos_notifier` (GUI notifications on macOS, used if
-    `terminal-notifier` is available)
+#   `terminal-notifier` is available)
 # - `$long-running-notifications:text_notifier` (used if nothing else works)
 #
 # You can provide your own notification function. It can make use of the following variables:
