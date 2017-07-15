@@ -21,6 +21,16 @@ use chain
 edit:prompt = chain:prompt
 edit:rprompt = chain:rprompt
 
+# Automatically set proxy
+use proxy
+proxy:test = { and ?(test -f /etc/resolv.conf) ?(egrep -q '^(search|domain).*corproot.net' /etc/resolv.conf) }
+proxy:host = "proxy.corproot.net:8079"
+prompt_hooks:add-before-readline { proxy:autoset }
+
+# Notifications for long-running-commands
+use long-running-notifications
+long-running-notifications:setup
+
 # Read in private settings
 use private
 
@@ -34,11 +44,14 @@ fn set-title [title]{ print "\e]2;"$title"\e\\" }
 prompt_hooks:add-before-readline { set-title "elvish "(tilde-abbr $pwd) > /dev/tty }
 prompt_hooks:add-after-readline [cmd]{ set-title (echo $cmd | sed 's/[ \t].*//')" "(tilde-abbr $pwd) }
 
-# Automatically set proxy
-use proxy
-proxy:test = { and ?(test -f /etc/resolv.conf) ?(egrep -q '^(search|domain).*corproot.net' /etc/resolv.conf) }
-proxy:host = "proxy.corproot.net:8079"
-prompt_hooks:add-before-readline { proxy:autoset }
+# Misc functions
+fn dotify_string [str dotify_length]{
+  if (or (== $dotify_length 0) (<= (count $str) $dotify_length)) {
+    put $str
+  } else {
+    re:replace '(.{'$dotify_length'}).*' '$1…' $str
+  }
+}
 
 # Aliases
 fn ls [@arg]{ e:ls -G $@arg }
