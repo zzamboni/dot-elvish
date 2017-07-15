@@ -38,6 +38,7 @@ use private
 
 # Alt-backspace to delete word
 edit:binding[insert][Alt-Backspace] = { edit:kill-word-left }
+edit:binding[insert][Alt-d] = { edit:move-dot-right-word; edit:kill-word-left }
 
 # Set terminal title
 fn set-title [title]{ print "\e]2;"$title"\e\\" }
