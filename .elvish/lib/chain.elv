@@ -74,17 +74,6 @@ fn prompt_arrow {
    # Is it possible to get the status of the last command? I'm still not clear on elvish's exceptions concept
 }
 
-# function __chain_prompt_arrow
-#   if test $last_status = 0
-#     set_color green
-#   else
-#     set_color red
-#     echo -n "($last_status)-"
-#   end
-
-#   echo -n "$chain_prompt_glyph "
-# end
-
 fn prompt {
    prompt_root
    prompt_dir
