@@ -61,3 +61,4 @@ fn more [@arg]{ less $@arg }
 
 # Environment variables
 E:LESS="-i -R"
+E:GOPATH=~/Personal/devel/go/
