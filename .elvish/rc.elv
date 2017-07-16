@@ -31,15 +31,15 @@ prompt_hooks:add-before-readline { proxy:autoset }
 use long-running-notifications
 long-running-notifications:setup
 
-# Read in private settings
-use private
+# Read in private settings - normally you should not check in lib/private.elv into git
+if ?(test -f ~/.elvish/lib/private.elv) { use private }
 
 ## Other keybindings
 
 # Alt-backspace to delete word
-edit:binding[insert][Alt-Backspace] = { edit:kill-word-left }
+edit:insert:binding[Alt-Backspace] = { edit:kill-word-left }
 # Alt-d to delete the word under the cursor
-edit:binding[insert][Alt-d] = { edit:move-dot-right-word; edit:kill-word-left }
+edit:insert:binding[Alt-d] = { edit:move-dot-right-word; edit:kill-word-left }
 
 # Set terminal title
 fn set-title [title]{ print "\e]2;"$title"\e\\" }
@@ -61,5 +61,3 @@ fn more [@arg]{ less $@arg }
 
 # Environment variables
 E:LESS="-i -R"
-E:ATLAS_TOKEN=$private:ATLAS_TOKEN
-ATLAS_TOKEN=$E:ATLAS_TOKEN
