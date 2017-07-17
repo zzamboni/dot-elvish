@@ -44,7 +44,7 @@ fn unset {
 fn autoset {
   if ($test) {
     if (and $host (not (eq $host ""))) {
-      if (and $notify (not $has_been_set)) { echo (edit:styled "Setting proxy" blue) }
+      if (and $notify (not $has_been_set)) { echo (edit:styled "Setting proxy "$host blue) }
       set $host
       has_been_set = $true
     } else {
