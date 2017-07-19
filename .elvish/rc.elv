@@ -33,6 +33,9 @@ prompt_hooks:add-before-readline { proxy:autoset }
 use long-running-notifications
 long-running-notifications:setup
 
+# Completions
+use completer:vcsh
+
 # Read in private settings - normally you should not check in lib/private.elv into git
 if ?(test -f ~/.elvish/lib/private.elv) { use private }
 
