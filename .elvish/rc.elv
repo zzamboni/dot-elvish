@@ -35,6 +35,7 @@ long-running-notifications:setup
 
 # Completions
 use completer:vcsh
+use completer:git
 
 # Read in private settings - normally you should not check in lib/private.elv into git
 if ?(test -f ~/.elvish/lib/private.elv) { use private }
