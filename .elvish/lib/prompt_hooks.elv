@@ -12,9 +12,9 @@
 # Multiple hooks can be added, they execute in sequence.
 
 fn add-before-readline [hook]{
-   edit:before-readline=[ $@edit:before-readline $hook ]
+	edit:before-readline=[ $@edit:before-readline $hook ]
 }
 
 fn add-after-readline [hook]{
-   edit:after-readline=[ $@edit:after-readline $hook ]
+	edit:after-readline=[ $@edit:after-readline $hook ]
 }

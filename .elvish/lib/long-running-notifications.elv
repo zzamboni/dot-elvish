@@ -74,16 +74,16 @@ before_readline_hook = {
 
 # Record the command and its start time
 after_readline_hook = [cmd]{
-   last_cmd = $cmd
-   last_cmd_start_time = (now)
+  last_cmd = $cmd
+  last_cmd_start_time = (now)
 }
 
 # Set up the prompt hooks to compute times and produce notifications
 # as needed
 fn setup {
-   use prompt_hooks
-   prompt_hooks:add-before-readline $before_readline_hook
-   prompt_hooks:add-after-readline $after_readline_hook
-   # Initialize to setup time to avoid spurious notification
-   last_cmd_start_time = (now)
+  use prompt_hooks
+  prompt_hooks:add-before-readline $before_readline_hook
+  prompt_hooks:add-after-readline $after_readline_hook
+	# Initialize to setup time to avoid spurious notification
+  last_cmd_start_time = (now)
 }

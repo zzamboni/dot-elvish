@@ -18,33 +18,33 @@ prompt_pwd_dir_length = 1
 root_id=0
 
 fn prompt_segment [style @texts]{
-   text = "["(joins ' ' $texts)"]"$chain_glyph
-   edit:styled $text $style
+	text = "["(joins ' ' $texts)"]"$chain_glyph
+	edit:styled $text $style
 }
 
 fn is_git_repo {
-   put ?(git status 2>/dev/null >/dev/null)
+	put ?(git status 2>/dev/null >/dev/null)
 }
 
 fn git_branch_name {
-   if (is_git_repo) {
-     git symbolic-ref HEAD 2>/dev/null | sed -e "s|^refs/heads/||"
-   } else {
-     echo ""
-   }
+	if (is_git_repo) {
+		git symbolic-ref HEAD 2>/dev/null | sed -e "s|^refs/heads/||"
+	} else {
+		echo ""
+	}
 }
 
 fn is_git_dirty {
-   and (is_git_repo) (not (eq "" (git status -s --ignore-submodules=dirty 2>/dev/null)))
+	and (is_git_repo) (not (eq "" (git status -s --ignore-submodules=dirty 2>/dev/null)))
 }
 
 fn prompt_root {
-   uid = (id -u)
-   if (eq $uid $root_id) {
-     prompt_segment yellow $su_glyph
-   } else {
-     put ""
-   }
+	uid = (id -u)
+	if (eq $uid $root_id) {
+		prompt_segment yellow $su_glyph
+	} else {
+		put ""
+	}
 }
 
 fn prompt_pwd {
@@ -57,30 +57,30 @@ fn prompt_pwd {
 }
 
 fn prompt_dir {
-   prompt_segment cyan (prompt_pwd)
+	prompt_segment cyan (prompt_pwd)
 }
 
 fn prompt_git {
-   if (is_git_repo) {
-      prompt_segment blue $git_branch_glyph (git_branch_name)
-      if (is_git_dirty) {
-         prompt_segment yellow $git_dirty_glyph
-      }
-   }
+	if (is_git_repo) {
+		prompt_segment blue $git_branch_glyph (git_branch_name)
+		if (is_git_dirty) {
+			prompt_segment yellow $git_dirty_glyph
+		}
+	}
 }
 
 fn prompt_arrow {
-   edit:styled $prompt_glyph" " green
-   # Is it possible to get the status of the last command? I'm still not clear on elvish's exceptions concept
+	edit:styled $prompt_glyph" " green
+	# Is it possible to get the status of the last command? I'm still not clear on elvish's exceptions concept
 }
 
 fn prompt {
-   prompt_root
-   prompt_dir
-   prompt_git
-   prompt_arrow
+	prompt_root
+	prompt_dir
+	prompt_git
+	prompt_arrow
 }
 
 fn rprompt {
-   put ""
+	put ""
 }

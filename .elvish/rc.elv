@@ -1,15 +1,17 @@
 # Path
-paths = [/Users/taazadi1/bin
-         /Users/taazadi1/Dropbox/Personal/devel/hammerspoon/spoon/bin
-         /opt/X11/bin
-         /Library/TeX/texbin
-         /usr/local/bin
-         /usr/local/sbin
-         /usr/bin
-         /bin
-         /usr/sbin
-         /sbin]
-         
+paths = [
+  /Users/taazadi1/bin
+  /Users/taazadi1/Dropbox/Personal/devel/hammerspoon/spoon/bin
+  /opt/X11/bin
+  /Library/TeX/texbin
+  /usr/local/bin
+  /usr/local/sbin
+  /usr/bin
+  /bin
+  /usr/sbin
+  /sbin
+]
+
 # Emacs keybinding
 use readline-binding
 
@@ -48,11 +50,11 @@ prompt_hooks:add-after-readline [cmd]{ set-title (echo $cmd | sed 's/[ \t].*//')
 
 # Misc functions
 fn dotify_string [str dotify_length]{
-  if (or (== $dotify_length 0) (<= (count $str) $dotify_length)) {
-    put $str
-  } else {
-    re:replace '(.{'$dotify_length'}).*' '$1…' $str
-  }
+	if (or (== $dotify_length 0) (<= (count $str) $dotify_length)) {
+		put $str
+	} else {
+		re:replace '(.{'$dotify_length'}).*' '$1…' $str
+	}
 }
 
 # Aliases
@@ -60,6 +62,6 @@ fn ls [@arg]{ e:ls -G $@arg }
 fn more [@arg]{ less $@arg }
 
 # Environment variables
-E:LESS="-i -R"
-E:GOPATH=~/Personal/devel/go/
-E:EDITOR=vim
+E:LESS = "-i -R"
+E:GOPATH = ~/Personal/devel/go/
+E:EDITOR = "vim"
