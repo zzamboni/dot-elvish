@@ -1,6 +1,8 @@
 # Completer for vcsh - https://github.com/RichiH/vcsh
 # Diego Zamboni <diego@zzamboni.org>
 
+use completer:git
+
 # Return all elements in $l1 except those who are already in $l2
 fn all-except [l1 l2]{
 	each [x]{ if (not (has-value $l2 $x)) { put $x } } $l1
@@ -13,6 +15,8 @@ fn vcsh-completer [cmd @rest]{
 		# Extract valid commands and options from the vcsh help message itself
 		cmds = [(vcsh 2>&1 | grep '^   [a-z-]' | grep -v ':$' | awk '{print $1}')]
 		put $@repos $@cmds
+	} elif (and (> $n 1) (has-value $repos $rest[0])) {
+		put (completer:git:git-completer $cmd" "$rest[0] (explode $rest[1:]))
 	} elif (eq $n 2) {
 		# Subcommand- or option-specific completions
 		if (eq $rest[0] "-c") {
@@ -25,14 +29,10 @@ fn vcsh-completer [cmd @rest]{
 			put $@repos "--terse"
 		}
 	} elif (> $n 2) {
-		if (eq $rest[1] "add") {
-			put (edit:complete-filename $rest[2])
-		} else {
-			# For more than two arguments, we recurse, removing any options that have been typed already
-			# Not perfect but it allows completion to work properly after "vcsh status --terse", for example,
-			# without too much repetition
-			put (all-except [(vcsh-completer $cmd (explode $rest[0:(- $n 1)]))] $rest[0:(- $n 1)])
-		}
+		# For more than two arguments, we recurse, removing any options that have been typed already
+		# Not perfect but it allows completion to work properly after "vcsh status --terse", for example,
+		# without too much repetition
+		put (all-except [(vcsh-completer $cmd (explode $rest[0:(- $n 1)]))] $rest[0:(- $n 1)])
 	}
 }
 
