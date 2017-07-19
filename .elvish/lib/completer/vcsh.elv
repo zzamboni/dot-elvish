@@ -3,11 +3,7 @@
 
 # Return all elements in $l1 except those who are already in $l2
 fn all-except [l1 l2]{
-	if (eq (count $l2) 0) {
-		put $@l1
-	} else {
-		put (echo (joins "\n" $l1) | egrep -v -- (joins "|" $l2))
-	}
+	each [x]{ if (not (has-value $l2 $x)) { put $x } } $l1
 }
 
 fn vcsh_completer [cmd @rest]{
