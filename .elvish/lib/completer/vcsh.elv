@@ -6,7 +6,7 @@ fn all-except [l1 l2]{
 	each [x]{ if (not (has-value $l2 $x)) { put $x } } $l1
 }
 
-fn vcsh_completer [cmd @rest]{
+fn vcsh-completer [cmd @rest]{
 	n = (count $rest)
 	repos = [(vcsh list)]
 	if (eq $n 1) {
@@ -25,11 +25,15 @@ fn vcsh_completer [cmd @rest]{
 			put $@repos "--terse"
 		}
 	} elif (> $n 2) {
-		# For more than two arguments, we recurse, removing any options that have been typed already
-		# Not perfect but it allows completion to work properly after "vcsh status --terse", for example,
-		# without too much repetition
-		put (all-except [(vcsh_completer $cmd (explode $rest[0:(- $n 1)]))] $rest[0:(- $n 1)])
+		if (eq $rest[1] "add") {
+			put (edit:complete-filename $rest[2])
+		} else {
+			# For more than two arguments, we recurse, removing any options that have been typed already
+			# Not perfect but it allows completion to work properly after "vcsh status --terse", for example,
+			# without too much repetition
+			put (all-except [(vcsh-completer $cmd (explode $rest[0:(- $n 1)]))] $rest[0:(- $n 1)])
+		}
 	}
 }
 
-edit:arg-completer[vcsh] = [@arg]{ vcsh_completer $@arg }
+edit:arg-completer[vcsh] = [@arg]{ vcsh-completer $@arg }
