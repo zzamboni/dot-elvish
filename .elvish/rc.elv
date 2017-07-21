@@ -19,15 +19,17 @@ use readline-binding
 use prompt_hooks
 
 # Chain prompt, copied from fish's theme at https://github.com/oh-my-fish/theme-chain
-use chain
-edit:prompt = chain:prompt
-edit:rprompt = chain:rprompt
+use theme:chain
+theme:chain:setup
 
 # Automatically set proxy
 use proxy
 proxy:test = { and ?(test -f /etc/resolv.conf) ?(egrep -q '^(search|domain).*corproot.net' /etc/resolv.conf) }
 proxy:host = "proxy.corproot.net:8079"
+# Add the hook both before and after the prompt so that it's configured correctly in case the conditions change
+# while you are typing a command.
 prompt_hooks:add-before-readline { proxy:autoset }
+prompt_hooks:add-after-readline { proxy:autoset }
 
 # Notifications for long-running-commands
 use long-running-notifications
