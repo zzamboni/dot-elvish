@@ -8,13 +8,26 @@
 # You can also assign the prompt functions manually instead of calling `chain:setup`:
 #   edit:prompt = $chain:&prompt
 #   edit:rprompt = $chain:&rprompt
+#
+# The chains on both sides can be configured by assigning to `theme:chain:prompt_segments` and
+# `theme:chain:rprompt_segments`, respectively. These variables must be arrays, and the given
+# segments will be automatically linked by `$theme:chain:glyph[chain]`. Each element can be any
+# of the following:
+#
+# - The name of one of the built-in segments. Available segments: `arrow` `timestamp` `su` `dir` `git_branch` `git_dirty`
+# - A string or the output of `edit:styled`, which will be displayed as-is.
+# - A lambda, which will be called and its output displayed
+# - The output of a call to `theme:chain:segment <style> <strings>`, which returns a "proper" segment, enclosed in
+#   square brackets and styled as requested.
+#
+
+# Default values (all can be configured by assigning to the appropriate variable):
 
 # Configurable prompt segments for each prompt
-# Available segments: arrow timestamp su dir git_branch git_dirty
 prompt_segments = [ su dir git_branch git_dirty arrow ]
 rprompt_segments = [ ]
 
-# Initialize glyphs to be used in the prompt.
+# Glyphs to be used in the prompt
 glyph = [
 	&prompt= ">"
 	&git_branch= "⎇"
@@ -23,6 +36,7 @@ glyph = [
 	&chain= "─"
 ]
 
+# Styling for each built-in segment. The value must be a valid argument to `edit:styled`
 segment_style = [
 	&chain= default
 	&su= yellow
@@ -41,6 +55,9 @@ timestamp_format = "%R"
 # User ID that will trigger the "su" segment. Defaults to root.
 root_id=0
 
+######################################################################
+
+# Internal function to return a styled string, or plain if color == "default"
 fn -colored [what color]{
 	if (!=s $color default) {
 		edit:styled $what $color
@@ -49,25 +66,30 @@ fn -colored [what color]{
 	}
 }
 
+# Build a prompt segment in the given style, surrounded by square brackets
 fn prompt_segment [style @texts]{
 	text = "["(joins ' ' $texts)"]"
 	-colored $text $style
 }
 
+# Check if the current directory is a git repo
 fn is_git_repo {
 	put ?(git status 2>/dev/null >/dev/null)
 }
 
+# Return the git branch name of the current directory
 fn -git_branch_name {
 	if (is_git_repo) {
 		git symbolic-ref HEAD 2>/dev/null | sed -e "s|^refs/heads/||"
 	}
 }
 
+# Return whether the current git repo is "dirty" (modified in any way)
 fn -git_is_dirty {
 	and (is_git_repo) (not (eq "" (git status -s --ignore-submodules=dirty 2>/dev/null)))
 }
 
+# Return the current directory, shortened according to `$prompt_pwd_dir_length`
 fn -prompt_pwd {
 	tmp = (tilde-abbr $pwd)
 	if (== $prompt_pwd_dir_length 0) {
@@ -76,6 +98,9 @@ fn -prompt_pwd {
 		re:replace '(\.?[^/]{'$prompt_pwd_dir_length'})[^/]*/' '$1/' $tmp
 	}
 }
+
+######################################################################
+# Built-in chain segments
 
 fn segment_su {
 	uid = (id -u)
@@ -102,7 +127,6 @@ fn segment_git_dirty {
 
 fn segment_arrow {
 	edit:styled $glyph[prompt]" " green
-	# Is it possible to get the status of the last command? I'm still not clear on elvish's exceptions concept
 }
 
 fn segment_timestamp {
@@ -119,6 +143,9 @@ segment = [
 	&timestamp= $&segment_timestamp
 ]
 
+# Given a segment specification, return the appropriate value, depending
+# on whether it's the name of a built-in segment, a lambda, a string
+# or an edit:styled
 fn -interpret-segment [seg]{
 	k = (kind-of $seg)
 	if (eq $k fn) {
@@ -138,6 +165,7 @@ fn -interpret-segment [seg]{
 	}
 }
 
+# Return a string of values, including the appropriate chain connectors
 fn -build-chain [segments]{
 	first = $true
 	for seg $segments {
@@ -152,8 +180,11 @@ fn -build-chain [segments]{
 	}
 }
 
+# Prompt and rprompt functions
 fn prompt { -build-chain $prompt_segments }
 fn rprompt { -build-chain $rprompt_segments }
+
+# Default setup, assigning our functions to `edit:prompt` and `edit:rprompt`
 
 fn setup {
 	edit:prompt = $&prompt
