@@ -9,7 +9,7 @@ commands = [(e:git help -a | grep '^  [a-z]' | tr -s "[:blank:]" "\n" | each [x]
 # interprets the first token (the head) to be the command.
 # One example of a multi-word $gitcmd is "vcsh <repo>", after which
 # any git subcommand is valid.
-fn run-git-cmd [gitcmd @rest]{
+fn -run-git-cmd [gitcmd @rest]{
 	gitcmds = [(splits &sep=" " $gitcmd)]
 	if (> (count $gitcmds) 1) {
 		$gitcmds[0] (explode $gitcmds[1:]) $@rest
@@ -26,14 +26,14 @@ fn git-completer [gitcmd @rest]{
 		# From https://github.com/occivink/config/blob/master/.elvish/rc.elv
 		subcommand = $rest[0]
 		if (or (eq $subcommand add) (eq $subcommand stage)) {
-			run-git-cmd $gitcmd diff --name-only
-			run-git-cmd $gitcmd ls-files --others --exclude-standard
+			-run-git-cmd $gitcmd diff --name-only
+			-run-git-cmd $gitcmd ls-files --others --exclude-standard
 		} elif (eq $subcommand discard) {
-			run-git-cmd $gitcmd diff --name-only
+			-run-git-cmd $gitcmd diff --name-only
 		} elif (eq $subcommand unstage) {
-			run-git-cmd $gitcmd diff --name-only --cached
+			-run-git-cmd $gitcmd diff --name-only --cached
 		} elif (or (eq $subcommand checkout) (eq $subcommand co)) {
-			run-git-cmd $gitcmd branch --list --all --format '%(refname:short)'
+			-run-git-cmd $gitcmd branch --list --all --format '%(refname:short)'
 		}
 	}
 }

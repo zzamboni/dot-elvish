@@ -4,7 +4,7 @@
 use completer:git
 
 # Return all elements in $l1 except those who are already in $l2
-fn all-except [l1 l2]{
+fn -all-except [l1 l2]{
 	each [x]{ if (not (has-value $l2 $x)) { put $x } } $l1
 }
 
@@ -32,8 +32,8 @@ fn vcsh-completer [cmd @rest]{
 		# For more than two arguments, we recurse, removing any options that have been typed already
 		# Not perfect but it allows completion to work properly after "vcsh status --terse", for example,
 		# without too much repetition
-		put (all-except [(vcsh-completer $cmd (explode $rest[0:(- $n 1)]))] $rest[0:(- $n 1)])
+		put (-all-except [(vcsh-completer $cmd (explode $rest[0:(- $n 1)]))] $rest[0:(- $n 1)])
 	}
 }
 
-edit:arg-completer[vcsh] = [@arg]{ vcsh-completer $@arg }
+edit:arg-completer[vcsh] = $&vcsh-completer
