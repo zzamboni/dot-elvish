@@ -1,8 +1,13 @@
-# Completion for git
+# Completion for git (or tools which allow git commands to be passed, like vcsh)
 # Diego Zamboni <diego@zzamboni.org>
 # Some code from https://github.com/occivink/config/blob/master/.elvish/rc.elv
 
-commands = [(e:git help -a | grep '^  [a-z]' | tr -s "[:blank:]" "\n" | each [x]{ if (> (count $x) 0) { put $x } })]
+# Fetch list of valid git commands and aliases from git itself
+-cmds = [
+  (e:git help -a | grep '^  [a-z]' | tr -s "[:blank:]" "\n" | each [x]{ if (> (count $x) 0) { put $x } })
+  (e:git config --list | grep alias | sed 's/^alias\.//; s/=.*$//')
+]
+commands = [(echo &sep="\n" $@-cmds | sort)]
 
 # This allows $gitcmd to be a multi-word command and still be executed
 # correctly. We cannot simply run "$gitcmd <opts>" because Elvish always
