@@ -53,7 +53,7 @@ prompt_pwd_dir_length = 1
 timestamp_format = "%R"
 
 # User ID that will trigger the "su" segment. Defaults to root.
-root_id=0
+root_id = 0
 
 ######################################################################
 
