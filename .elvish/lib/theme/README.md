@@ -66,9 +66,9 @@ segment_style = [
 prompt_pwd_dir_length = 1
 ```
 - Format to use for the 'timestamp' segment,
-  in [strftime(3)](http://man7.org/linux/man-pages/man3/strftime.3.html)
+  in [strftime(3)](http://man7.org/linux/man-pages/man3/strftime.3.html) format
 ```
-format timestamp_format = "%R"
+timestamp_format = "%R"
 ```
 - User ID that will trigger the display of the "su" segment. Defaults to root.
 ```
