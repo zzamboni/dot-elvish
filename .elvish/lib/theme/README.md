@@ -34,12 +34,12 @@ element can be any of the following:
 Default values (all can be configured by assigning to the appropriate variable):
 
 - Prompt configurations
-  ```
+```
 prompt_segments = [ su dir git_branch git_dirty arrow ]
 rprompt_segments = [ ]
   ```
 - Glyphs to be used in the prompt
-  ```
+```
 glyph = [
 	&prompt= ">"
 	&git_branch= "⎇"
@@ -49,7 +49,7 @@ glyph = [
 ]
 ```
 - Styling for each built-in segment. The value must be a valid argument to `edit:styled`
-  ```
+```
 segment_style = [
 	&chain= default
 	&su= yellow
