@@ -185,7 +185,6 @@ fn prompt { -build-chain $prompt_segments }
 fn rprompt { -build-chain $rprompt_segments }
 
 # Default setup, assigning our functions to `edit:prompt` and `edit:rprompt`
-
 fn setup {
 	edit:prompt = $&prompt
 	edit:rprompt = $&rprompt
