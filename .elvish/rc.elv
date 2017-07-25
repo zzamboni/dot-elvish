@@ -63,6 +63,12 @@ fn dotify_string [str dotify_length]{
 	}
 }
 
+# Smart-case completion (if your pattern is entirely lower
+# case it ignores case, otherwise it's case sensitive).
+# "&smart-case" can be "&ignore-case" to make it always
+# case-insensitive.
+edit:-matcher[''] = [p]{ edit:match-prefix &smart-case $p }
+
 # Aliases
 fn ls [@arg]{ e:ls -G $@arg }
 fn more [@arg]{ less $@arg }
@@ -71,3 +77,4 @@ fn more [@arg]{ less $@arg }
 E:LESS = "-i -R"
 E:GOPATH = ~/Personal/devel/go/
 E:EDITOR = "vim"
+paths = [ $@paths $E:GOPATH/bin ]
