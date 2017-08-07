@@ -45,7 +45,7 @@ if ?(test -f ~/.elvish/lib/private.elv) { use private }
 ## Other keybindings
 
 # Alt-backspace to delete word
-edit:insert:binding[Alt-Backspace] = { edit:kill-word-left }
+edit:insert:binding[Alt-Backspace] = $edit:&kill-small-word-left
 # Alt-d to delete the word under the cursor
 edit:insert:binding[Alt-d] = { edit:move-dot-right-word; edit:kill-word-left }
 
