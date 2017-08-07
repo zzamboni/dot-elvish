@@ -25,11 +25,11 @@ theme:chain:setup
 # Automatically set proxy
 use proxy
 proxy:test = { and ?(test -f /etc/resolv.conf) ?(egrep -q '^(search|domain).*corproot.net' /etc/resolv.conf) }
-proxy:host = "proxy.corproot.net:8079"
+proxy:host = "http://proxy.corproot.net:8079"
 # Add the hook both before and after the prompt so that it's configured correctly in case the conditions change
 # while you are typing a command.
 prompt_hooks:add-before-readline { proxy:autoset }
-prompt_hooks:add-after-readline { proxy:autoset }
+prompt_hooks:add-after-readline [cmd]{ proxy:autoset }
 
 # Notifications for long-running-commands
 use long-running-notifications
