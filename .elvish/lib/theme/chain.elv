@@ -55,6 +55,12 @@ timestamp_format = "%R"
 # User ID that will trigger the "su" segment. Defaults to root.
 root_id = 0
 
+# Cached generated prompt - since arbitrary commands can be executed, we compute
+# the prompt only before displaying it and not on every keystroke, and we cache
+# the prompts here.
+cached_prompt = [ ]
+cached_rprompt = [ ]
+
 ######################################################################
 
 # Internal function to return a styled string, or plain if color == "default"
@@ -180,12 +186,16 @@ fn -build-chain [segments]{
 	}
 }
 
+fn generate_prompt { cached_prompt = [(-build-chain $prompt_segments)] }
+fn generate_rprompt { cached_rprompt = [(-build-chain $rprompt_segments)] }
+
 # Prompt and rprompt functions
-fn prompt { -build-chain $prompt_segments }
-fn rprompt { -build-chain $rprompt_segments }
+fn prompt { put $@cached_prompt }
+fn rprompt { put $@cached_rprompt }
 
 # Default setup, assigning our functions to `edit:prompt` and `edit:rprompt`
 fn setup {
-	edit:prompt = $&prompt
-	edit:rprompt = $&rprompt
+  edit:before-readline=[ $@edit:before-readline $&generate_prompt ]
+  edit:prompt = $&prompt
+  edit:rprompt = $&rprompt
 }
