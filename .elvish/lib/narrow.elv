@@ -69,28 +69,36 @@ fn lastcmd {
 
 # TODO: separate bindings from functions
 
-fn bind_i [k f]{
+fn -bind_i [k f]{
   edit:insert:binding[$k] = $f
 }
 
-fn bind_n [k f]{
+fn -bind_n [k f]{
   edit:narrow:binding[$k] = $f
 }
 
-bind_i Alt-l     narrow:location
-bind_i C-r       narrow:history
-bind_i M-1       narrow:lastcmd
+# Bind keys for location, history and lastcmd modes. Without
+# options, it uses the default bindings, but different keys
+# can be specified with the options. To disable a binding,
+# specify its key as "".
+# Example:
+#   narrow:bind_keys &location=Alt-l &lastcmd=""
+fn bind_keys [&location=C-l &history=C-r &lastcmd=M-1]{
+  if (> (count $location) 0) { -bind_i $location narrow:location }
+  if (> (count $history) 0)  { -bind_i $history  narrow:history }
+  if (> (count $lastcmd) 0)  { -bind_i $lastcmd  narrow:lastcmd }
+}
 
-bind_n Up        $edit:narrow:&up
-bind_n PageUp    $edit:narrow:&page-up
-bind_n Down      $edit:narrow:&down
-bind_n PageDown  $edit:narrow:&page-down
-bind_n Tab       $edit:narrow:&down-cycle
-bind_n S-Tab     $edit:narrow:&up-cycle
-bind_n Backspace $edit:narrow:&backspace
-bind_n Enter     $edit:narrow:&accept-close
-bind_n M-Enter   $edit:narrow:&accept
-bind_n default   $edit:narrow:&default
-bind_n "C-["     $edit:insert:&start
-bind_n C-G       $edit:narrow:&toggle-ignore-case
-bind_n C-D       $edit:narrow:&toggle-ignore-duplication
+-bind_n Up        $edit:narrow:&up
+-bind_n PageUp    $edit:narrow:&page-up
+-bind_n Down      $edit:narrow:&down
+-bind_n PageDown  $edit:narrow:&page-down
+-bind_n Tab       $edit:narrow:&down-cycle
+-bind_n S-Tab     $edit:narrow:&up-cycle
+-bind_n Backspace $edit:narrow:&backspace
+-bind_n Enter     $edit:narrow:&accept-close
+-bind_n M-Enter   $edit:narrow:&accept
+-bind_n default   $edit:narrow:&default
+-bind_n "C-["     $edit:insert:&start
+-bind_n C-G       $edit:narrow:&toggle-ignore-case
+-bind_n C-D       $edit:narrow:&toggle-ignore-duplication

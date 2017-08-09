@@ -42,6 +42,7 @@ use completer:git
 # Use narrow mode for location, dir-history and lastcmd modes, this
 # allows hooking into the completion process (i.e. to update the prompt)
 use narrow
+narrow:bind_keys &location=Alt-l
 update_prompt = { theme:chain:generate_prompt; edit:redraw }
 narrow:after-location = [ $@narrow:after-location $update_prompt ]
 narrow:after-history = [ $@narrow:after-history $update_prompt ]
