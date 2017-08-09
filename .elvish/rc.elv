@@ -39,6 +39,10 @@ long-running-notifications:setup
 use completer:vcsh
 use completer:git
 
+# Use narrow mode for location, dir-history and lastcmd modes, this
+# allows hooking into the completion process (i.e. to update the prompt)
+use narrow
+
 # Read in private settings - normally you should not check in lib/private.elv into git
 if ?(test -f ~/.elvish/lib/private.elv) { use private }
 
