@@ -1,4 +1,13 @@
+# Hooks
+before-location = []
+after-location = []
+before-history = []
+after-history = []
+before-lastcmd = []
+after-lastcmd = []
+
 fn location {
+  for hook $before-location { $hook }
   candidates = [(dir-history | each [arg]{
 	      score = (splits . $arg[score] | take 1)
         put [
@@ -11,12 +20,12 @@ fn location {
     put $@candidates
   } [arg]{
     cd $arg[content]
-    theme:chain:generate_prompt
-    edit:redraw
+    for hook $after-location { $hook }
   } &modeline="[narrow] Location " &ignore-case=$true
 }
 
 fn history {
+  for hook $before-history { $hook }
   candidates = [(edit:command-history | each [arg]{
         put [
 	        &content=$arg[cmd]
@@ -28,12 +37,12 @@ fn history {
     put $@candidates
   } [arg]{
     edit:replace-input $arg[content]
-    theme:chain:generate_prompt
-    edit:redraw
+    for hook $after-history { $hook }
   } &modeline="[narrow] History " &keep-bottom=$true &ignore-case=$true
 }
 
 fn lastcmd {
+  for hook $before-lastcmd { $hook }
   last = (edit:command-history -1)
   cmd = [
     &content=$last[cmd]
@@ -52,9 +61,8 @@ fn lastcmd {
   edit:-narrow-read {
     put $@candidates
   } [arg]{
-    edit:replace-input $arg[content]
-    theme:chain:generate_prompt
-    edit:redraw
+    edit:insert-at-dot $arg[content]
+    for hook $after-lastcmd { $hook }
   } &modeline="[narrow] Lastcmd " &auto-commit=$true &bindings=[&M-1={ edit:narrow:accept-close }] &ignore-case=$true
 }
 
