@@ -55,6 +55,9 @@ timestamp_format = "%R"
 # User ID that will trigger the "su" segment. Defaults to root.
 root_id = 0
 
+# If $true, the chain is only generated after each command and not on every keystroke
+cache_chain = $true
+
 # Cached generated prompt - since arbitrary commands can be executed, we compute
 # the prompt only before displaying it and not on every keystroke, and we cache
 # the prompts here.
@@ -80,19 +83,19 @@ fn prompt_segment [style @texts]{
 
 # Check if the current directory is a git repo
 fn is_git_repo {
-	put ?(git status 2>/dev/null >/dev/null)
+	put ?(git rev-parse --is-inside-work-tree 2>/dev/null)
 }
 
 # Return the git branch name of the current directory
 fn -git_branch_name {
 	if (is_git_repo) {
-		git symbolic-ref HEAD 2>/dev/null | sed -e "s|^refs/heads/||"
+		git rev-parse --abbrev-ref HEAD 2> /dev/null
 	}
 }
 
 # Return whether the current git repo is "dirty" (modified in any way)
 fn -git_is_dirty {
-	and (is_git_repo) (not (eq "" (git status -s --ignore-submodules=dirty 2>/dev/null)))
+	and (is_git_repo) (not (eq "" (git status --porcelain --ignore-submodules)))
 }
 
 # Return the current directory, shortened according to `$prompt_pwd_dir_length`
@@ -174,8 +177,10 @@ fn -interpret-segment [seg]{
 # Return a string of values, including the appropriate chain connectors
 fn -build-chain [segments]{
 	first = $true
+  output = ""
 	for seg $segments {
-		output = [(-interpret-segment $seg)]
+		time = (-time { output = [(-interpret-segment $seg)] })
+    echo (date) $pwd segment-$seg $time >> /tmp/chain-debug.log
 		if (> (count $output) 0) {
 			if (not $first) {
 				-colored $glyph[chain] $segment_style[chain]
@@ -186,16 +191,27 @@ fn -build-chain [segments]{
 	}
 }
 
-fn generate_prompt { cached_prompt = [(-build-chain $prompt_segments)] }
-fn generate_rprompt { cached_rprompt = [(-build-chain $rprompt_segments)] }
-
 # Prompt and rprompt functions
-fn prompt { put $@cached_prompt }
-fn rprompt { put $@cached_rprompt }
+
+fn prompt { -build-chain $prompt_segments }
+fn rprompt { -build-chain $rprompt_segments }
+
+fn cache_prompts {
+  time = (-time {
+      cached_prompt = [(prompt)]
+      cached_rprompt = [(rprompt)] 
+  })
+  echo (date) $pwd cache_prompts $time >> /tmp/chain-debug.log
+}
 
 # Default setup, assigning our functions to `edit:prompt` and `edit:rprompt`
 fn setup {
-  edit:before-readline=[ $@edit:before-readline $&generate_prompt ]
-  edit:prompt = $&prompt
-  edit:rprompt = $&rprompt
+  if $cache_chain {
+    edit:before-readline=[ $@edit:before-readline $&cache_prompts ]
+    edit:prompt = { put $@cached_prompt }
+    edit:rprompt = { put $@cached_rprompt }
+  } else {
+    edit:prompt = $&prompt
+    edit:rprompt = $&rprompt
+  }
 }
