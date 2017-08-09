@@ -42,6 +42,10 @@ use completer:git
 # Use narrow mode for location, dir-history and lastcmd modes, this
 # allows hooking into the completion process (i.e. to update the prompt)
 use narrow
+update_prompt = { theme:chain:generate_prompt; edit:redraw }
+narrow:after-location = [ $@narrow:after-location $update_prompt ]
+narrow:after-history = [ $@narrow:after-history $update_prompt ]
+narrow:after-lastcmd = [ $@narrow:after-lastcmd $update_prompt ]
 
 # Read in private settings - normally you should not check in lib/private.elv into git
 if ?(test -f ~/.elvish/lib/private.elv) { use private }
