@@ -20,6 +20,9 @@ use prompt_hooks
 
 # Chain prompt, copied from fish's theme at https://github.com/oh-my-fish/theme-chain
 use theme:chain
+# Uncomment this to update the chain on every keystroke - this can slow down typing (especially in large git repos)
+# By default the chain is updated on every command.
+#theme:chain:cache_chain = $false
 theme:chain:setup
 
 # Automatically set proxy
@@ -43,7 +46,7 @@ use completer:git
 # allows hooking into the completion process (i.e. to update the prompt)
 use narrow
 narrow:bind_keys &location=Alt-l
-update_prompt = { theme:chain:generate_prompt; edit:redraw }
+update_prompt = { theme:chain:cache_prompts; edit:redraw }
 narrow:after-location = [ $@narrow:after-location $update_prompt ]
 narrow:after-history = [ $@narrow:after-history $update_prompt ]
 narrow:after-lastcmd = [ $@narrow:after-lastcmd $update_prompt ]
