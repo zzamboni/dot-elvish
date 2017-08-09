@@ -1,4 +1,25 @@
+# Implementation of location, history and lastcmd mode using the new
+# -narrow-read mode. One advantage of this is that it allows the
+# execution of arbitrary hooks before or after each mode.
+#
+# Usage:
+#   use narrow
+#   narrow:bind_keys
+#
+# narrow:bind_keys binds keys for location, history and lastcmd
+# modes. Without options, it uses the default bindings (same as the
+# default bindings for edit:location, edit:history and edit:lastcmd),
+# but different keys can be specified with the options. To disable a
+# binding, specify its key as "".
+# Example:
+#   narrow:bind_keys &location=Alt-l &lastcmd="" 
+
 # Hooks
+# Each hook variable is an array which must contain lambdas, all of
+# which will be executed in sequence before and after the
+# corresponding mode.
+# Example (list the new directory after switching to it in location mode):
+#    narrow:after-location = [ $@narrow:after-location { edit:insert-at-dot "ls"; edit:smart-enter } ]
 before-location = []
 after-location = []
 before-history = []
@@ -67,8 +88,6 @@ fn lastcmd {
 }
 
 
-# TODO: separate bindings from functions
-
 fn -bind_i [k f]{
   edit:insert:binding[$k] = $f
 }
@@ -89,6 +108,7 @@ fn bind_keys [&location=C-l &history=C-r &lastcmd=M-1]{
   if (> (count $lastcmd) 0)  { -bind_i $lastcmd  narrow:lastcmd }
 }
 
+# Set up some default useful bindings for narrow mode
 -bind_n Up        $edit:narrow:&up
 -bind_n PageUp    $edit:narrow:&page-up
 -bind_n Down      $edit:narrow:&down
