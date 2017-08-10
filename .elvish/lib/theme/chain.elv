@@ -56,7 +56,10 @@ timestamp_format = "%R"
 root_id = 0
 
 # If $true, the chain is only generated after each command and not on every keystroke
-cache_chain = $true
+# This improves typing speed sometimes (e.g. in large git repos when you have the
+# git segments enabled) but may cause prompt refresh problems sometimes until
+# you press Enter after a directory change or some other change.
+cache_chain = $false
 
 # Cached generated prompt - since arbitrary commands can be executed, we compute
 # the prompt only before displaying it and not on every keystroke, and we cache
