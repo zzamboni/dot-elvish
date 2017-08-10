@@ -1,4 +1,5 @@
 # Directory history
+# Keep and move through the directory history
 
 # The stack and a pointer into it, which points to the current
 # directory. Normally the cursor points to the end of the stack, but
