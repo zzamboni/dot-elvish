@@ -20,9 +20,12 @@ use prompt_hooks
 
 # Chain prompt, copied from fish's theme at https://github.com/oh-my-fish/theme-chain
 use theme:chain
-# Uncomment this to update the chain on every keystroke - this can slow down typing (especially in large git repos)
-# By default the chain is updated on every command.
-#theme:chain:cache_chain = $false
+# Uncomment this to update the chain only after each command and not
+# on every keystroke. This improves typing speed sometimes (e.g. in
+# large git repos when you have the git segments enabled) but may
+# cause prompt refresh problems sometimes until you press Enter after
+# a directory change or some other change.
+#theme:chain:cache_chain = $true
 theme:chain:setup
 
 # Automatically set proxy
@@ -50,6 +53,12 @@ update_prompt = { theme:chain:cache_prompts; edit:redraw }
 narrow:after-location = [ $@narrow:after-location $update_prompt ]
 narrow:after-history = [ $@narrow:after-history $update_prompt ]
 narrow:after-lastcmd = [ $@narrow:after-lastcmd $update_prompt ]
+
+# Directory history
+use dirs
+dirs:setup
+edit:insert:binding[Alt-b] = $dirs:&left-word-or-prev-dir
+edit:insert:binding[Alt-f] = $dirs:&right-word-or-next-dir
 
 # Read in private settings - normally you should not check in lib/private.elv into git
 if ?(test -f ~/.elvish/lib/private.elv) { use private }
