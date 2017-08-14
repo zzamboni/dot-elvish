@@ -98,7 +98,7 @@ fn -git_branch_name {
 
 # Return whether the current git repo is "dirty" (modified in any way)
 fn -git_is_dirty {
-	and (is_git_repo) (not (eq "" (git status --porcelain --ignore-submodules)))
+	and (is_git_repo) (not (eq "" (git ls-files --exclude-standard -om)))
 }
 
 # Return the current directory, shortened according to `$prompt_pwd_dir_length`
