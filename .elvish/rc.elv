@@ -73,7 +73,7 @@ edit:insert:binding[Alt-d] = { edit:move-dot-right-word; edit:kill-word-left }
 # Set terminal title
 fn set-title [title]{ print "\e]2;"$title"\e\\" }
 prompt_hooks:add-before-readline { set-title "elvish "(tilde-abbr $pwd) > /dev/tty }
-prompt_hooks:add-after-readline [cmd]{ set-title (echo (replaces "\n" " " $cmd) | sed 's/[ \t].*//')" "(tilde-abbr $pwd) }
+prompt_hooks:add-after-readline [cmd]{ set-title [(splits " " (re:replace "\n" " " $cmd))][0]" "(tilde-abbr $pwd) }
 
 # Misc functions
 fn dotify_string [str dotify_length]{
