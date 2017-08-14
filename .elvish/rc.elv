@@ -55,10 +55,10 @@ narrow:after-history = [ $@narrow:after-history $update_prompt ]
 narrow:after-lastcmd = [ $@narrow:after-lastcmd $update_prompt ]
 
 # Directory history
-use dirs
-dirs:setup
-edit:insert:binding[Alt-b] = $dirs:&left-word-or-prev-dir
-edit:insert:binding[Alt-f] = $dirs:&right-word-or-next-dir
+use dir
+dir:setup
+edit:insert:binding[Alt-b] = $dir:&left-word-or-prev-dir
+edit:insert:binding[Alt-f] = $dir:&right-word-or-next-dir
 
 # Read in private settings - normally you should not check in lib/private.elv into git
 if ?(test -f ~/.elvish/lib/private.elv) { use private }
