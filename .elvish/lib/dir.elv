@@ -28,7 +28,6 @@ fn curdir {
 fn push {
   if (or (== (stacksize) 0) (!=s $pwd (curdir))) {
     -dirstack = [ (explode $-dirstack[0:(+ $-cursor 1)]) $pwd ]
-    echo "Added to stack: "$pwd
     -cursor = (- (count $-dirstack) 1)
   }
 }
@@ -63,7 +62,7 @@ fn left-word-or-prev-dir {
   if (> (count $edit:current-command) 0) {
     edit:move-dot-left-word
   } else {
-    dirs:back
+    back
   }
 }
 
@@ -71,7 +70,7 @@ fn right-word-or-next-dir {
   if (> (count $edit:current-command) 0) {
     edit:move-dot-right-word
   } else {
-    dirs:forward
+    forward
   }
 }
 
