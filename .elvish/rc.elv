@@ -94,6 +94,37 @@ edit:-matcher[''] = [p]{ edit:match-prefix &smart-case $p }
 fn ls [@arg]{ e:ls -G $@arg }
 fn more [@arg]{ less $@arg }
 
+# Check if the current directory is a git repo
+fn is_git_repo {
+	put ?(git rev-parse --is-inside-work-tree 2>/dev/null)
+}
+
+# Wrapper around git that transparenly calls vcsh if the current
+# directory is not a git repo, but it is a vcsh-managed directory.
+fn git [@arg]{
+  if (is_git_repo) {
+    # If we are in a git repo, run git normally
+    e:git $@arg
+  } else {
+    # Else, try to determine if we are in a vcsh-managed directory
+    dirname = (path-base $pwd)
+    vcsh_repo = ""
+    pwd=~ { _ = ?(vcsh_repo = (splits ':' (vcsh which $dirname 2>/dev/null | take 1) | take 1)) }
+    if (not-eq $vcsh_repo "") {
+      # If the last git argument is "status", add a "." to restrict the status to the current directory
+      # and avoid spurious output from vcsh
+      if (or (==s $arg[-1] "status") (==s $arg[-1] "st")) {
+        arg = [$@arg "."]
+      }
+      # Execute vcsh with the correct repo and the git options given
+      vcsh $vcsh_repo $@arg
+    } else {
+      # If this is no vcsh dir, run git anyway, which will produce the expected error
+      e:git $@arg
+    }
+  }
+}
+
 # Environment variables
 E:LESS = "-i -R"
 E:GOPATH = ~/Personal/devel/go/
