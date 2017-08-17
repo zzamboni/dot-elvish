@@ -59,6 +59,7 @@ use dir
 dir:setup
 edit:insert:binding[Alt-b] = $dir:&left-word-or-prev-dir
 edit:insert:binding[Alt-f] = $dir:&right-word-or-next-dir
+fn cd [@dir]{ dir:cd $@dir }
 
 # Git-related functions
 use git

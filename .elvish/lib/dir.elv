@@ -7,7 +7,11 @@
 -dirstack = [ $pwd ]
 -cursor = (- (count $-dirstack) 1)
 
+# Maximum stack size, 0 for no limit
+-max-stack-size = 100
+
 fn stacksize { count $-dirstack }
+
 fn stack { put $@-dirstack }
 fn pstack { pprint [(stack)] }
 
@@ -28,12 +32,14 @@ fn curdir {
 fn push {
   if (or (== (stacksize) 0) (!=s $pwd (curdir))) {
     -dirstack = [ (explode $-dirstack[0:(+ $-cursor 1)]) $pwd ]
-    -cursor = (- (count $-dirstack) 1)
+    if (> (stacksize) $-max-stack-size) {
+      -dirstack = $-dirstack[(- $-max-stack-size):]
+    }
+    -cursor = (- (stacksize) 1)
   }
 }
 
-# Move back and forward through the stack. `pop` is the same
-# as `back`.
+# Move back and forward through the stack.
 fn back {
   if (> $-cursor 0) {
     -cursor = (- $-cursor 1)
@@ -44,8 +50,6 @@ fn back {
   }
 }
 
-fn pop { back }
-
 fn forward {
   if (< $-cursor (- (stacksize) 1)) {
     -cursor = (+ $-cursor 1)
@@ -53,6 +57,18 @@ fn forward {
     push
   } else {
     echo "End of directory stack!"
+  }
+}
+
+# Pop the previous directory on the stack. The current dir becomes the
+# previous one, so successive pops alternate between the two last
+# directories.
+fn pop {
+  if (> $-cursor 0) {
+    cd $-dirstack[(- $-cursor 1)]
+    push
+  } else {
+    echo "No previous directory to pop!"
   }
 }
 
@@ -71,6 +87,16 @@ fn right-word-or-next-dir {
     edit:move-dot-right-word
   } else {
     forward
+  }
+}
+
+# cd wrapper which supports "-" to indicate the previous directory
+# (calls pop)
+fn cd [@dir]{
+  if (and (== (count $dir) 1) (eq $dir[0] "-")) {
+    pop
+  } else {
+    builtin:cd $@dir
   }
 }
 
