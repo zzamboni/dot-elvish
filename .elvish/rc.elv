@@ -4,6 +4,7 @@ paths = [
   /Users/taazadi1/Dropbox/Personal/devel/hammerspoon/spoon/bin
   /opt/X11/bin
   /Library/TeX/texbin
+  /usr/local/opt/node@6/bin
   /usr/local/bin
   /usr/local/sbin
   /usr/bin
