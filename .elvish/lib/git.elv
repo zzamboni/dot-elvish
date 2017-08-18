@@ -10,7 +10,13 @@ fn is_git_repo {
 fn git_vcsh [@arg]{
   if (is_git_repo) {
     # If we are in a git repo, run git normally
-    e:git $@arg
+    try {
+      e:git $@arg
+    } except e {
+      if (not (re:match 'git killed by signal broken pipe' (echo $e))) {
+        fail (echo $e)
+      }
+    }
   } else {
     # Else, try to determine if we are in a vcsh-managed directory
     dirname = (path-base $pwd)
