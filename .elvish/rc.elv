@@ -96,9 +96,10 @@ fn dotify_string [str dotify_length]{
 # case-insensitive.
 edit:-matcher[''] = [p]{ edit:match-prefix &smart-case $p }
 
-# Aliases
+# Aliases and other misc functions
 fn ls [@arg]{ e:ls -G $@arg }
 fn more [@arg]{ less $@arg }
+fn cdb [p]{ cd (dirname $p) }
 
 # Environment variables
 E:LESS = "-i -R"
