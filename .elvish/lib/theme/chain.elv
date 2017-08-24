@@ -24,7 +24,7 @@
 # Default values (all can be configured by assigning to the appropriate variable):
 
 # Configurable prompt segments for each prompt
-prompt_segments = [ su dir git_branch git_dirty arrow ]
+prompt_segments = [ cache su dir git_branch git_dirty arrow ]
 rprompt_segments = [ ]
 
 # Glyphs to be used in the prompt
@@ -33,6 +33,7 @@ glyph = [
 	&git_branch= "⎇"
 	&git_dirty= "±"
 	&su= "⚡"
+  &cache= "∼"
 	&chain= "─"
 ]
 
@@ -40,6 +41,7 @@ glyph = [
 segment_style = [
 	&chain= default
 	&su= yellow
+  &cache= yellow
 	&dir= cyan
 	&git_branch= blue
 	&git_dirty= yellow
@@ -61,6 +63,9 @@ root_id = 0
 # you press Enter after a directory change or some other change.
 cache_chain = $false
 
+# Threshold in milliseconds for auto-enabling prompt caching
+auto_cache_threshold_ms = 150
+
 # Cached generated prompt - since arbitrary commands can be executed, we compute
 # the prompt only before displaying it and not on every keystroke, and we cache
 # the prompts here.
@@ -68,6 +73,18 @@ cached_prompt = [ ]
 cached_rprompt = [ ]
 
 ######################################################################
+
+# Convert output from -time function to a number in ms
+fn -time-to-ms [n]{
+  pat = (re:find '^([\d.]+)(.*)$' $n)
+  num unit = $pat[groups][1 2][text]
+  factor = [&s=1000 &ms=1 &µs=.001]
+  * $num $factor[$unit]
+}
+
+fn -log [@msg]{
+  echo (date) $@msg >> /tmp/chain-debug.log
+}
 
 # Internal function to return a styled string, or plain if color == "default"
 fn -colored [what color]{
@@ -121,6 +138,12 @@ fn segment_su {
 	}
 }
 
+fn segment_cache {
+  if $cache_chain {
+    prompt_segment $segment_style[cache] $glyph[cache]
+  }
+}
+
 fn segment_dir {
 	prompt_segment $segment_style[dir] (-prompt_pwd)
 }
@@ -148,6 +171,7 @@ fn segment_timestamp {
 # List of built-in segments
 segment = [
 	&su= $&segment_su
+  &cache= $&segment_cache
 	&dir= $&segment_dir
 	&git_branch= $&segment_git_branch
 	&git_dirty= $&segment_git_dirty
@@ -183,28 +207,65 @@ fn -build-chain [segments]{
   output = ""
 	for seg $segments {
 		time = (-time { output = [(-interpret-segment $seg)] })
-    echo (date) $pwd segment-$seg $time >> /tmp/chain-debug.log
-		if (> (count $output) 0) {
-			if (not $first) {
-				-colored $glyph[chain] $segment_style[chain]
-			}
-			put $@output
-			first = $false
-		}
+    #    -log $pwd segment-$seg $time
+	  if (> (count $output) 0) {
+		  if (not $first) {
+			  -colored $glyph[chain] $segment_style[chain]
+		  }
+		  put $@output
+		  first = $false
+	  }
 	}
+}
+
+# Check if the time exceeds the threshold for enabling/disabling
+# caching We have separate functions for enabling/disabling because
+# they are called from different points - the "enabling" functions are
+# called after each chain generation (so that either prompt or rprompt
+# taking too long can trigger the caching), while the "disabling"
+# functions are called only from the "cache_prompts" function, so that
+# caching is disabled only when both prompts are fast.
+fn -check_time_for_enabling_caching [t]{
+  ms = (-time-to-ms $t)
+  if (>= $ms $auto_cache_threshold_ms) {
+    if (not $cache_chain) {
+      -log Chain build took $ms - enabling prompt caching
+      theme:chain:cache $true
+    }
+  }
+}
+
+fn -check_time_for_disabling_caching [t]{
+  ms = (-time-to-ms $t)
+  if (< $ms $auto_cache_threshold_ms) {
+    if $cache_chain {
+      -log Chain build took $ms - disabling prompt caching
+      theme:chain:cache $false
+    }
+  }
 }
 
 # Prompt and rprompt functions
 
-fn prompt { -build-chain $prompt_segments }
-fn rprompt { -build-chain $rprompt_segments }
+fn prompt {
+  out time = (-time { put [(-build-chain $prompt_segments)] })
+  -check_time_for_enabling_caching $time
+  put $@out
+}
+
+fn rprompt {
+  out time = (-time { put [(-build-chain $rprompt_segments)] } )
+  -check_time_for_enabling_caching $time
+  put $@out
+}
 
 fn cache_prompts {
   time = (-time {
       cached_prompt = [(prompt)]
       cached_rprompt = [(rprompt)] 
   })
-  echo (date) $pwd cache_prompts $time >> /tmp/chain-debug.log
+  -check_time_for_disabling_caching $time
+  #  -log $pwd cache_prompts $time
 }
 
 # Default setup, assigning our functions to `edit:prompt` and `edit:rprompt`
@@ -213,8 +274,20 @@ fn setup {
     edit:before-readline=[ $@edit:before-readline $&cache_prompts ]
     edit:prompt = { put $@cached_prompt }
     edit:rprompt = { put $@cached_rprompt }
+    cache_prompts
+    edit:redraw
   } else {
     edit:prompt = $&prompt
     edit:rprompt = $&rprompt
   }
+}
+
+# Toggle (or set, according to parameter) prompt caching
+fn cache [@val]{
+  value = (not $cache_chain)
+  if (> (count $val) 0) {
+    value = $val[0]
+  }
+  cache_chain = $value
+  setup
 }
