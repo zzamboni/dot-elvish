@@ -249,26 +249,32 @@ fn -check_time_for_disabling_caching [t]{
 
 # Prompt and rprompt functions
 
-fn prompt {
+fn prompt [@skipcheck]{
   out = []
   time = (-time { out = [(-build-chain $prompt_segments)] })
-  -check_time_for_enabling_caching $time
+  if (== (count $skipcheck) 0) {
+    -check_time_for_enabling_caching $time
+  }
   put $@out
 }
 
-fn rprompt {
+fn rprompt [@skipcheck]{
   out = []
   time = (-time { out = [(-build-chain $rprompt_segments)] } )
-  -check_time_for_enabling_caching $time
+  if (== (count $skipcheck) 0) {
+    -check_time_for_enabling_caching $time
+  }
   put $@out
 }
 
-fn cache_prompts {
+fn cache_prompts [@skipcheck]{
   time = (-time {
-      cached_prompt = [(prompt)]
-      cached_rprompt = [(rprompt)] 
+      cached_prompt = [(prompt $@skipcheck)]
+      cached_rprompt = [(rprompt $@skipcheck)] 
   })
-  -check_time_for_disabling_caching $time
+  if (== (count $skipcheck) 0) {
+    -check_time_for_disabling_caching $time
+  }
   #  -log $pwd cache_prompts $time
 }
 
@@ -278,7 +284,7 @@ fn setup {
     edit:before-readline=[ $@edit:before-readline $&cache_prompts ]
     edit:prompt = { put $@cached_prompt }
     edit:rprompt = { put $@cached_rprompt }
-    cache_prompts
+    cache_prompts skip_timecheck
   } else {
     edit:prompt = $&prompt
     edit:rprompt = $&rprompt
