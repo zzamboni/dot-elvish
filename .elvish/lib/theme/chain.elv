@@ -64,7 +64,7 @@ root_id = 0
 cache_chain = $false
 
 # Threshold in milliseconds for auto-enabling prompt caching
-auto_cache_threshold_ms = 150
+auto_cache_threshold_ms = 100
 
 # Cached generated prompt - since arbitrary commands can be executed, we compute
 # the prompt only before displaying it and not on every keystroke, and we cache
@@ -248,13 +248,15 @@ fn -check_time_for_disabling_caching [t]{
 # Prompt and rprompt functions
 
 fn prompt {
-  out time = (-time { put [(-build-chain $prompt_segments)] })
+  out = []
+  time = (-time { out = [(-build-chain $prompt_segments)] })
   -check_time_for_enabling_caching $time
   put $@out
 }
 
 fn rprompt {
-  out time = (-time { put [(-build-chain $rprompt_segments)] } )
+  out = []
+  time = (-time { out = [(-build-chain $rprompt_segments)] } )
   -check_time_for_enabling_caching $time
   put $@out
 }
