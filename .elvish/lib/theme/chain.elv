@@ -231,6 +231,7 @@ fn -check_time_for_enabling_caching [t]{
     if (not $cache_chain) {
       -log Chain build took $ms - enabling prompt caching
       theme:chain:cache $true
+      edit:redraw
     }
   }
 }
@@ -241,6 +242,7 @@ fn -check_time_for_disabling_caching [t]{
     if $cache_chain {
       -log Chain build took $ms - disabling prompt caching
       theme:chain:cache $false
+      edit:redraw
     }
   }
 }
@@ -277,7 +279,6 @@ fn setup {
     edit:prompt = { put $@cached_prompt }
     edit:rprompt = { put $@cached_rprompt }
     cache_prompts
-    edit:redraw
   } else {
     edit:prompt = $&prompt
     edit:rprompt = $&rprompt
