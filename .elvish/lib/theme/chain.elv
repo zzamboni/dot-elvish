@@ -104,17 +104,23 @@ fn prompt_segment [style @texts]{
 # Return the git branch name of the current directory
 fn -git_branch_name {
   out = ""
-  err = ?(out = (git symbolic-ref HEAD 2>/dev/null | sed -e 's|^refs/heads/||'))
-  if (not-eq $out "") {
-    put $out
-  }
+  err = ?(out = (git branch 2>/dev/null | eawk [line @f]{
+        if (eq $f[0] "*") {
+          if (and (> (count $f) 2) (eq $f[2] "detached")) {
+            replaces ')' '' $f[4]
+          } else {
+            echo $f[1]
+          }
+        }
+  }))
+  put $out
 }
 
 # Return whether the current git repo is "dirty" (modified in any way)
 fn -git_is_dirty {
-  out = ""
-  err = ?(out = (git status -s --ignore-submodules=dirty 2>/dev/null))
-  not (eq "" $out)
+  out = []
+  err = ?(out = [(git status -s --ignore-submodules=dirty 2>/dev/null)])
+  > (count $out) 0
 }
 
 # Return the current directory, shortened according to `$prompt_pwd_dir_length`
@@ -148,7 +154,7 @@ fn segment_dir {
 }
 
 fn segment_git_branch {
-  branch = ""(-git_branch_name)
+  branch = (-git_branch_name)
   if (not-eq $branch "") {
 	  prompt_segment $segment_style[git_branch] $glyph[git_branch] $branch
   }

@@ -19,6 +19,10 @@ use readline-binding
 # Prompt hook manipulation
 use prompt_hooks
 
+# Git-related functions
+use git
+fn git [@arg]{ git:git_vcsh $@arg }
+
 # Chain prompt, copied from fish's theme at https://github.com/oh-my-fish/theme-chain
 use theme:chain
 # Uncomment this to update the chain only after each command and not
@@ -61,10 +65,6 @@ dir:setup
 edit:insert:binding[Alt-b] = $dir:&left-word-or-prev-dir
 edit:insert:binding[Alt-f] = $dir:&right-word-or-next-dir
 fn cd [@dir]{ dir:cd $@dir }
-
-# Git-related functions
-use git
-fn git [@arg]{ git:git_vcsh $@arg }
 
 # Atlas-related functions
 use atlas
