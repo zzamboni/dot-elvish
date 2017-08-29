@@ -66,6 +66,9 @@ fn cd [@dir]{ dir:cd $@dir }
 use git
 fn git [@arg]{ git:git_vcsh $@arg }
 
+# Atlas-related functions
+use atlas
+
 # Read in private settings - normally you should not check in lib/private.elv into git
 if ?(test -f ~/.elvish/lib/private.elv) { use private }
 
