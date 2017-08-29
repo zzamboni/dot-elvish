@@ -101,21 +101,20 @@ fn prompt_segment [style @texts]{
 	-colored $text $style
 }
 
-# Check if the current directory is a git repo
-fn is_git_repo {
-	put ?(git rev-parse --is-inside-work-tree 2>/dev/null)
-}
-
 # Return the git branch name of the current directory
 fn -git_branch_name {
-	if (is_git_repo) {
-		git rev-parse --abbrev-ref HEAD 2> /dev/null
-	}
+  out = ""
+  err = ?(out = (git symbolic-ref HEAD 2>/dev/null | sed -e 's|^refs/heads/||'))
+  if (not-eq $out "") {
+    put $out
+  }
 }
 
 # Return whether the current git repo is "dirty" (modified in any way)
 fn -git_is_dirty {
-	and (is_git_repo) (not (eq "" (git ls-files --exclude-standard -om)))
+  out = ""
+  err = ?(out = (git status -s --ignore-submodules=dirty 2>/dev/null))
+  not (eq "" $out)
 }
 
 # Return the current directory, shortened according to `$prompt_pwd_dir_length`
@@ -149,14 +148,15 @@ fn segment_dir {
 }
 
 fn segment_git_branch {
-	if (is_git_repo) {
-		prompt_segment $segment_style[git_branch] $glyph[git_branch] (-git_branch_name)
-	}
+  branch = ""(-git_branch_name)
+  if (not-eq $branch "") {
+	  prompt_segment $segment_style[git_branch] $glyph[git_branch] $branch
+  }
 }
 
 fn segment_git_dirty {
-	if (and (is_git_repo) (-git_is_dirty)) {
-		prompt_segment $segment_style[git_dirty] $glyph[git_dirty]
+	if (-git_is_dirty) {
+	  prompt_segment $segment_style[git_dirty] $glyph[git_dirty]
 	}
 }
 
