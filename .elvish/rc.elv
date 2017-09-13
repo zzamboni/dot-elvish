@@ -50,14 +50,22 @@ long-running-notifications:setup
 use completer:vcsh
 use completer:git
 
+edit:arg-completer[git] = [@args]{ completer:git:git-completer $&git (explode $args[1:]) }
+
 # Use narrow mode for location, dir-history and lastcmd modes, this
 # allows hooking into the completion process (i.e. to update the prompt)
 use narrow
-narrow:bind-trigger-keys &location=Alt-l
+narrow:bind-trigger-keys &location=Alt-l &lastcmd=""
 update_prompt = { theme:chain:cache_prompts; edit:redraw }
 narrow:after-location = [ $@narrow:after-location $update_prompt ]
 narrow:after-history = [ $@narrow:after-history $update_prompt ]
 narrow:after-lastcmd = [ $@narrow:after-lastcmd $update_prompt ]
+
+# Use !! and !$ to insert the last command and its last argument, respectively.
+# Because muscle memory is too strong to give up
+use bang-bang
+bang-bang:bind-trigger-keys
+bang-bang:after-lastcmd = [ $@bang-bang:after-lastcmd $update_prompt ]
 
 # Directory history
 use dir
