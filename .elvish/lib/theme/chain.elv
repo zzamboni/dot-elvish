@@ -75,6 +75,9 @@ cached_rprompt = [ ]
 # Internal variable to avoid adding the before-readline hook multiple times
 -hook-installed = $false
 
+# Enable logging, useful for debugging chain-segment performance
+-log-times = $false
+
 ######################################################################
 
 # Convert output from -time function to a number in ms
@@ -86,7 +89,9 @@ fn -time-to-ms [n]{
 }
 
 fn -log [@msg]{
-  echo (date) $@msg >> /tmp/chain-debug.log
+  if $-log-times {
+    echo (date) $@msg >> /tmp/chain-debug.log
+  }
 }
 
 # Internal function to return a styled string, or plain if color == "default"
@@ -107,22 +112,26 @@ fn prompt_segment [style @texts]{
 # Return the git branch name of the current directory
 fn -git_branch_name {
   out = ""
-  err = ?(out = (git branch 2>/dev/null | eawk [line @f]{
-        if (eq $f[0] "*") {
-          if (and (> (count $f) 2) (eq $f[2] "detached")) {
-            replaces ')' '' $f[4]
-          } else {
-            echo $f[1]
-          }
-        }
-  }))
+  t = (-time {
+      err = ?(out = (git branch 2>/dev/null | eawk [line @f]{
+            if (eq $f[0] "*") {
+              if (and (> (count $f) 2) (eq $f[2] "detached")) {
+                replaces ')' '' $f[4]
+              } else {
+                echo $f[1]
+              }
+            }
+      }))
+  })
+  -log Time for git_branch_name: $t
   put $out
 }
 
 # Return whether the current git repo is "dirty" (modified in any way)
 fn -git_is_dirty {
   out = []
-  err = ?(out = [(git status -s --ignore-submodules=dirty 2>/dev/null)])
+  t = (-time { err = ?(out = [(git ls-files --exclude-standard -om 2>/dev/null)]) })
+  -log Time for git_is_dirty: $t
   > (count $out) 0
 }
 
