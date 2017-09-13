@@ -1,5 +1,21 @@
-# Directory history
-# Keep and move through the directory history
+# Directory history management
+#
+# Keep and move through the directory history, including a graphical
+# chooser, similar to Elvish's Location mode, but showing a chronological
+# directory history instead of a weighted one.
+#
+# Example of use:
+#
+#     use dir
+#     dir:setup
+#     edit:insert:binding[Alt-b] = $dir:&left-word-or-prev-dir
+#     edit:insert:binding[Alt-f] = $dir:&right-word-or-next-dir
+#     edit:insert:binding[Alt-i] = $dir:&dir-chooser
+#     fn cd [@dir]{ dir:cd $@dir }
+
+# Hooks to run before and after the directory chooser
+before-chooser = []
+after-chooser = []
 
 # The stack and a pointer into it, which points to the current
 # directory. Normally the cursor points to the end of the stack, but
@@ -98,6 +114,27 @@ fn cd [@dir]{
   } else {
     builtin:cd $@dir
   }
+}
+
+# Interactive dir history chooser
+fn dir-chooser {
+  for hook $before-chooser { $hook }
+  index = 0
+  candidates = [(each [arg]{
+        put [
+          &content=$arg
+          &display=$index" "$arg
+          &filter-text=$index" "$arg
+        ]
+        index = (+ $index 1)
+  } $-dirstack)]
+  edit:-narrow-read {
+    put $@candidates
+  } [arg]{
+    cd $arg[content]
+    push
+    for hook $after-chooser { $hook }
+  } &modeline="Dir history " &ignore-case=$true &keep-bottom=$true
 }
 
 # Set up callbacks to push the current directory on every prompt and,

@@ -72,6 +72,8 @@ use dir
 dir:setup
 edit:insert:binding[Alt-b] = $dir:&left-word-or-prev-dir
 edit:insert:binding[Alt-f] = $dir:&right-word-or-next-dir
+edit:insert:binding[Alt-i] = $dir:&dir-chooser
+dir:after-chooser = [ $@dir:after-chooser $update_prompt ]
 fn cd [@dir]{ dir:cd $@dir }
 
 # Atlas-related functions
