@@ -72,6 +72,9 @@ auto_cache_threshold_ms = 100
 cached_prompt = [ ]
 cached_rprompt = [ ]
 
+# Internal variable to avoid adding the before-readline hook multiple times
+-hook-installed = $false
+
 ######################################################################
 
 # Convert output from -time function to a number in ms
@@ -287,7 +290,10 @@ fn cache_prompts [@skipcheck]{
 # Default setup, assigning our functions to `edit:prompt` and `edit:rprompt`
 fn setup {
   if $cache_chain {
-    edit:before-readline=[ $@edit:before-readline $&cache_prompts ]
+    if (not $-hook-installed) {
+      edit:before-readline=[ $@edit:before-readline $&cache_prompts ]
+      -hook-installed = $true
+    }
     edit:prompt = { put $@cached_prompt }
     edit:rprompt = { put $@cached_rprompt }
     cache_prompts skip_timecheck
