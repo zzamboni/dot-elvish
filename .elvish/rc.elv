@@ -56,7 +56,7 @@ edit:arg-completer[git] = [@args]{ completer:git:git-completer $&git (explode $a
 # allows hooking into the completion process (i.e. to update the prompt)
 use narrow
 narrow:bind-trigger-keys &location=Alt-l &lastcmd=""
-update_prompt = { theme:chain:cache_prompts; edit:redraw }
+update_prompt = { _ = ?(theme:chain:cache_prompts; edit:redraw) }
 narrow:after-location = [ $@narrow:after-location $update_prompt ]
 narrow:after-history = [ $@narrow:after-history $update_prompt ]
 narrow:after-lastcmd = [ $@narrow:after-lastcmd $update_prompt ]
@@ -72,8 +72,8 @@ use dir
 dir:setup
 edit:insert:binding[Alt-b] = $dir:&left-word-or-prev-dir
 edit:insert:binding[Alt-f] = $dir:&right-word-or-next-dir
-edit:insert:binding[Alt-i] = $dir:&dir-chooser
-dir:after-chooser = [ $@dir:after-chooser $update_prompt ]
+edit:insert:binding[Alt-i] = $dir:&history-chooser
+dir:after-cd = [ $@dir:after-cd $update_prompt ]
 fn cd [@dir]{ dir:cd $@dir }
 
 # Atlas-related functions

@@ -17,6 +17,10 @@
 before-chooser = []
 after-chooser = []
 
+# Hooks to run before and after any directory change
+before-cd = []
+after-cd = []
+
 # The stack and a pointer into it, which points to the current
 # directory. Normally the cursor points to the end of the stack, but
 # it can move with `back` and `forward`
@@ -26,10 +30,21 @@ after-chooser = []
 # Maximum stack size, 0 for no limit
 -max-stack-size = 100
 
-fn stacksize { count $-dirstack }
-
 fn stack { put $@-dirstack }
-fn pstack { pprint [(stack)] }
+
+fn history {
+  index = 0
+  each [dir]{
+    if (== $index $-cursor) {
+      echo (edit:styled "* "$dir green)
+    } else {
+      echo "  "$dir
+    }
+    index = (+ $index 1)
+  } $-dirstack
+}
+
+fn stacksize { count $-dirstack }
 
 # Current directory in the stack, empty string if stack is empty
 fn curdir {
@@ -38,6 +53,11 @@ fn curdir {
   } else {
     put ""
   }
+}
+
+# Cut everything after $cursor from the stack
+fn -trimstack {
+  -dirstack = $-dirstack[0:(+ $-cursor 1)]
 }
 
 # Add $pwd into the stack at $-cursor, only if it's different than the
@@ -55,34 +75,47 @@ fn push {
   }
 }
 
+# cd wrapper which supports "-" to indicate the previous directory
+fn -cd [@dir]{
+  for hook $before-cd { $hook }
+  if (and (== (count $dir) 1) (eq $dir[0] "-")) {
+    builtin:cd $-dirstack[(- $-cursor 1)]
+  } else {
+    builtin:cd $@dir
+  }
+  push
+  for hook $after-cd { $hook }
+}
+
+# Wrapper entrypoint for -cd
+fn cd [@dir]{ -cd $@dir }
+
 # Move back and forward through the stack.
 fn back {
   if (> $-cursor 0) {
     -cursor = (- $-cursor 1)
-    cd $-dirstack[$-cursor]
-    push
+    -cd $-dirstack[$-cursor]
   } else {
-    echo "Beginning of directory stack!"
+    echo "Beginning of directory history!"
   }
 }
 
 fn forward {
   if (< $-cursor (- (stacksize) 1)) {
     -cursor = (+ $-cursor 1)
-    cd $-dirstack[$-cursor]
-    push
+    -cd $-dirstack[$-cursor]
   } else {
-    echo "End of directory stack!"
+    echo "End of directory history!"
   }
 }
 
-# Pop the previous directory on the stack. The current dir becomes the
-# previous one, so successive pops alternate between the two last
-# directories.
+# Pop the previous directory on the stack, removes the current
+# one. Pop doesn't do a push afterwards, so successive pops walk back
+# the stack until it's empty.
 fn pop {
   if (> $-cursor 0) {
-    cd $-dirstack[(- $-cursor 1)]
-    push
+    back
+    -trimstack
   } else {
     echo "No previous directory to pop!"
   }
@@ -106,18 +139,8 @@ fn right-word-or-next-dir {
   }
 }
 
-# cd wrapper which supports "-" to indicate the previous directory
-# (calls pop)
-fn cd [@dir]{
-  if (and (== (count $dir) 1) (eq $dir[0] "-")) {
-    pop
-  } else {
-    builtin:cd $@dir
-  }
-}
-
 # Interactive dir history chooser
-fn dir-chooser {
+fn history-chooser {
   for hook $before-chooser { $hook }
   index = 0
   candidates = [(each [arg]{
@@ -131,15 +154,16 @@ fn dir-chooser {
   edit:-narrow-read {
     put $@candidates
   } [arg]{
-    cd $arg[content]
-    push
+    -cd $arg[content]
     for hook $after-chooser { $hook }
   } &modeline="Dir history " &ignore-case=$true &keep-bottom=$true
 }
 
-# Set up callbacks to push the current directory on every prompt and,
-# if `narrow` is loaded, also after location mode.
 fn setup {
-  edit:before-readline = [ $@edit:before-readline $&push ]
-  _ = ?(narrow:after-location = [ $@narrow:after-location $&push ])
+  # Set up a hook to call "dir:cd ." on every prompt, to push the new
+  # directory (if any) and to run any cd hooks.
+  edit:before-readline = [ $@edit:before-readline { -cd . } ]
+  # If `narrow` is loaded, call "dir:cd ." after every change, to push
+  # the new directory onto the stack and run any cd hooks
+  _ = ?(narrow:after-location = [ $@narrow:after-location { -cd . } ])
 }
