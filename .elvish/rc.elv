@@ -1,7 +1,7 @@
 # Path
 paths = [
-  /Users/taazadi1/bin
-  /Users/taazadi1/Dropbox/Personal/devel/hammerspoon/spoon/bin
+  ~/bin
+  ~/Dropbox/Personal/devel/hammerspoon/spoon/bin
   /opt/X11/bin
   /Library/TeX/texbin
   /usr/local/opt/node@6/bin
@@ -78,6 +78,9 @@ fn cd [@dir]{ dir:cd $@dir }
 
 # Atlas-related functions
 use atlas
+
+# Set up Nix environment
+use nix
 
 # Read in private settings - normally you should not check in lib/private.elv into git
 if ?(test -f ~/.elvish/lib/private.elv) { use private }
