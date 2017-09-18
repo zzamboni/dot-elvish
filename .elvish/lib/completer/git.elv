@@ -4,8 +4,8 @@
 
 # Fetch list of valid git commands and aliases from git itself
 -cmds = [
-  (e:git help -a | grep '^  [a-z]' | tr -s "[:blank:]" "\n" | each [x]{ if (> (count $x) 0) { put $x } })
-  (e:git config --list | grep alias | sed 's/^alias\.//; s/=.*$//')
+  ((resolve git) help -a | grep '^  [a-z]' | tr -s "[:blank:]" "\n" | each [x]{ if (> (count $x) 0) { put $x } })
+  ((resolve git) config --list | grep alias | sed 's/^alias\.//; s/=.*$//')
 ]
 commands = [(echo &sep="\n" $@-cmds | sort)]
 
@@ -15,7 +15,10 @@ commands = [(echo &sep="\n" $@-cmds | sort)]
 # One example of a multi-word $gitcmd is "vcsh <repo>", after which
 # any git subcommand is valid.
 fn -run-git-cmd [gitcmd @rest]{
-	gitcmds = [(splits &sep=" " $gitcmd)]
+  gitcmds = [$gitcmd]
+  if (eq (kind-of $gitcmd) string) {
+	  gitcmds = [(splits " " $gitcmd)]
+  }
 	if (> (count $gitcmds) 1) {
 		$gitcmds[0] (explode $gitcmds[1:]) $@rest
 	} else {
@@ -32,15 +35,12 @@ fn git-completer [gitcmd @rest]{
 		subcommand = $rest[0]
 		if (or (eq $subcommand add) (eq $subcommand stage)) {
 			-run-git-cmd $gitcmd diff --name-only
-			-run-git-cmd $gitcmd ls-files --others --exclude-standard
-		} elif (eq $subcommand discard) {
-			-run-git-cmd $gitcmd diff --name-only
-		} elif (eq $subcommand unstage) {
-			-run-git-cmd $gitcmd diff --name-only --cached
+		  -run-git-cmd $gitcmd ls-files --others --exclude-standard
 		} elif (or (eq $subcommand checkout) (eq $subcommand co)) {
 			-run-git-cmd $gitcmd branch --list --all --format '%(refname:short)'
-		}
+      -run-git-cmd $gitcmd diff --name-only
+		} elif (or (eq $subcommand mv) (eq $subcommand rm) (eq $subcommand diff)) {
+      -run-git-cmd $gitcmd ls-files
+    }
 	}
 }
-
-edit:arg-completer[git] = [@args]{ git-completer e:git (explode $args[1:]) }
