@@ -1,6 +1,7 @@
 # Set up environment for Nix
+# Ported to Elvish from /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 
-  # Set up secure multi-user builds: non-root users build through the
+# Set up secure multi-user builds: non-root users build through the
 # Nix daemon.
 if (or (not-eq $E:USER root) (not ?(test -w /nix/var/nix/db))) {
   E:NIX_REMOTE = daemon
