@@ -81,6 +81,9 @@ use atlas
 
 # Set up Nix environment
 use nix
+nix:multi-user-setup
+# Work without the daemon
+E:NIX_REMOTE = ""
 
 # Read in private settings - normally you should not check in lib/private.elv into git
 if ?(test -f ~/.elvish/lib/private.elv) { use private }
@@ -122,3 +125,5 @@ E:LESS = "-i -R"
 E:GOPATH = ~/Personal/devel/go/
 E:EDITOR = "vim"
 paths = [ $@paths $E:GOPATH/bin ]
+
+fortune | lolcat
