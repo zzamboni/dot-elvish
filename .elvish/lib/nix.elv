@@ -124,3 +124,30 @@ fn search [@pkgs]{
 fn install [@pkgs]{
   nix-env -i $@pkgs
 }
+
+# Simple interactive function to go through installed Homebrew
+# packages and allow you to replace them with their Nix equivalents.
+# Only loops through the "leaves" - i.e. Homebrew packages that do not
+# have any dependents, so it will not loop through everything. You may
+# need to run it a few times to fully clean up.
+fn brew-to-nix {
+  brew leaves | each [pkg]{
+    echo (edit:styled "Package "$pkg green)
+    brew info $pkg
+    loop = $true
+    while $loop {
+      loop = $false
+      print (edit:styled $pkg": [R]emove/[Q]uery nix/[K]eep/Remove and [I]nstall with nix? " yellow)
+      resp = (head -n1 </dev/tty)
+      if (eq $resp "r") {
+        brew uninstall --force $pkg
+      } elif (eq $resp "q") {
+        _ = ?(nix:search --description '.*'$pkg'.*')
+        loop = $true
+      } elif (eq $resp "i") {
+        nix:install $pkg
+        brew uninstall --force $pkg
+      }
+    }
+  }
+}
