@@ -21,6 +21,8 @@
 #   square brackets and styled as requested.
 #
 
+use re
+
 # Default values (all can be configured by assigning to the appropriate variable):
 
 # Configurable prompt segments for each prompt
