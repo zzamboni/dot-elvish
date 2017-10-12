@@ -45,7 +45,8 @@ text_notifier = { echo (edit:styled "Command lasted "$last_cmd_duration"s" magen
 # GUI notifications for macOS. Requires terminal-notifier from https://github.com/julienXX/terminal-notifier
 # To explicitly set it:
 #   long-running-notifications:notifier = $long-running-notifications:macos_notifier
-macos_notifier = { terminal-notifier -title "Finished: "$last_cmd -message "Running time: "$last_cmd_duration"s" > /dev/null }
+macos_notifier_extraopts = []
+macos_notifier = { terminal-notifier -title "Finished: "$last_cmd -message "Running time: "$last_cmd_duration"s" $@macos_notifier_extraopts > /dev/null }
 
 # Notification method to use. Defaults to $macos_notifier if terminal-notifier is available, $text_notifier otherwise
 notifier = $text_notifier

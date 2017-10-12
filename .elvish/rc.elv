@@ -47,6 +47,8 @@ prompt_hooks:add-after-readline [cmd]{ proxy:autoset }
 # Notifications for long-running-commands
 use long-running-notifications
 long-running-notifications:setup
+long-running-notifications:macos_notifier_extraopts = [ "-sender" "com.apple.Terminal" ]
+
 
 # Completions
 use completer:vcsh
