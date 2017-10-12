@@ -13,6 +13,8 @@ paths = [
   /sbin
 ]
 
+use re
+
 # Emacs keybinding
 use readline-binding
 
@@ -115,9 +117,13 @@ fn dotify_string [str dotify_length]{
 # case-insensitive.
 edit:-matcher[''] = [p]{ edit:match-prefix &smart-case $p }
 
-# Aliases and other misc functions
-fn ls [@arg]{ e:ls -G $@arg }
-fn more [@arg]{ less $@arg }
+# Aliases
+use alias
+
+# Other misc functions
+#fn ls [@arg]{ e:ls --color=auto $@arg }
+#fn more [@arg]{ less $@arg }
+#fn v [@arg]{ vagrant $@arg }
 fn cdb [p]{ cd (dirname $p) }
 
 # Environment variables
