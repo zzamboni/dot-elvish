@@ -18,6 +18,8 @@ fn list {
   _ = ?(grep '^#alias:def ' $dir/*.elv | sed 's/^.*#//')
 }
 
+fn ls { list } # Alias for list
+
 fn def [name @cmd]{
   file = $dir/$name.elv
   echo "#alias:def" $name $@cmd > $file
@@ -29,6 +31,8 @@ fn def [name @cmd]{
     rm $file
   }
 }
+
+fn new [@arg]{ def $@arg }
 
 fn undef [name]{
   file = $dir/$name.elv
