@@ -18,6 +18,12 @@ use re
 # Emacs keybinding
 use readline-binding
 
+# Set up Nix environment
+use nix
+nix:multi-user-setup
+# Work without the daemon
+E:NIX_REMOTE = ""
+
 # Prompt hook manipulation
 use prompt_hooks
 
@@ -82,12 +88,6 @@ fn cd [@dir]{ dir:cd $@dir }
 
 # Atlas-related functions
 use atlas
-
-# Set up Nix environment
-use nix
-nix:multi-user-setup
-# Work without the daemon
-E:NIX_REMOTE = ""
 
 # Read in private settings - normally you should not check in lib/private.elv into git
 if ?(test -f ~/.elvish/lib/private.elv) { use private }

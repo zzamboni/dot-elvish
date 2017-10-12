@@ -53,7 +53,11 @@ fn multi-user-setup {
   }
 
   E:NIX_USER_PROFILE_DIR = "/nix/var/nix/profiles/per-user/"$E:USER
-  E:NIX_PROFILES = "/nix/var/nix/profiles/default "$E:HOME"/.nix-profile"
+  nix_profiles = [
+    "/nix/var/nix/profiles/default"
+    $E:HOME"/.nix-profile"
+  ]
+  E:NIX_PROFILES = (joins " " $nix_profiles)
 
   # Set up the per-user profile.
   mkdir -m 0755 -p $E:NIX_USER_PROFILE_DIR
@@ -95,6 +99,7 @@ fn multi-user-setup {
 
   E:NIX_SSL_CERT_FILE = "/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt"
   E:NIX_PATH = "/nix/var/nix/profiles/per-user/root/channels"
+  # E:MANPATH = ~/.nix-profile/share/man
   paths = [
     ~/.nix-profile/bin
     ~/.nix-profile/sbin
