@@ -132,6 +132,21 @@ fn cdb [p]{ cd (dirname $p) }
 E:LESS = "-i -R"
 E:GOPATH = ~/Personal/devel/go/
 E:EDITOR = "vim"
+
 paths = [ $@paths $E:GOPATH/bin ]
 
-fortune | lolcat
+fn pipesplit [l1 l2 l3]{
+  pout = (pipe)
+  perr = (pipe)
+  run-parallel {
+    $l1 > $pout 2> $perr
+    pwclose $pout
+    pwclose $perr
+  } {
+    $l2 < $pout
+    prclose $pout
+  } {
+    $l3 < $perr
+    prclose $perr
+  }
+}
