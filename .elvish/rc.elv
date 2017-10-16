@@ -13,9 +13,10 @@ paths = [
   /sbin
 ]
 
+# Regex functions
 use re
 
-# Emacs keybinding
+# Emacs keybindings
 use readline-binding
 
 # Set up Nix environment
@@ -23,6 +24,7 @@ use nix
 nix:multi-user-setup
 # Work without the daemon
 E:NIX_REMOTE = ""
+E:MANPATH = ""
 
 # Prompt hook manipulation
 use prompt_hooks
