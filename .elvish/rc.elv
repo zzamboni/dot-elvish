@@ -121,13 +121,10 @@ fn dotify_string [str dotify_length]{
 # case-insensitive.
 edit:-matcher[''] = [p]{ edit:match-prefix &smart-case $p }
 
-# Aliases
+# Aliases - loaded from ~/.elvish/aliases/
 use alias
 
 # Other misc functions
-#fn ls [@arg]{ e:ls --color=auto $@arg }
-#fn more [@arg]{ less $@arg }
-#fn v [@arg]{ vagrant $@arg }
 fn cdb [p]{ cd (dirname $p) }
 
 # Environment variables
