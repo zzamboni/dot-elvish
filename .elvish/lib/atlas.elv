@@ -1,5 +1,7 @@
 # Functions to trigger O'Reilly Atlas builds.
 
+use re
+
 fn push [@arg]{
   msg = "Markup fixes"
   if (< 0 (count $arg)) {

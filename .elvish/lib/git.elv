@@ -1,5 +1,7 @@
 # Git and vcsh related functions
 
+use re
+
 # Check if the current directory is a git repo
 fn is_git_repo {
 	put ?(git rev-parse --is-inside-work-tree 2>/dev/null)

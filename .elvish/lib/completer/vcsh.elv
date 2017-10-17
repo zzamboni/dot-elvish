@@ -2,6 +2,7 @@
 # Diego Zamboni <diego@zzamboni.org>
 
 use completer:git
+use re
 
 # Return all elements in $l1 except those who are already in $l2
 fn -all-except [l1 l2]{
