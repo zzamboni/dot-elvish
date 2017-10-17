@@ -15,7 +15,7 @@
 dir = ~/.elvish/aliases
 
 fn list {
-  _ = ?(grep '^#alias:def ' $dir/*.elv | sed 's/^.*#//')
+  _ = ?(grep -h '^#alias:def ' $dir/*.elv | sed 's/^#//')
 }
 
 fn ls { list } # Alias for list
