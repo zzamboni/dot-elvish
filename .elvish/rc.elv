@@ -23,8 +23,8 @@ use readline-binding
 use nix
 nix:multi-user-setup
 # Work without the daemon
-E:NIX_REMOTE = ""
-E:MANPATH = ""
+#E:NIX_REMOTE = ""
+#E:MANPATH = ""
 
 # Prompt hook manipulation
 use prompt_hooks
