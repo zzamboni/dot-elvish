@@ -238,6 +238,27 @@ fn -build-chain [segments]{
 	}
 }
 
+fn prompt { }
+fn rprompt { }
+
+# Toggle (or set, according to parameter) prompt caching
+fn cache [@val]{
+  value = (not $cache_chain)
+  if (> (count $val) 0) {
+    value = $val[0]
+  }
+  cache_chain = $value
+  if $cache_chain {
+    edit:prompt = { put $@cached_prompt }
+    edit:rprompt = { put $@cached_rprompt }
+    cached_prompt = [(-build-chain $prompt_segments)]
+    cached_rprompt = [(-build-chain $rprompt_segments)]
+  } else {
+    edit:prompt = $&prompt
+    edit:rprompt = $&rprompt
+  }
+}
+
 # Check if the time exceeds the threshold for enabling/disabling
 # caching We have separate functions for enabling/disabling because
 # they are called from different points - the "enabling" functions are
@@ -250,7 +271,7 @@ fn -check_time_for_enabling_caching [t]{
   if (>= $ms $auto_cache_threshold_ms) {
     if (not $cache_chain) {
       -log Chain build took $ms - enabling prompt caching
-      theme:chain:cache $true
+      cache $true
       edit:redraw
     }
   }
@@ -261,7 +282,7 @@ fn -check_time_for_disabling_caching [t]{
   if (< $ms $auto_cache_threshold_ms) {
     if $cache_chain {
       -log Chain build took $ms - disabling prompt caching
-      theme:chain:cache $false
+      cache $false
       edit:redraw
     }
   }
@@ -312,14 +333,4 @@ fn setup {
     edit:prompt = $&prompt
     edit:rprompt = $&rprompt
   }
-}
-
-# Toggle (or set, according to parameter) prompt caching
-fn cache [@val]{
-  value = (not $cache_chain)
-  if (> (count $val) 0) {
-    value = $val[0]
-  }
-  cache_chain = $value
-  setup
 }
