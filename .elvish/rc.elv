@@ -2,6 +2,7 @@
 paths = [
   ~/bin
   ~/Dropbox/Personal/devel/hammerspoon/spoon/bin
+  ~/.gem/ruby/2.4.0/bin
   /opt/X11/bin
   /Library/TeX/texbin
   /usr/local/opt/node@6/bin
@@ -131,6 +132,7 @@ fn cdb [p]{ cd (dirname $p) }
 E:LESS = "-i -R"
 E:GOPATH = ~/Personal/devel/go/
 E:EDITOR = "vim"
+E:LC_ALL = "en_US.UTF-8"
 
 paths = [ $@paths $E:GOPATH/bin ]
 
