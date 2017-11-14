@@ -42,6 +42,8 @@ use theme:chain
 # cause prompt refresh problems sometimes until you press Enter after
 # a directory change or some other change.
 #theme:chain:cache_chain = $true
+#theme:chain:auto_cache_threshold_ms = 10000
+edit:-prompts-max-wait = 0.01
 theme:chain:setup
 
 # Automatically set proxy

@@ -16,26 +16,26 @@
 
 * Use
 
-  To use, put this file in =~/.elvish/lib/= and add the following to your =~/.elvish/rc.elv= file:
+  Put =chain.elv= in =~/.elvish/lib/theme/= and add the following to your =~/.elvish/rc.elv= file:
 
   #+BEGIN_SRC elvish :tangle no
-    use chain
-    chain:setup
-  #+END_SRC
-
-  Alternatively, you can also assign the prompt functions manually
-  instead of calling `chain:setup`:
-
-  #+BEGIN_SRC elvish :tangle no
-    edit:prompt = $chain:&prompt
-    edit:rprompt = $chain:&rprompt
+    use theme:chain
+    theme:chain:setup
   #+END_SRC
 
   The chains on both sides can be configured by assigning to
   =theme:chain:prompt_segments= and =theme:chain:rprompt_segments=,
   respectively. These variables must be arrays, and the given segments
-  will be automatically linked by =$theme:chain:glyph[chain]=. Each
-  element can be any of the following:
+  will be automatically linked by =$theme:chain:glyph[chain]=. Their
+  default values are:
+
+  #+NAME: prompt_segment_defaults
+  #+BEGIN_SRC elvish :tangle no
+    prompt_segments = [ su dir git_branch git_dirty arrow ]
+    rprompt_segments = [ ]
+  #+END_SRC
+
+  Each element can be any of the following:
 
   - The name of one of the built-in segments. Available segments:
     =arrow= =timestamp= =su= =dir= =git_branch= =git_dirty=
@@ -66,11 +66,9 @@
    Set up the default values for the chains (all can be configured by
    assigning to the appropriate variable):
 
-   #+BEGIN_SRC elvish
-     prompt_segments = [ su dir git_branch git_dirty arrow ]
-     rprompt_segments = [ ]
+   #+BEGIN_SRC elvish :noweb yes
+     <<prompt_segment_defaults>>
    #+END_SRC
-
    Set up the default values for the glyphs used in the different
    chains.
 
