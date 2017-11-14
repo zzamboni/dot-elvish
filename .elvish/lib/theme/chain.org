@@ -14,11 +14,11 @@
   Ported to Elvish by Diego Zamboni <diego@zzamboni.org>.
 
   This file is written in [[http://www.howardism.org/Technical/Emacs/literate-programming-tutorial.html][literate programming style]], to make it easy
-  to explain. See =[[chain.elv][chain.elv]]= for the generated file.
+  to explain. See [[chain.elv][chain.elv]] for the generated file.
 
 * Use
 
-  Put =[[chain.elv][chain.elv]]= in =~/.elvish/lib/theme/= and add the following to your =~/.elvish/rc.elv= file:
+  Put [[chain.elv][chain.elv]] in =~/.elvish/lib/theme/= and add the following to your =~/.elvish/rc.elv= file:
 
   #+BEGIN_SRC elvish :tangle no
     use theme:chain
