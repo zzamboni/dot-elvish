@@ -11,12 +11,14 @@
   based on the original fish theme at
   https://github.com/oh-my-fish/theme-chain.
 
-  Ported to Elvish by Diego Zamboni <diego@zzamboni.org>. I've written
-  it in a [[http://www.howardism.org/Technical/Emacs/literate-programming-tutorial.html][literate style]], to make it easy to explain.
+  Ported to Elvish by Diego Zamboni <diego@zzamboni.org>.
+
+  This file is written in [[http://www.howardism.org/Technical/Emacs/literate-programming-tutorial.html][literate programming style]], to make it easy
+  to explain. See =[[chain.elv][chain.elv]]= for the generated file.
 
 * Use
 
-  Put =chain.elv= in =~/.elvish/lib/theme/= and add the following to your =~/.elvish/rc.elv= file:
+  Put =[[chain.elv][chain.elv]]= in =~/.elvish/lib/theme/= and add the following to your =~/.elvish/rc.elv= file:
 
   #+BEGIN_SRC elvish :tangle no
     use theme:chain
@@ -30,7 +32,7 @@
   default values are:
 
   #+NAME: prompt_segment_defaults
-  #+BEGIN_SRC elvish :tangle no
+  #+BEGIN_SRC elvish
     prompt_segments = [ su dir git_branch git_dirty arrow ]
     rprompt_segments = [ ]
   #+END_SRC
