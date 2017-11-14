@@ -1,0 +1,346 @@
+#+PROPERTY: header-args:elvish :tangle chain.elv
+#+PROPERTY: header-args :mkdirp yes :comments no 
+
+#+TITLE:  Elvish "Chain" theme prompt
+#+AUTHOR: Diego Zamboni
+#+EMAIL:  diego@zzamboni.org
+
+* Introduction
+
+  This is my implementation for [[http://elvish.io][Elvish]] of the /Chain/ prompt theme,
+  based on the original fish theme at
+  https://github.com/oh-my-fish/theme-chain.
+
+  Ported to Elvish by Diego Zamboni <diego@zzamboni.org>. I've written
+  it in a [[http://www.howardism.org/Technical/Emacs/literate-programming-tutorial.html][literate style]], to make it easy to explain.
+
+* Use
+
+  To use, put this file in =~/.elvish/lib/= and add the following to your =~/.elvish/rc.elv= file:
+
+  #+BEGIN_SRC elvish :tangle no
+    use chain
+    chain:setup
+  #+END_SRC
+
+  Alternatively, you can also assign the prompt functions manually
+  instead of calling `chain:setup`:
+
+  #+BEGIN_SRC elvish :tangle no
+    edit:prompt = $chain:&prompt
+    edit:rprompt = $chain:&rprompt
+  #+END_SRC
+
+  The chains on both sides can be configured by assigning to
+  =theme:chain:prompt_segments= and =theme:chain:rprompt_segments=,
+  respectively. These variables must be arrays, and the given segments
+  will be automatically linked by =$theme:chain:glyph[chain]=. Each
+  element can be any of the following:
+
+  - The name of one of the built-in segments. Available segments:
+    =arrow= =timestamp= =su= =dir= =git_branch= =git_dirty=
+  - A string or the output of =edit:styled=, which will be displayed
+    as-is.
+  - A lambda, which will be called and its output displayed
+  - The output of a call to =theme:chain:segment <style> <strings>=,
+    which returns a "proper" segment, enclosed in square brackets and
+    styled as requested.
+
+* Implementation
+
+** Base code and default values
+
+   First, we insert a link to this file in the source code output.
+
+   #+BEGIN_SRC elvish
+     # See https://github.com/zzamboni/vcsh_elvish/blob/master/.elvish/lib/theme/chain.org
+     # for the source code from which this file is generated.
+   #+END_SRC
+
+   Load the regular expression library.
+
+   #+BEGIN_SRC elvish
+     use re
+   #+END_SRC
+
+   Set up the default values for the chains (all can be configured by
+   assigning to the appropriate variable):
+
+   #+BEGIN_SRC elvish
+     prompt_segments = [ su dir git_branch git_dirty arrow ]
+     rprompt_segments = [ ]
+   #+END_SRC
+
+   Set up the default values for the glyphs used in the different
+   chains.
+
+   #+BEGIN_SRC elvish
+     glyph = [
+       &prompt= ">"
+       &git_branch= "⎇"
+       &git_dirty= "±"
+       &su= "⚡"
+       &chain= "─"
+     ]
+   #+END_SRC
+
+   Styling for each built-in segment. The value must be a valid argument
+   to [[https://elvish.io/ref/edit.html#editstyled][=edit:styled=]].
+
+   #+BEGIN_SRC elvish
+     segment_style = [
+       &chain= default
+       &su= yellow
+       &dir= cyan
+       &git_branch= blue
+       &git_dirty= yellow
+       &timestamp= gray
+     ]
+   #+END_SRC
+
+   To how many letters to abbreviate directories in the path - ~0~ to show in full.
+
+   #+BEGIN_SRC elvish
+     prompt_pwd_dir_length = 1
+   #+END_SRC
+
+   Format to use for the 'timestamp' segment, in [[http://man7.org/linux/man-pages/man3/strftime.3.html][strftime(3)]] format.
+
+   #+BEGIN_SRC elvish
+     timestamp_format = "%R"
+   #+END_SRC
+
+   User ID that will trigger the "su" segment. Defaults to root.
+
+   #+BEGIN_SRC elvish
+     root_id = 0
+   #+END_SRC
+
+** General utility functions
+
+   Internal function to return a styled string, or plain if =color == "default"=.
+
+   #+BEGIN_SRC elvish
+     fn -colored [what color]{
+       if (!=s $color default) {
+         edit:styled $what $color
+       } else {
+         put $what
+       }
+     }
+   #+END_SRC
+
+   Build a prompt segment in the given style, surrounded by square
+   brackets.
+
+   #+BEGIN_SRC elvish
+     fn prompt_segment [style @texts]{
+       text = "["(joins ' ' $texts)"]"
+       -colored $text $style
+     }
+   #+END_SRC
+
+** Built-in Segment Definitions
+
+   This is where the built-in segments are defined.
+
+*** =git_branch= and =git_dirty=
+
+    We have two git-related segments: showing the current branch name
+    (if any) and whether the current repository is dirty. To support
+    these, we first define two functions which determine the
+    corresponding information about the current directory.
+
+    #+BEGIN_SRC elvish
+      # Return the git branch name of the current directory
+      fn -git_branch_name {
+        out = ""
+        err = ?(out = (git branch 2>/dev/null | eawk [line @f]{
+              if (eq $f[0] "*") {
+                if (and (> (count $f) 2) (eq $f[2] "detached")) {
+                  replaces ')' '' $f[4]
+                } else {
+                  echo $f[1]
+                }
+              }
+        }))
+        put $out
+      }
+
+      # Return whether the current git repo is "dirty" (modified in any way)
+      fn -git_is_dirty {
+        out = []
+        err = ?(out = [(git ls-files --exclude-standard -om 2>/dev/null)])
+        > (count $out) 0
+      }
+    #+END_SRC
+
+    Based on these, we define the two segment functions. Please note
+    that these functions only produce an output if the current
+    directory contains a git repository.
+
+    #+BEGIN_SRC elvish
+      fn segment_git_branch {
+        branch = (-git_branch_name)
+        if (not-eq $branch "") {
+          prompt_segment $segment_style[git_branch] $glyph[git_branch] $branch
+        }
+      }
+
+      fn segment_git_dirty {
+        if (-git_is_dirty) {
+          prompt_segment $segment_style[git_dirty] $glyph[git_dirty]
+        }
+      }
+    #+END_SRC
+
+*** =dir=
+
+    For this segment we also need a support function, which returns
+    the current path with each directory name shortened to a maximum
+    of =$prompt_pwd_dir_length= characters.
+
+    #+BEGIN_SRC elvish
+      fn -prompt_pwd {
+        tmp = (tilde-abbr $pwd)
+        if (== $prompt_pwd_dir_length 0) {
+          put $tmp
+        } else {
+          re:replace '(\.?[^/]{'$prompt_pwd_dir_length'})[^/]*/' '$1/' $tmp
+        }
+      }
+    #+END_SRC
+
+    #+BEGIN_SRC elvish
+      fn segment_dir {
+        prompt_segment $segment_style[dir] (-prompt_pwd)
+      }
+    #+END_SRC
+
+*** =su=
+
+    This segment outputs a glyph if the current user has a privileged
+    ID (=root= by default, with ID 0, but can be configured by
+    changing =$root_id=).
+
+    #+BEGIN_SRC elvish
+      fn segment_su {
+        uid = (id -u)
+        if (eq $uid $root_id) {
+          prompt_segment $segment_style[su] $glyph[su]
+        }
+      }
+    #+END_SRC
+
+*** =timestamp=
+
+    This segment simply outputs the current date according to the
+    format defined in =$timestamp_format=.
+
+    #+BEGIN_SRC elvish
+      fn segment_timestamp {
+        prompt_segment $segment_style[timestamp] (date +$timestamp_format)
+      }
+    #+END_SRC
+
+*** =arrow=
+
+    This segment prints the separator between the other chains and the
+    cursor.
+
+    #+BEGIN_SRC elvish
+      fn segment_arrow {
+        edit:styled $glyph[prompt]" " green
+      }
+    #+END_SRC
+
+** Default segment declarations
+
+   Here we define the list of segment names and the function that
+   produces each one of them.
+
+   #+BEGIN_SRC elvish
+     # List of built-in segments
+     segment = [
+       &su= $&segment_su
+       &dir= $&segment_dir
+       &git_branch= $&segment_git_branch
+       &git_dirty= $&segment_git_dirty
+       &arrow= $&segment_arrow
+       &timestamp= $&segment_timestamp
+     ]
+   #+END_SRC
+
+** Chain- and prompt-building functions
+
+   Given a segment specification, return the appropriate value,
+   depending on whether it's the name of a built-in segment, a lambda,
+   a string or an edit:styled
+
+   #+BEGIN_SRC elvish
+     fn -interpret-segment [seg]{
+       k = (kind-of $seg)
+       if (eq $k fn) {
+         # If it's a lambda, run it
+         $seg
+       } elif (eq $k string) {
+         if (has-key $segment $seg) {
+           # If it's the name of a built-in segment, run its function
+           $segment[$seg]
+         } else {
+           # If it's any other string, return it as-is
+           put $seg
+         }
+       } elif (eq $k styled) {
+         # If it's an edit:styled, return it as-is
+         put $seg
+       }
+     }
+   #+END_SRC
+
+   Given a list of segments (which can be built-in segment names,
+   lambdas, strings or ~edit:styled~ objects), return the appropriate
+   chain, including the chain connectors.
+
+   #+BEGIN_SRC elvish
+     fn -build-chain [segments]{
+       first = $true
+       output = ""
+       for seg $segments {
+         time = (-time { output = [(-interpret-segment $seg)] })
+         if (> (count $output) 0) {
+           if (not $first) {
+             -colored $glyph[chain] $segment_style[chain]
+           }
+           put $@output
+           first = $false
+         }
+       }
+     }
+   #+END_SRC
+
+   Finally, we get to the functions that build the left and right
+   prompts, respectively. These are basically wrappers around
+   =-build-chain= with the corresponding arguments.
+
+   #+BEGIN_SRC elvish
+     fn prompt [@skipcheck]{
+       put (-build-chain $prompt_segments)
+     }
+
+     fn rprompt [@skipcheck]{
+       put (-build-chain $rprompt_segments)
+     }
+   #+END_SRC
+
+** Setup
+
+   Default setup, assigning our functions to =edit:prompt= and
+   =edit:rprompt=
+
+   #+BEGIN_SRC elvish
+     fn setup {
+       edit:prompt = $&prompt
+       edit:rprompt = $&rprompt
+     }
+    #+END_SRC
