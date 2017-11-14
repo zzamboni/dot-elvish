@@ -7,20 +7,20 @@ prompt_segments = [ su dir git_branch git_dirty arrow ]
 rprompt_segments = [ ]
 
 glyph = [
-  &prompt= ">"
+  &prompt=     ">"
   &git_branch= "⎇"
-  &git_dirty= "±"
-  &su= "⚡"
-  &chain= "─"
+  &git_dirty=  "±"
+  &su=         "⚡"
+  &chain=      "─"
 ]
 
 segment_style = [
-  &chain= default
-  &su= yellow
-  &dir= cyan
+  &chain=      default
+  &su=         yellow
+  &dir=        cyan
   &git_branch= blue
-  &git_dirty= yellow
-  &timestamp= gray
+  &git_dirty=  yellow
+  &timestamp=  gray
 ]
 
 prompt_pwd_dir_length = 1
@@ -107,20 +107,20 @@ fn segment_arrow {
 
 # List of built-in segments
 segment = [
-  &su= $&segment_su
-  &dir= $&segment_dir
+  &su=         $&segment_su
+  &dir=        $&segment_dir
   &git_branch= $&segment_git_branch
-  &git_dirty= $&segment_git_dirty
-  &arrow= $&segment_arrow
-  &timestamp= $&segment_timestamp
+  &git_dirty=  $&segment_git_dirty
+  &arrow=      $&segment_arrow
+  &timestamp=  $&segment_timestamp
 ]
 
 fn -interpret-segment [seg]{
   k = (kind-of $seg)
-  if (eq $k fn) {
+  if (eq $k 'fn') {
     # If it's a lambda, run it
     $seg
-  } elif (eq $k string) {
+  } elif (eq $k 'string') {
     if (has-key $segment $seg) {
       # If it's the name of a built-in segment, run its function
       $segment[$seg]
@@ -128,7 +128,7 @@ fn -interpret-segment [seg]{
       # If it's any other string, return it as-is
       put $seg
     }
-  } elif (eq $k styled) {
+  } elif (eq $k 'styled') {
     # If it's an edit:styled, return it as-is
     put $seg
   }

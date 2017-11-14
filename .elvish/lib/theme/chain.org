@@ -14,15 +14,25 @@
   Ported to Elvish by Diego Zamboni <diego@zzamboni.org>.
 
   This file is written in [[http://www.howardism.org/Technical/Emacs/literate-programming-tutorial.html][literate programming style]], to make it easy
-  to explain. See [[chain.elv][chain.elv]] for the generated file.
+  to explain. See [[file:chain.elv][chain.elv]] for the generated file.
 
 * Use
 
-  Put [[chain.elv][chain.elv]] in =~/.elvish/lib/theme/= and add the following to your =~/.elvish/rc.elv= file:
+  Put [[file:chain.elv][chain.elv]] in =~/.elvish/lib/theme/= and add the following to your =~/.elvish/rc.elv= file:
 
   #+BEGIN_SRC elvish :tangle no
     use theme:chain
     theme:chain:setup
+  #+END_SRC
+
+  If you are using a recent version of Elvish (after [[https://github.com/elves/elvish/commit/dd2d36a6d346372593163718e9465503d307fc47#diff-b50c0ed36c6482d1373be5e2a68bf0daR165][commit dd2d36a]]),
+  you should use the =$edit:-prompts-max-wait= variable to
+  automatically cache the prompt, particularly when using any of the
+  git-related segments, which can produce slowdowns in large
+  repositories:
+
+  #+BEGIN_SRC elvish :tangle no
+    edit:-prompts-max-wait = 0.01
   #+END_SRC
 
   The chains on both sides can be configured by assigning to
@@ -32,7 +42,7 @@
   default values are:
 
   #+NAME: prompt_segment_defaults
-  #+BEGIN_SRC elvish
+  #+BEGIN_SRC elvish :tangle no
     prompt_segments = [ su dir git_branch git_dirty arrow ]
     rprompt_segments = [ ]
   #+END_SRC
@@ -76,11 +86,11 @@
 
    #+BEGIN_SRC elvish
      glyph = [
-       &prompt= ">"
+       &prompt=     ">"
        &git_branch= "⎇"
-       &git_dirty= "±"
-       &su= "⚡"
-       &chain= "─"
+       &git_dirty=  "±"
+       &su=         "⚡"
+       &chain=      "─"
      ]
    #+END_SRC
 
@@ -89,12 +99,12 @@
 
    #+BEGIN_SRC elvish
      segment_style = [
-       &chain= default
-       &su= yellow
-       &dir= cyan
+       &chain=      default
+       &su=         yellow
+       &dir=        cyan
        &git_branch= blue
-       &git_dirty= yellow
-       &timestamp= gray
+       &git_dirty=  yellow
+       &timestamp=  gray
      ]
    #+END_SRC
 
@@ -262,12 +272,12 @@
    #+BEGIN_SRC elvish
      # List of built-in segments
      segment = [
-       &su= $&segment_su
-       &dir= $&segment_dir
+       &su=         $&segment_su
+       &dir=        $&segment_dir
        &git_branch= $&segment_git_branch
-       &git_dirty= $&segment_git_dirty
-       &arrow= $&segment_arrow
-       &timestamp= $&segment_timestamp
+       &git_dirty=  $&segment_git_dirty
+       &arrow=      $&segment_arrow
+       &timestamp=  $&segment_timestamp
      ]
    #+END_SRC
 
@@ -280,10 +290,10 @@
    #+BEGIN_SRC elvish
      fn -interpret-segment [seg]{
        k = (kind-of $seg)
-       if (eq $k fn) {
+       if (eq $k 'fn') {
          # If it's a lambda, run it
          $seg
-       } elif (eq $k string) {
+       } elif (eq $k 'string') {
          if (has-key $segment $seg) {
            # If it's the name of a built-in segment, run its function
            $segment[$seg]
@@ -291,7 +301,7 @@
            # If it's any other string, return it as-is
            put $seg
          }
-       } elif (eq $k styled) {
+       } elif (eq $k 'styled') {
          # If it's an edit:styled, return it as-is
          put $seg
        }
