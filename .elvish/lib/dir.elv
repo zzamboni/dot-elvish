@@ -90,6 +90,9 @@ fn -cd [@dir]{
 # Wrapper entrypoint for -cd
 fn cd [@dir]{ -cd $@dir }
 
+# cd to the base directory of the argument
+fn cdb [p]{ cd (dirname $p) }
+
 # Move back and forward through the stack.
 fn back {
   if (> $-cursor 0) {

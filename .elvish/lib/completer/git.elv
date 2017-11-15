@@ -17,30 +17,30 @@ commands = [(echo &sep="\n" $@-cmds | sort)]
 fn -run-git-cmd [gitcmd @rest]{
   gitcmds = [$gitcmd]
   if (eq (kind-of $gitcmd) string) {
-	  gitcmds = [(splits " " $gitcmd)]
+    gitcmds = [(splits " " $gitcmd)]
   }
-	if (> (count $gitcmds) 1) {
-		$gitcmds[0] (explode $gitcmds[1:]) $@rest
-	} else {
-		$gitcmds[0] $@rest
-	}
+  if (> (count $gitcmds) 1) {
+    $gitcmds[0] (explode $gitcmds[1:]) $@rest
+  } else {
+    $gitcmds[0] $@rest
+  }
 }
 
 fn git-completer [gitcmd @rest]{
-	n = (count $rest)
-	if (eq $n 1) {
-		put $@commands
-	} else {
-		# From https://github.com/occivink/config/blob/master/.elvish/rc.elv
-		subcommand = $rest[0]
-		if (or (eq $subcommand add) (eq $subcommand stage)) {
-			-run-git-cmd $gitcmd diff --name-only
-		  -run-git-cmd $gitcmd ls-files --others --exclude-standard
-		} elif (or (eq $subcommand checkout) (eq $subcommand co)) {
-			-run-git-cmd $gitcmd branch --list --all --format '%(refname:short)'
+  n = (count $rest)
+  if (eq $n 1) {
+    put $@commands
+  } else {
+    # From https://github.com/occivink/config/blob/master/.elvish/rc.elv
+    subcommand = $rest[0]
+    if (or (eq $subcommand add) (eq $subcommand stage)) {
       -run-git-cmd $gitcmd diff --name-only
-		} elif (or (eq $subcommand mv) (eq $subcommand rm) (eq $subcommand diff)) {
+      -run-git-cmd $gitcmd ls-files --others --exclude-standard
+    } elif (or (eq $subcommand checkout) (eq $subcommand co)) {
+      -run-git-cmd $gitcmd branch --list --all --format '%(refname:short)'
+      -run-git-cmd $gitcmd diff --name-only
+    } elif (or (eq $subcommand mv) (eq $subcommand rm) (eq $subcommand diff)) {
       -run-git-cmd $gitcmd ls-files
     }
-	}
+  }
 }

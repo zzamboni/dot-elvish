@@ -54,7 +54,7 @@ fn lastcmd {
   cmd = [
     &content=$last[cmd]
     &display="! "$last[cmd]
-	  &filter-text=""
+    &filter-text=""
   ]
   bang = [
     &content="!"
@@ -67,12 +67,12 @@ fn lastcmd {
         if (eq $index (- (count $parts) 1)) {
           extra = "/$"
         }
-	      put [
+        put [
           &content=$arg
           &display=$index$extra" "$arg
           &filter-text=$index
-	      ]
-	      index = (+ $index 1)
+        ]
+        index = (+ $index 1)
   } $parts) $bang]
   bindings = [
     &!={ edit:insert:start; edit:insert-at-dot $last[cmd] }

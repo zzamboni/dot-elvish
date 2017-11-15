@@ -72,3 +72,8 @@ fn autoset {
     }
   }
 }
+
+fn setup_autoset {
+  edit:before-readline=[ $@edit:before-readline { autoset } ]
+  edit:after-readline=[ $@edit:after-readline [cmd]{ autoset } ]
+}
