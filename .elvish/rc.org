@@ -239,7 +239,7 @@
 
 * Miscellaneous stuff
 
-  I use the [[https://atlas.oreilly.com/][O'Reilly Atlas]] publishing platform, and this module
+  I use the [[https://atlas.oreilly.com/][O'Reilly Atlas]] publishing platform. The [[file:lib/atlas.org][atlas]] module
   contains some useful functions for triggering and accessing document
   builds.
 
