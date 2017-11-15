@@ -153,7 +153,7 @@
 
 * Long-running-command notifications
 
-  The [[file:/lib/long-running-notifications.org][long-running-notifications]] module allows for producing a
+  The [[file:lib/long-running-notifications.org][long-running-notifications]] module allows for producing a
   notification when a command takes longer than a certain time to
   finish (by default the period is 10 seconds). The module
   automatically detects when [[https://github.com/julienXX/terminal-notifier][terminal-notifier]] is available on macOS

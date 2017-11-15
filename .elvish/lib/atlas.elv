@@ -1,5 +1,3 @@
-# Functions to trigger O'Reilly Atlas builds.
-
 use re
 
 fn push [@arg]{
