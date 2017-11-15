@@ -46,20 +46,20 @@
 
 * Base modules
 
-  Load the bundled [[https://elvish.io/ref/re.html][=re=]] module for regular expression functions.
+  Load the bundled [[https://elvish.io/ref/re.html][re]] module for regular expression functions.
 
   #+BEGIN_SRC elvish
     use re
   #+END_SRC
 
-  The [[file:lib/prompt_hooks.org][=prompt_hooks=]] module provides some functions for manipulating the
+  The [[file:lib/prompt_hooks.org][prompt_hooks]] module provides some functions for manipulating the
   before/after command hooks.
 
   #+BEGIN_SRC elvish
     use prompt_hooks
   #+END_SRC
 
-  The bundled [[https://elvish.io/ref/bundled.html][=readline-binding=]] module associates some Emacs-like
+  The bundled [[https://elvish.io/ref/bundled.html][readline-binding]] module associates some Emacs-like
   keybindings for manipulation of the command line.
   
   #+BEGIN_SRC elvish
@@ -78,7 +78,7 @@
 
 * Nix package manager
 
-  I use the [[https://nixos.org/nix/][Nix]] package manager on macOS, the [[file:lib/nix.elv][=nix=]] module sets up the
+  I use the [[https://nixos.org/nix/][Nix]] package manager on macOS, the [[file:lib/nix.org][nix]] module sets up the
   necessary environment variables.
 
   #+BEGIN_SRC elvish
@@ -88,7 +88,7 @@
 
 * Git-related stuff
 
-  The [[file:lib/git.elv][=git=]] module defines some git-related functionality, including a
+  The [[file:lib/git.org][git]] module defines some git-related functionality, including a
   wrapper to automatically call =vcsh= when needed.
 
   #+BEGIN_SRC elvish
@@ -96,7 +96,7 @@
     fn git [@arg]{ git:git_vcsh $@arg }
   #+END_SRC
 
-  We also load the [[file:lib/completer/git.org][=completer:git=]] module to provide completions for
+  We also load the [[file:lib/completer/git.org][completer:git]] module to provide completions for
   git and similar commands. We set the completer to call the =git=
   function defined above, so that it also works when we are in vcsh
   repositories.
@@ -106,7 +106,7 @@
     edit:arg-completer[git] = [@args]{ completer:git:git-completer $&git (explode $args[1:]) }
   #+END_SRC
 
-  The [[file:lib/completer/vcsh.org][=completer:vcsh=]] module provides git-like completion for vcsh.
+  The [[file:lib/completer/vcsh.org][completer:vcsh]] module provides git-like completion for vcsh.
 
   #+BEGIN_SRC elvish
     use completer:vcsh
@@ -114,7 +114,7 @@
 
 * Prompt theme
 
-  I use the [[file:lib/theme/chain.org][=chain=]] prompt theme, ported from the fish theme at
+  I use the [[file:lib/theme/chain.org][chain]] prompt theme, ported from the fish theme at
   https://github.com/oh-my-fish/theme-chain.
 
   #+BEGIN_SRC elvish
@@ -128,7 +128,7 @@
   When I am in the office, I need to use a proxy to access the
   Internet. For macOS applications, the proxy is set automatically
   using a company-provided PAC file. For the command line variables,
-  the [[file:lib/proxy.org][=proxy=]] module allows me to define a test which determines when
+  the [[file:lib/proxy.org][proxy]] module allows me to define a test which determines when
   the proxy should be set, so that the change is done automatically.
 
   First, we load the module and set the proxy. The
@@ -153,7 +153,7 @@
 
 * Long-running-command notifications
 
-  The [[file:/lib/long-running-notifications.org][=long-running-notifications=]] module allows for producing a
+  The [[file:/lib/long-running-notifications.org][long-running-notifications]] module allows for producing a
   notification when a command takes longer than a certain time to
   finish (by default the period is 10 seconds). The module
   automatically detects when [[https://github.com/julienXX/terminal-notifier][terminal-notifier]] is available on macOS
@@ -161,7 +161,6 @@
   a notification on the terminal.
 
   #+BEGIN_SRC elvish
-    # Notifications for long-running-commands
     use long-running-notifications
     long-running-notifications:setup
   #+END_SRC
@@ -183,7 +182,7 @@
   #+END_SRC
 
   I have decades of muscle memory using ~!!~ and ~!$~ to insert the last
-  command and its last argument, respectively. The [[file:lib/bang-bang.org][=bang-bang=]] module
+  command and its last argument, respectively. The [[file:lib/bang-bang.org][bang-bang]] module
   allows me to keep using them.
   
   #+BEGIN_SRC elvish
@@ -191,7 +190,7 @@
     bang-bang:bind-trigger-keys
   #+END_SRC
 
-  The [[file:lib/dir.org][=dir=]] module implements a directory history and some related
+  The [[file:lib/dir.org][dir]] module implements a directory history and some related
   functions. I override the built-in ~cd~ command with a function that
   calls =dir:cd= so that any directory changes are kept in the
   history. I also create a top-level wrapper for the =dir:cdb= function,
@@ -212,7 +211,7 @@
 * Aliases
 
   Elvish does not have built-in alias functionality, but this is
-  implemented easily using the [[file:lib/alias.org][=alias=]] module, which stores the alias
+  implemented easily using the [[file:lib/alias.org][alias]] module, which stores the alias
   definitions as functions under =~/.elvish/aliases/= and loads them
   automatically.
 
@@ -245,15 +244,13 @@
   builds.
 
   #+BEGIN_SRC elvish
-    # Atlas-related functions
     use atlas
   #+END_SRC
 
-  The =private= module sets up some private information such as
+  The =private= module sets up some private settings such as
   authentication tokens. This is not on github :)
 
   #+BEGIN_SRC elvish
-    # Read in private settings - normally you should not check in lib/private.elv into git
     if ?(test -f ~/.elvish/lib/private.elv) { use private }
   #+END_SRC
 
@@ -276,7 +273,6 @@
   Function to shorten a string to a maximum length, followed by dots.
 
   #+BEGIN_SRC elvish
-    # Misc functions
     fn dotify_string [str dotify_length]{
       if (or (== $dotify_length 0) (<= (count $str) $dotify_length)) {
         put $str

@@ -52,7 +52,6 @@ proxy:setup_autoset
 
 proxy:test = { and ?(test -f /etc/resolv.conf) ?(egrep -q '^(search|domain).*corproot.net' /etc/resolv.conf) }
 
-# Notifications for long-running-commands
 use long-running-notifications
 long-running-notifications:setup
 
@@ -80,10 +79,8 @@ prompt_hooks:add-after-readline [cmd]{
   set-title (re:split '\s' $cmd | take 1)" "(tilde-abbr $pwd)
 }
 
-# Atlas-related functions
 use atlas
 
-# Read in private settings - normally you should not check in lib/private.elv into git
 if ?(test -f ~/.elvish/lib/private.elv) { use private }
 
 edit:-matcher[''] = [p]{ edit:match-prefix &smart-case $p }
@@ -92,7 +89,6 @@ E:LESS = "-i -R"
 E:EDITOR = "vim"
 E:LC_ALL = "en_US.UTF-8"
 
-# Misc functions
 fn dotify_string [str dotify_length]{
   if (or (== $dotify_length 0) (<= (count $str) $dotify_length)) {
     put $str
