@@ -52,7 +52,7 @@
     use re
   #+END_SRC
 
-  The [[file:lib/prompt_hooks.org][~prompt_hooks~]] module provides some functions for manipulating the
+  The [[file:lib/prompt_hooks.org][prompt_hooks]] module provides some functions for manipulating the
   before/after command hooks.
 
   #+BEGIN_SRC elvish
