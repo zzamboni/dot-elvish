@@ -1,0 +1,12 @@
+* My configuration files for [[https://elvish.io/][Elvish]]
+
+I recently discovered the [[https://elvish.io/][Elvish]] shell, and I find it very interesting
+and have started using it as my main shell on macOS. This is my
+current =~/.elvish= configuration directory, including several modules I
+have written. You can find the full documentation in the [[file:rc.org][rc.org file]].
+
+I hope you find them useful!
+
+Please note: These files are written in [[http://www.howardism.org/Technical/Emacs/literate-programming-tutorial.html][literate programming style]]
+using [[http://orgmode.org/][org-mode]] for Emacs. The =.elv= files are generated automatically
+from the corresponding =.org= files.
