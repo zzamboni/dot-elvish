@@ -52,7 +52,7 @@
     use re
   #+END_SRC
 
-  The [[file:lib/prompt_hooks.org][prompt_hooks]] module provides some functions for manipulating the
+  The [[file:lib/prompt_hooks.org][~prompt_hooks~]] module provides some functions for manipulating the
   before/after command hooks.
 
   #+BEGIN_SRC elvish
@@ -171,8 +171,8 @@
   the new (still experimental) =narrow= module, which allow for more
   customization, including pre- and after- hooks for each of the
   modes. I use the default binding for history mode (~C-r~), but change
-  the location mode binding to ~Alt-l~ to avoid conflicting with
-  =readline-binding='s binding of ~C-l~ to "clear screen". I disable the
+  the location mode binding to ~Alt-l~ to avoid conflicting with the binding of
+  ~C-l~ to "clear screen" in =readline-binding=. I disable the
   lastcmd binding because it is taken over by the =bang-bang= module
   below.
 
@@ -285,13 +285,7 @@
   [[https://github.com/elves/elvish/issues/500][Parallel redirection of stdout and stderr to different commands]]. The
   =pipesplit= function takes three lambdas. The first one is executed,
   its stdout is redirected to the second one, and its stderr to the
-  third one. Example:
-
-  #+BEGIN_EXAMPLE
-    > pipesplit { echo stdout-test; echo stderr-test >&2 } { echo STDOUT: (cat) } { echo STDERR: (cat) }
-    STDOUT: stdout-test
-    STDERR: stderr-test
-  #+END_EXAMPLE
+  third one.
 
   #+BEGIN_SRC elvish
     fn pipesplit [l1 l2 l3]{
@@ -310,3 +304,11 @@
       }
     }
   #+END_SRC
+
+ Example:
+
+  #+BEGIN_EXAMPLE
+    > pipesplit { echo stdout-test; echo stderr-test >&2 } { echo STDOUT: (cat) } { echo STDERR: (cat) }
+    STDOUT: stdout-test
+    STDERR: stderr-test
+  #+END_EXAMPLE
