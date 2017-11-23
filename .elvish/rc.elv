@@ -83,7 +83,12 @@ use atlas
 
 if ?(test -f ~/.elvish/lib/private.elv) { use private }
 
-edit:-matcher[''] = [p]{ edit:match-prefix &smart-case $p }
+if (not ?(test -d ~/.elvish/lib/github.com/xiaq)) {
+  mkdir -p ~/.elvish/lib/github.com/xiaq
+  git clone https://github.com/xiaq/edit.elv.git ~/.elvish/lib/github.com/xiaq/edit.elv
+}
+use github.com/xiaq/edit.elv/smart-matcher
+edit:-matcher[''] = $smart-matcher:&match
 
 E:LESS = "-i -R"
 E:EDITOR = "vim"
