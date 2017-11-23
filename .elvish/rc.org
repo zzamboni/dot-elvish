@@ -258,28 +258,30 @@
  https://github.com/xiaq/edit.elv/blob/master/smart-matcher.elv, which
  tries prefix match, smart-case prefix match, substring match,
  smart-case substring match, subsequence match and smart-case
- subsequence match.  Other possible values for =edit:-matcher= are =[p]{
- edit:match-prefix &smart-case $p }= for smart-case completion (if your
- pattern is entirely lower case it ignores case, otherwise it's case
- sensitive).  =&smart-case= can be replaced with =&ignore-case= to make it
- always case-insensitive.
+ subsequence match.
 
-  #+BEGIN_SRC elvish :noweb yes
-    <<install-xiaq-edit.elv>>
-    use github.com/xiaq/edit.elv/smart-matcher
-    edit:-matcher[''] = $smart-matcher:&match
-  #+END_SRC
+ For it to work, we need to install the smart-matcher module, which is
+ hosted in github. The following code installs it if necessary:
 
-  For the above to work, we need to install the smart-matcher module,
-  which is hosted in github:
-
-  #+NAME: install-xiaq-edit.elv
-  #+BEGIN_SRC elvish :tangle no
+  #+BEGIN_SRC elvish
     if (not ?(test -d ~/.elvish/lib/github.com/xiaq)) {
       mkdir -p ~/.elvish/lib/github.com/xiaq
       git clone https://github.com/xiaq/edit.elv.git ~/.elvish/lib/github.com/xiaq/edit.elv
     }
   #+END_SRC
+
+ Now we can load and configure it.
+
+  #+BEGIN_SRC elvish :noweb no-export
+    use github.com/xiaq/edit.elv/smart-matcher
+    edit:-matcher[''] = $smart-matcher:&match
+  #+END_SRC
+
+  Other possible values for =edit:-matcher= are =[p]{ edit:match-prefix
+ &smart-case $p }= for smart-case completion (if your pattern is
+ entirely lower case it ignores case, otherwise it's case sensitive).
+ =&smart-case= can be replaced with =&ignore-case= to make it always
+ case-insensitive.
 
   Some general environment variables.
 
