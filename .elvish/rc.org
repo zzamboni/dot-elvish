@@ -254,7 +254,7 @@
     if ?(test -f ~/.elvish/lib/private.elv) { use private }
   #+END_SRC
 
-  Use the smart-matcher module from
+ I use the smart-matcher module from
  https://github.com/xiaq/edit.elv/blob/master/smart-matcher.elv, which
  tries prefix match, smart-case prefix match, substring match,
  smart-case substring match, subsequence match and smart-case
