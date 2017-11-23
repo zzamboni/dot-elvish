@@ -1,5 +1,6 @@
 db
 lib/private.elv
+lib/github.com
 *.html
 *.pdf
 *.tex
