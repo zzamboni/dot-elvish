@@ -5,6 +5,19 @@
 #+AUTHOR: Diego Zamboni
 #+EMAIL:  diego@zzamboni.org
 
+* Libraries
+
+We need the =re= module.
+
+#+BEGIN_SRC elvish
+  use re
+#+END_SRC
+
+* Environment setup
+
+I have two environment setup functions, one for a multi-user
+environment (default on macOS) and the other for a single-user setup.
+
 #+BEGIN_SRC elvish
   fn single-user-setup {
     # Set up single-user Nix (no daemon)
@@ -120,10 +133,15 @@
 
     #echo (edit:styled "Nix environment ready" green)
   }
+#+END_SRC
 
-  # Utility functions for Nix
+* Utility functions
 
-  # Wrapper around nix-env -qa
+=nix:search= is a wrapper around =nix-env -qa=, which removes the
+automatic pager wrapper, and pipes through =json_pp= if the first
+argument is =--json=.
+
+#+BEGIN_SRC elvish
   fn search [@pkgs]{
     pipecmd = cat
     opts = []
@@ -132,17 +150,23 @@
     }
     nix-env -qa $@opts $@pkgs | $pipecmd
   }
+#+END_SRC
 
-  # Wrapper aroud nix-env -i
+=nix:install= is a wrapper around =nix-env -i=.
+
+#+BEGIN_SRC elvish
   fn install [@pkgs]{
     nix-env -i $@pkgs
   }
+#+END_SRC
 
-  # Simple interactive function to go through installed Homebrew
-  # packages and allow you to replace them with their Nix equivalents.
-  # Only loops through the "leaves" - i.e. Homebrew packages that do not
-  # have any dependents, so it will not loop through everything. You may
-  # need to run it a few times to fully clean up.
+Simple interactive function to go through installed Homebrew packages
+and allow you to replace them with their Nix equivalents.  Only loops
+through the "leaves" - i.e. Homebrew packages that do not have any
+dependents, so it will not loop through everything. You may need to
+run it a few times to fully clean up.
+
+#+BEGIN_SRC elvish
   fn brew-to-nix {
     brew leaves | each [pkg]{
       echo (edit:styled "Package "$pkg green)
@@ -162,6 +186,33 @@
           brew uninstall --force $pkg
         }
       }
+    }
+  }
+#+END_SRC
+
+=nix:info= is a wrapper to query nix packages, but showing more
+information than what =nix-env= usually provides, by extracting it from
+the package metadata.
+
+#+BEGIN_SRC elvish
+  fn info [pkg]{
+    install-path = nil
+    installed = ?(install-path = [(re:split '\s+' (nix-env -q --out-path $pkg 2>/dev/null))][1])
+    flag = (if $installed { put "-q" } else { put "-qa" })
+    data = (nix-env $flag --json $pkg | from-json)
+    top-key = (keys $data | take 1)
+    pkg = $data[$top-key]
+    meta = $pkg[meta]
+    echo-if = [obj key]{ if (has-key $obj $key) { echo $obj[$key] } }
+    # Produce the output
+    print (edit:styled $pkg[name] yellow)
+    if (has-key $meta description) { echo ":" $meta[description] } else { echo "" }
+    if (has-key $meta homepage)    { echo (edit:styled "Homepage: " blue) $meta[homepage] }
+    if $installed { echo (edit:styled "Installed:" green) $install-path } else { echo (edit:styled "Not installed" red) }
+    echo From: (re:replace ':\d+' "" $meta[position])
+    if (has-key $meta longDescription) {
+      echo ""
+      echo $meta[longDescription] | fmt
     }
   }
 #+END_SRC

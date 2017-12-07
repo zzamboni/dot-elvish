@@ -1,3 +1,5 @@
+use re
+
 fn single-user-setup {
   # Set up single-user Nix (no daemon)
   if (not-eq $E:HOME "") {
@@ -113,9 +115,6 @@ fn multi-user-setup {
   #echo (edit:styled "Nix environment ready" green)
 }
 
-# Utility functions for Nix
-
-# Wrapper around nix-env -qa
 fn search [@pkgs]{
   pipecmd = cat
   opts = []
@@ -125,16 +124,10 @@ fn search [@pkgs]{
   nix-env -qa $@opts $@pkgs | $pipecmd
 }
 
-# Wrapper aroud nix-env -i
 fn install [@pkgs]{
   nix-env -i $@pkgs
 }
 
-# Simple interactive function to go through installed Homebrew
-# packages and allow you to replace them with their Nix equivalents.
-# Only loops through the "leaves" - i.e. Homebrew packages that do not
-# have any dependents, so it will not loop through everything. You may
-# need to run it a few times to fully clean up.
 fn brew-to-nix {
   brew leaves | each [pkg]{
     echo (edit:styled "Package "$pkg green)
@@ -154,5 +147,26 @@ fn brew-to-nix {
         brew uninstall --force $pkg
       }
     }
+  }
+}
+
+fn info [pkg]{
+  install-path = nil
+  installed = ?(install-path = [(re:split '\s+' (nix-env -q --out-path $pkg 2>/dev/null))][1])
+  flag = (if $installed { put "-q" } else { put "-qa" })
+  data = (nix-env $flag --json $pkg | from-json)
+  top-key = (keys $data | take 1)
+  pkg = $data[$top-key]
+  meta = $pkg[meta]
+  echo-if = [obj key]{ if (has-key $obj $key) { echo $obj[$key] } }
+  # Produce the output
+  print (edit:styled $pkg[name] yellow)
+  if (has-key $meta description) { echo ":" $meta[description] } else { echo "" }
+  if (has-key $meta homepage)    { echo (edit:styled "Homepage: " blue) $meta[homepage] }
+  if $installed { echo (edit:styled "Installed:" green) $install-path } else { echo (edit:styled "Not installed" red) }
+  echo From: (re:replace ':\d+' "" $meta[position])
+  if (has-key $meta longDescription) {
+    echo ""
+    echo $meta[longDescription] | fmt
   }
 }
