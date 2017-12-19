@@ -37,4 +37,4 @@ fn vcsh-completer [cmd @rest]{
   }
 }
 
-edit:arg-completer[vcsh] = $&vcsh-completer
+edit:arg-completer[vcsh] = $vcsh-completer~

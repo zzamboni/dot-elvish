@@ -27,7 +27,7 @@ use prompt_hooks
 use readline-binding
 
 # Alt-backspace to delete word
-edit:insert:binding[Alt-Backspace] = $edit:&kill-small-word-left
+edit:insert:binding[Alt-Backspace] = $edit:kill-small-word-left~
 # Alt-d to delete the word under the cursor
 edit:insert:binding[Alt-d] = { edit:move-dot-right-word; edit:kill-word-left }
 
@@ -38,7 +38,7 @@ use git
 fn git [@arg]{ git:git_vcsh $@arg }
 
 use completer:git
-edit:arg-completer[git] = [@args]{ completer:git:git-completer $&git (explode $args[1:]) }
+edit:arg-completer[git] = [@args]{ completer:git:git-completer $git~ (explode $args[1:]) }
 
 use completer:vcsh
 
@@ -63,9 +63,9 @@ bang-bang:bind-trigger-keys
 
 use dir
 dir:setup
-edit:insert:binding[Alt-b] = $dir:&left-word-or-prev-dir
-edit:insert:binding[Alt-f] = $dir:&right-word-or-next-dir
-edit:insert:binding[Alt-i] = $dir:&history-chooser
+edit:insert:binding[Alt-b] = $dir:left-word-or-prev-dir~
+edit:insert:binding[Alt-f] = $dir:right-word-or-next-dir~
+edit:insert:binding[Alt-i] = $dir:history-chooser~
 fn cd [@dir]{ dir:cd $@dir }
 fn cdb [@dir]{ dir:cdb $@dir }
 
@@ -87,9 +87,6 @@ if (not ?(test -d ~/.elvish/lib/github.com/xiaq)) {
   mkdir -p ~/.elvish/lib/github.com/xiaq
   git clone https://github.com/xiaq/edit.elv.git ~/.elvish/lib/github.com/xiaq/edit.elv
 }
-
-use github.com/xiaq/edit.elv/smart-matcher
-edit:-matcher[''] = $smart-matcher:&match
 
 E:LESS = "-i -R"
 E:EDITOR = "vim"

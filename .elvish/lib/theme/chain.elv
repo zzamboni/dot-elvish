@@ -107,12 +107,12 @@ fn segment_arrow {
 
 # List of built-in segments
 segment = [
-  &su=         $&segment_su
-  &dir=        $&segment_dir
-  &git_branch= $&segment_git_branch
-  &git_dirty=  $&segment_git_dirty
-  &arrow=      $&segment_arrow
-  &timestamp=  $&segment_timestamp
+  &su=         $segment_su~
+  &dir=        $segment_dir~
+  &git_branch= $segment_git_branch~
+  &git_dirty=  $segment_git_dirty~
+  &arrow=      $segment_arrow~
+  &timestamp=  $segment_timestamp~
 ]
 
 fn -interpret-segment [seg]{
@@ -158,6 +158,6 @@ fn rprompt [@skipcheck]{
 }
 
 fn setup {
-  edit:prompt = $&prompt
-  edit:rprompt = $&rprompt
+  edit:prompt = $prompt~
+  edit:rprompt = $rprompt~
 }

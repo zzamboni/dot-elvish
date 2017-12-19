@@ -71,7 +71,7 @@
 
   #+BEGIN_SRC elvish
     # Alt-backspace to delete word
-    edit:insert:binding[Alt-Backspace] = $edit:&kill-small-word-left
+    edit:insert:binding[Alt-Backspace] = $edit:kill-small-word-left~
     # Alt-d to delete the word under the cursor
     edit:insert:binding[Alt-d] = { edit:move-dot-right-word; edit:kill-word-left }
   #+END_SRC
@@ -103,7 +103,7 @@
 
   #+BEGIN_SRC elvish
     use completer:git
-    edit:arg-completer[git] = [@args]{ completer:git:git-completer $&git (explode $args[1:]) }
+    edit:arg-completer[git] = [@args]{ completer:git:git-completer $git~ (explode $args[1:]) }
   #+END_SRC
 
   The [[file:lib/completer/vcsh.org][completer:vcsh]] module provides git-like completion for vcsh.
@@ -201,9 +201,9 @@
   #+BEGIN_SRC elvish
     use dir
     dir:setup
-    edit:insert:binding[Alt-b] = $dir:&left-word-or-prev-dir
-    edit:insert:binding[Alt-f] = $dir:&right-word-or-next-dir
-    edit:insert:binding[Alt-i] = $dir:&history-chooser
+    edit:insert:binding[Alt-b] = $dir:left-word-or-prev-dir~
+    edit:insert:binding[Alt-f] = $dir:right-word-or-next-dir~
+    edit:insert:binding[Alt-i] = $dir:history-chooser~
     fn cd [@dir]{ dir:cd $@dir }
     fn cdb [@dir]{ dir:cdb $@dir }
   #+END_SRC
@@ -272,9 +272,9 @@
 
  Now we can load and configure it.
 
-  #+BEGIN_SRC elvish :noweb no-export
+  #+BEGIN_SRC elvish :noweb no-export :tangle no
     use github.com/xiaq/edit.elv/smart-matcher
-    edit:-matcher[''] = $smart-matcher:&match
+    edit:-matcher[''] = $smart-matcher:match~
   #+END_SRC
 
   Other possible values for =edit:-matcher= are =[p]{ edit:match-prefix

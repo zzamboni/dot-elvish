@@ -77,7 +77,7 @@ fn lastcmd {
   bindings = [
     &!={ edit:insert:start; edit:insert-at-dot $last[cmd] }
     &"$"={ edit:insert:start; edit:insert-at-dot $parts[-1] }
-    &$plain-bang-insert=$&insert-plain-bang
+    &$plain-bang-insert=$insert-plain-bang~
   ] 
   for k $extra-trigger-keys {
     bindings[$k] = { edit:insert:start; edit:insert-at-dot $last[cmd] }
@@ -93,9 +93,9 @@ fn lastcmd {
 fn bind-trigger-keys [&plain-bang="Alt-!" &extra-triggers=["Alt-1"]]{
   plain-bang-insert = $plain-bang
   extra-trigger-keys = $extra-triggers
-  edit:insert:binding[!] = $&lastcmd
+  edit:insert:binding[!] = $lastcmd~
   for k $extra-triggers {
-    edit:insert:binding[$k] = $&lastcmd
+    edit:insert:binding[$k] = $lastcmd~
   }
-  edit:insert:binding[$plain-bang-insert] = $&insert-plain-bang
+  edit:insert:binding[$plain-bang-insert] = $insert-plain-bang~
 }
