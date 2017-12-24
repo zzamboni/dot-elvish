@@ -88,6 +88,9 @@ if (not ?(test -d ~/.elvish/lib/github.com/xiaq)) {
   git clone https://github.com/xiaq/edit.elv.git ~/.elvish/lib/github.com/xiaq/edit.elv
 }
 
+use github.com/xiaq/edit.elv/smart-matcher
+edit:-matcher[''] = $smart-matcher:match~
+
 E:LESS = "-i -R"
 E:EDITOR = "vim"
 E:LC_ALL = "en_US.UTF-8"

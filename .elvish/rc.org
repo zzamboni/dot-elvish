@@ -272,7 +272,7 @@
 
  Now we can load and configure it.
 
-  #+BEGIN_SRC elvish :noweb no-export :tangle no
+  #+BEGIN_SRC elvish :noweb no-export
     use github.com/xiaq/edit.elv/smart-matcher
     edit:-matcher[''] = $smart-matcher:match~
   #+END_SRC
