@@ -89,11 +89,7 @@ use github.com/zzamboni/modules.elv/atlas
 
 if ?(test -f ~/.elvish/lib/private.elv) { use private }
 
-if (not ?(test -d ~/.elvish/lib/github.com/xiaq)) {
-  mkdir -p ~/.elvish/lib/github.com/xiaq
-  git clone https://github.com/xiaq/edit.elv.git ~/.elvish/lib/github.com/xiaq/edit.elv
-}
-
+epm:install-if-needed github.com/xiaq/edit.elv
 use github.com/xiaq/edit.elv/smart-matcher
 edit:-matcher[''] = $smart-matcher:match~
 
