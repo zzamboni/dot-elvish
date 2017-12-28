@@ -17,8 +17,10 @@ paths = [
   /bin
   /usr/sbin
   /sbin
-  $E:GOPATH/bin    
+  $E:GOPATH/bin
 ]
+
+use epm
 
 use re
 
@@ -42,9 +44,10 @@ edit:arg-completer[git] = [@args]{ completer:git:git-completer $git~ (explode $a
 
 use completer:vcsh
 
-use theme:chain
+epm:install-if-needed github.com/zzamboni/theme.elv
+use github.com/zzamboni/theme.elv:chain
 edit:-prompts-max-wait = 0.01
-theme:chain:setup
+theme.elv:chain:setup
 
 use proxy
 proxy:host = "http://proxy.corproot.net:8079"

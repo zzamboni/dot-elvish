@@ -40,11 +40,17 @@
       /bin
       /usr/sbin
       /sbin
-      $E:GOPATH/bin    
+      $E:GOPATH/bin
     ]
   #+END_SRC
 
 * Base modules
+
+  The bundled [[https://elvish.io/ref/epm.html][epm]] module allows us to install and manage Elvish packages.
+
+  #+BEGIN_SRC elvish
+    use epm
+  #+END_SRC
 
   Load the bundled [[https://elvish.io/ref/re.html][re]] module for regular expression functions.
 
@@ -61,7 +67,7 @@
 
   The bundled [[https://elvish.io/ref/bundled.html][readline-binding]] module associates some Emacs-like
   keybindings for manipulation of the command line.
-  
+
   #+BEGIN_SRC elvish
     use readline-binding
   #+END_SRC
@@ -118,9 +124,10 @@
   https://github.com/oh-my-fish/theme-chain.
 
   #+BEGIN_SRC elvish
-    use theme:chain
+    epm:install-if-needed github.com/zzamboni/theme.elv
+    use github.com/zzamboni/theme.elv:chain
     edit:-prompts-max-wait = 0.01
-    theme:chain:setup
+    theme.elv:chain:setup
   #+END_SRC
 
 * Automatic proxy settings
@@ -140,7 +147,7 @@
   #+BEGIN_SRC elvish
     use proxy
     proxy:host = "http://proxy.corproot.net:8079"
-    proxy:setup_autoset 
+    proxy:setup_autoset
   #+END_SRC
 
   Next, we set the test function. In my case, the =/etc/resolv.conf=
@@ -184,7 +191,7 @@
   I have decades of muscle memory using ~!!~ and ~!$~ to insert the last
   command and its last argument, respectively. The [[file:lib/bang-bang.org][bang-bang]] module
   allows me to keep using them.
-  
+
   #+BEGIN_SRC elvish
     use bang-bang
     bang-bang:bind-trigger-keys
