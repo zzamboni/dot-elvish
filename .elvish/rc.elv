@@ -39,10 +39,11 @@ nix:multi-user-setup
 use git
 fn git [@arg]{ git:git_vcsh $@arg }
 
-use completer:git
-edit:arg-completer[git] = [@args]{ completer:git:git-completer $git~ (explode $args[1:]) }
+epm:install-if-needed github.com/zzamboni/completer.elv
+use github.com/zzamboni/completer.elv:git
+edit:arg-completer[git] = [@args]{ completer.elv:git:git-completer $git~ (explode $args[1:]) }
 
-use completer:vcsh
+use github.com/zzamboni/completer.elv:vcsh
 
 epm:install-if-needed github.com/zzamboni/theme.elv
 use github.com/zzamboni/theme.elv:chain

@@ -1,5 +1,5 @@
 #+PROPERTY: header-args:elvish :tangle rc.elv
-#+PROPERTY: header-args :mkdirp yes :comments no 
+#+PROPERTY: header-args :mkdirp yes :comments no
 
 #+TITLE:  My Elvish config file
 #+AUTHOR: Diego Zamboni
@@ -102,20 +102,20 @@
     fn git [@arg]{ git:git_vcsh $@arg }
   #+END_SRC
 
-  We also load the [[file:lib/completer/git.org][completer:git]] module to provide completions for
-  git and similar commands. We set the completer to call the =git=
-  function defined above, so that it also works when we are in vcsh
-  repositories.
+  We also install and load the [[file:lib/completer/git.org][completer.elv:git]] module to provide completions
+  for git and similar commands. We set the completer to call the =git= function
+  defined above, so that it also works when we are in vcsh repositories.
 
   #+BEGIN_SRC elvish
-    use completer:git
-    edit:arg-completer[git] = [@args]{ completer:git:git-completer $git~ (explode $args[1:]) }
+    epm:install-if-needed github.com/zzamboni/completer.elv
+    use github.com/zzamboni/completer.elv:git
+    edit:arg-completer[git] = [@args]{ completer.elv:git:git-completer $git~ (explode $args[1:]) }
   #+END_SRC
 
-  The [[file:lib/completer/vcsh.org][completer:vcsh]] module provides git-like completion for vcsh.
+  The [[file:lib/completer/vcsh.org][completer.elv:vcsh]] module provides git-like completion for vcsh.
 
   #+BEGIN_SRC elvish
-    use completer:vcsh
+    use github.com/zzamboni/completer.elv:vcsh
   #+END_SRC
 
 * Prompt theme
