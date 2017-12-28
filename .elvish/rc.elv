@@ -22,9 +22,11 @@ paths = [
 
 use epm
 
+epm:install-if-needed github.com/zzamboni/modules.elv
+
 use re
 
-use prompt_hooks
+use github.com/zzamboni/modules.elv/prompt_hooks
 
 use readline-binding
 
@@ -33,10 +35,10 @@ edit:insert:binding[Alt-Backspace] = $edit:kill-small-word-left~
 # Alt-d to delete the word under the cursor
 edit:insert:binding[Alt-d] = { edit:move-dot-right-word; edit:kill-word-left }
 
-use nix
+use github.com/zzamboni/modules.elv/nix
 nix:multi-user-setup
 
-use git
+use github.com/zzamboni/modules.elv/git
 fn git [@arg]{ git:git_vcsh $@arg }
 
 epm:install-if-needed github.com/zzamboni/completer.elv
@@ -50,22 +52,22 @@ use github.com/zzamboni/theme.elv:chain
 edit:-prompts-max-wait = 0.01
 theme.elv:chain:setup
 
-use proxy
+use github.com/zzamboni/modules.elv/proxy
 proxy:host = "http://proxy.corproot.net:8079"
 proxy:setup_autoset
 
 proxy:test = { and ?(test -f /etc/resolv.conf) ?(egrep -q '^(search|domain).*corproot.net' /etc/resolv.conf) }
 
-use long-running-notifications
+use github.com/zzamboni/modules.elv/long-running-notifications
 long-running-notifications:setup
 
 use narrow
 narrow:bind-trigger-keys &location=Alt-l &lastcmd=""
 
-use bang-bang
+use github.com/zzamboni/modules.elv/bang-bang
 bang-bang:bind-trigger-keys
 
-use dir
+use github.com/zzamboni/modules.elv/dir
 dir:setup
 edit:insert:binding[Alt-b] = $dir:left-word-or-prev-dir~
 edit:insert:binding[Alt-f] = $dir:right-word-or-next-dir~
@@ -73,7 +75,7 @@ edit:insert:binding[Alt-i] = $dir:history-chooser~
 fn cd [@dir]{ dir:cd $@dir }
 fn cdb [@dir]{ dir:cdb $@dir }
 
-use alias
+use github.com/zzamboni/modules.elv/alias
 
 fn set-title [title]{ print "\e]0;"$title"\e\\" }
 prompt_hooks:add-before-readline {
@@ -83,7 +85,7 @@ prompt_hooks:add-after-readline [cmd]{
   set-title (re:split '\s' $cmd | take 1)" "(tilde-abbr $pwd)
 }
 
-use atlas
+use github.com/zzamboni/modules.elv/atlas
 
 if ?(test -f ~/.elvish/lib/private.elv) { use private }
 

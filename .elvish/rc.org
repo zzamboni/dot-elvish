@@ -52,6 +52,12 @@
     use epm
   #+END_SRC
 
+  Install all my base modules, they get loaded individually below.
+
+  #+BEGIN_SRC elvish
+    epm:install-if-needed github.com/zzamboni/modules.elv
+  #+END_SRC
+
   Load the bundled [[https://elvish.io/ref/re.html][re]] module for regular expression functions.
 
   #+BEGIN_SRC elvish
@@ -62,7 +68,7 @@
   before/after command hooks.
 
   #+BEGIN_SRC elvish
-    use prompt_hooks
+    use github.com/zzamboni/modules.elv/prompt_hooks
   #+END_SRC
 
   The bundled [[https://elvish.io/ref/bundled.html][readline-binding]] module associates some Emacs-like
@@ -88,7 +94,7 @@
   necessary environment variables.
 
   #+BEGIN_SRC elvish
-    use nix
+    use github.com/zzamboni/modules.elv/nix
     nix:multi-user-setup
   #+END_SRC
 
@@ -98,7 +104,7 @@
   wrapper to automatically call =vcsh= when needed.
 
   #+BEGIN_SRC elvish
-    use git
+    use github.com/zzamboni/modules.elv/git
     fn git [@arg]{ git:git_vcsh $@arg }
   #+END_SRC
 
@@ -145,7 +151,7 @@
   change while I am typing a command.
 
   #+BEGIN_SRC elvish
-    use proxy
+    use github.com/zzamboni/modules.elv/proxy
     proxy:host = "http://proxy.corproot.net:8079"
     proxy:setup_autoset
   #+END_SRC
@@ -168,7 +174,7 @@
   a notification on the terminal.
 
   #+BEGIN_SRC elvish
-    use long-running-notifications
+    use github.com/zzamboni/modules.elv/long-running-notifications
     long-running-notifications:setup
   #+END_SRC
 
@@ -193,7 +199,7 @@
   allows me to keep using them.
 
   #+BEGIN_SRC elvish
-    use bang-bang
+    use github.com/zzamboni/modules.elv/bang-bang
     bang-bang:bind-trigger-keys
   #+END_SRC
 
@@ -206,7 +212,7 @@
   which I bind to ~Alt-i~.
 
   #+BEGIN_SRC elvish
-    use dir
+    use github.com/zzamboni/modules.elv/dir
     dir:setup
     edit:insert:binding[Alt-b] = $dir:left-word-or-prev-dir~
     edit:insert:binding[Alt-f] = $dir:right-word-or-next-dir~
@@ -223,7 +229,7 @@
   automatically.
 
   #+BEGIN_SRC elvish
-    use alias
+    use github.com/zzamboni/modules.elv/alias
   #+END_SRC
 
 * Dynamic terminal title
@@ -251,7 +257,7 @@
   builds.
 
   #+BEGIN_SRC elvish
-    use atlas
+    use github.com/zzamboni/modules.elv/atlas
   #+END_SRC
 
   The =private= module sets up some private settings such as
