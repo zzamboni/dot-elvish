@@ -1,5 +1,6 @@
 #+PROPERTY: header-args:elvish :tangle rc.elv
 #+PROPERTY: header-args :mkdirp yes :comments no
+#+STARTUP: indent
 
 #+TITLE:  My Elvish config file
 #+AUTHOR: Diego Zamboni
@@ -14,18 +15,18 @@
 
 * Introduction
 
-  This is my main config file for [[http://elvish.io][Elvish]].
+This is my main config file for [[http://elvish.io][Elvish]].
 
-  This file is written in [[http://www.howardism.org/Technical/Emacs/literate-programming-tutorial.html][literate programming style]], to make it easy
-  to explain. See [[file:rc.elv][rc.elv]] for the generated file.
+This file is written in [[http://www.howardism.org/Technical/Emacs/literate-programming-tutorial.html][literate programming style]], to make it easy
+to explain. See [[file:rc.elv][rc.elv]] for the generated file.
 
 * Paths
 
-  First we set up the executable paths. We set the ~GOPATH~ environment
-  variable while we are at it, since we need to use it as part of the
-  path.
+First we set up the executable paths. We set the ~GOPATH~ environment
+variable while we are at it, since we need to use it as part of the
+path.
 
-  #+BEGIN_SRC elvish
+#+BEGIN_SRC elvish
     E:GOPATH = ~/Personal/devel/go/
     paths = [
       ~/bin
@@ -42,176 +43,186 @@
       /sbin
       $E:GOPATH/bin
     ]
-  #+END_SRC
+#+END_SRC
+
+* External modules
+
+The bundled [[https://elvish.io/ref/epm.html][epm]] module allows us to install and manage Elvish packages.
+
+#+BEGIN_SRC elvish
+    use epm
+#+END_SRC
+
+Install all my packages, the modules within them get loaded individually
+below.
+
+For now I have these packages:
+
+- [[https://github.com/zzamboni/modules.elv][modules.elv]] contains all my modules except completions and themes. Maybe these
+  should be separated eventually, but for now this works fine.
+- [[https://github.com/zzamboni/theme.elv][theme.elv]] contains my prompt themes (only [[https://github.com/zzamboni/theme.elv/blob/master/chain.org][chain]] for now).
+- [[https://github.com/zzamboni/completer.elv][completer.elv]] contains my completer definitions.
+
+#+BEGIN_SRC elvish
+    epm:install-if-needed github.com/zzamboni/modules.elv
+    epm:install-if-needed github.com/zzamboni/completer.elv
+    epm:install-if-needed github.com/zzamboni/theme.elv
+#+END_SRC
 
 * Base modules
 
-  The bundled [[https://elvish.io/ref/epm.html][epm]] module allows us to install and manage Elvish packages.
+Load the bundled [[https://elvish.io/ref/re.html][re]] module for regular expression functions.
 
-  #+BEGIN_SRC elvish
-    use epm
-  #+END_SRC
-
-  Install all my base modules, they get loaded individually below.
-
-  #+BEGIN_SRC elvish
-    epm:install-if-needed github.com/zzamboni/modules.elv
-  #+END_SRC
-
-  Load the bundled [[https://elvish.io/ref/re.html][re]] module for regular expression functions.
-
-  #+BEGIN_SRC elvish
+#+BEGIN_SRC elvish
     use re
-  #+END_SRC
+#+END_SRC
 
-  The [[file:lib/prompt_hooks.org][prompt_hooks]] module provides some functions for manipulating the
-  before/after command hooks.
+The [[file:lib/prompt_hooks.org][prompt_hooks]] module provides some functions for manipulating the
+before/after command hooks.
 
-  #+BEGIN_SRC elvish
+#+BEGIN_SRC elvish
     use github.com/zzamboni/modules.elv/prompt_hooks
-  #+END_SRC
+#+END_SRC
 
-  The bundled [[https://elvish.io/ref/bundled.html][readline-binding]] module associates some Emacs-like
-  keybindings for manipulation of the command line.
+The bundled [[https://elvish.io/ref/bundled.html][readline-binding]] module associates some Emacs-like
+keybindings for manipulation of the command line.
 
-  #+BEGIN_SRC elvish
+#+BEGIN_SRC elvish
     use readline-binding
-  #+END_SRC
+#+END_SRC
 
-  I add a couple of keybindings which are missing from the default
-  =readline-binding= module.
+I add a couple of keybindings which are missing from the default
+=readline-binding= module.
 
-  #+BEGIN_SRC elvish
+#+BEGIN_SRC elvish
     # Alt-backspace to delete word
     edit:insert:binding[Alt-Backspace] = $edit:kill-small-word-left~
     # Alt-d to delete the word under the cursor
     edit:insert:binding[Alt-d] = { edit:move-dot-right-word; edit:kill-word-left }
-  #+END_SRC
+#+END_SRC
 
 * Nix package manager
 
-  I use the [[https://nixos.org/nix/][Nix]] package manager on macOS, the [[file:lib/nix.org][nix]] module sets up the
-  necessary environment variables.
+I use the [[https://nixos.org/nix/][Nix]] package manager on macOS, the [[file:lib/nix.org][nix]] module sets up the
+necessary environment variables.
 
-  #+BEGIN_SRC elvish
+#+BEGIN_SRC elvish
     use github.com/zzamboni/modules.elv/nix
     nix:multi-user-setup
-  #+END_SRC
+#+END_SRC
 
 * Git-related stuff
 
-  The [[file:lib/git.org][git]] module defines some git-related functionality, including a
-  wrapper to automatically call =vcsh= when needed.
+The [[file:lib/git.org][git]] module defines some git-related functionality, including a
+wrapper to automatically call =vcsh= when needed.
 
-  #+BEGIN_SRC elvish
+#+BEGIN_SRC elvish
     use github.com/zzamboni/modules.elv/git
     fn git [@arg]{ git:git_vcsh $@arg }
-  #+END_SRC
+#+END_SRC
 
-  We also install and load the [[file:lib/completer/git.org][completer.elv:git]] module to provide completions
-  for git and similar commands. We set the completer to call the =git= function
-  defined above, so that it also works when we are in vcsh repositories.
+We also install and load the [[file:lib/completer/git.org][completer.elv:git]] module to provide completions
+for git and similar commands. We set the completer to call the =git= function
+defined above, so that it also works when we are in vcsh repositories.
 
-  #+BEGIN_SRC elvish
-    epm:install-if-needed github.com/zzamboni/completer.elv
+#+BEGIN_SRC elvish
     use github.com/zzamboni/completer.elv:git
     edit:arg-completer[git] = [@args]{ completer.elv:git:git-completer $git~ (explode $args[1:]) }
-  #+END_SRC
+#+END_SRC
 
-  The [[file:lib/completer/vcsh.org][completer.elv:vcsh]] module provides git-like completion for vcsh.
+The [[file:lib/completer/vcsh.org][completer.elv:vcsh]] module provides git-like completion for vcsh.
 
-  #+BEGIN_SRC elvish
+#+BEGIN_SRC elvish
     use github.com/zzamboni/completer.elv:vcsh
-  #+END_SRC
+#+END_SRC
 
 * Prompt theme
 
-  I use the [[file:lib/theme/chain.org][chain]] prompt theme, ported from the fish theme at
-  https://github.com/oh-my-fish/theme-chain.
+I use the [[file:lib/theme/chain.org][chain]] prompt theme, ported from the fish theme at
+https://github.com/oh-my-fish/theme-chain.
 
-  #+BEGIN_SRC elvish
-    epm:install-if-needed github.com/zzamboni/theme.elv
+#+BEGIN_SRC elvish
     use github.com/zzamboni/theme.elv:chain
     edit:-prompts-max-wait = 0.01
     theme.elv:chain:setup
-  #+END_SRC
+#+END_SRC
 
 * Automatic proxy settings
 
-  When I am in the office, I need to use a proxy to access the
-  Internet. For macOS applications, the proxy is set automatically
-  using a company-provided PAC file. For the command line variables,
-  the [[file:lib/proxy.org][proxy]] module allows me to define a test which determines when
-  the proxy should be set, so that the change is done automatically.
+When I am in the office, I need to use a proxy to access the
+Internet. For macOS applications, the proxy is set automatically
+using a company-provided PAC file. For the command line variables,
+the [[file:lib/proxy.org][proxy]] module allows me to define a test which determines when
+the proxy should be set, so that the change is done automatically.
 
-  First, we load the module and set the proxy. The
-  =proxy:setup_autoset= function adds the =proxy:autoset= function to
-  both the pre- and post-command hooks, so that the proxy is
-  automatically set/unset as soon as possible, even if the conditions
-  change while I am typing a command.
+First, we load the module and set the proxy. The
+=proxy:setup_autoset= function adds the =proxy:autoset= function to
+both the pre- and post-command hooks, so that the proxy is
+automatically set/unset as soon as possible, even if the conditions
+change while I am typing a command.
 
-  #+BEGIN_SRC elvish
+#+BEGIN_SRC elvish
     use github.com/zzamboni/modules.elv/proxy
     proxy:host = "http://proxy.corproot.net:8079"
     proxy:setup_autoset
-  #+END_SRC
+#+END_SRC
 
-  Next, we set the test function. In my case, the =/etc/resolv.conf=
-  file contains the ~corproot.net~ domain (set through DHCP) when I'm in
-  the corporate network, so I can check for that.
+Next, we set the test function. In my case, the =/etc/resolv.conf=
+file contains the ~corproot.net~ domain (set through DHCP) when I'm in
+the corporate network, so I can check for that.
 
-  #+BEGIN_SRC elvish
+#+BEGIN_SRC elvish
     proxy:test = { and ?(test -f /etc/resolv.conf) ?(egrep -q '^(search|domain).*corproot.net' /etc/resolv.conf) }
-  #+END_SRC
+#+END_SRC
 
 * Long-running-command notifications
 
-  The [[file:lib/long-running-notifications.org][long-running-notifications]] module allows for producing a
-  notification when a command takes longer than a certain time to
-  finish (by default the period is 10 seconds). The module
-  automatically detects when [[https://github.com/julienXX/terminal-notifier][terminal-notifier]] is available on macOS
-  and uses it to produce Mac-style notifications, otherwise it prints
-  a notification on the terminal.
+The [[file:lib/long-running-notifications.org][long-running-notifications]] module allows for producing a
+notification when a command takes longer than a certain time to
+finish (by default the period is 10 seconds). The module
+automatically detects when [[https://github.com/julienXX/terminal-notifier][terminal-notifier]] is available on macOS
+and uses it to produce Mac-style notifications, otherwise it prints
+a notification on the terminal.
 
-  #+BEGIN_SRC elvish
+#+BEGIN_SRC elvish
     use github.com/zzamboni/modules.elv/long-running-notifications
     long-running-notifications:setup
-  #+END_SRC
+#+END_SRC
 
 * Directory and command navigation and history
 
-  Elvish comes with built-in location and command history modes. I use
-  the new (still experimental) =narrow= module, which allow for more
-  customization, including pre- and after- hooks for each of the
-  modes. I use the default binding for history mode (~C-r~), but change
-  the location mode binding to ~Alt-l~ to avoid conflicting with the binding of
-  ~C-l~ to "clear screen" in =readline-binding=. I disable the
-  lastcmd binding because it is taken over by the =bang-bang= module
-  below.
+Elvish comes with built-in location and command history modes. I use
+the new (still experimental) =narrow= module, which allow for more
+customization, including pre- and after- hooks for each of the
+modes. I use the default binding for history mode (~C-r~), but change
+the location mode binding to ~Alt-l~ to avoid conflicting with the binding of
+~C-l~ to "clear screen" in =readline-binding=. I disable the
+lastcmd binding because it is taken over by the =bang-bang= module
+below.
 
-  #+BEGIN_SRC elvish
+#+BEGIN_SRC elvish
     use narrow
     narrow:bind-trigger-keys &location=Alt-l &lastcmd=""
-  #+END_SRC
+#+END_SRC
 
-  I have decades of muscle memory using ~!!~ and ~!$~ to insert the last
-  command and its last argument, respectively. The [[file:lib/bang-bang.org][bang-bang]] module
-  allows me to keep using them.
+I have decades of muscle memory using ~!!~ and ~!$~ to insert the last
+command and its last argument, respectively. The [[file:lib/bang-bang.org][bang-bang]] module
+allows me to keep using them.
 
-  #+BEGIN_SRC elvish
+#+BEGIN_SRC elvish
     use github.com/zzamboni/modules.elv/bang-bang
     bang-bang:bind-trigger-keys
-  #+END_SRC
+#+END_SRC
 
-  The [[file:lib/dir.org][dir]] module implements a directory history and some related
-  functions. I override the built-in ~cd~ command with a function that
-  calls =dir:cd= so that any directory changes are kept in the
-  history. I also create a top-level wrapper for the =dir:cdb= function,
-  which allows changing to the base directory of the argument. The
-  module also implements a narrow-based directory history chooser,
-  which I bind to ~Alt-i~.
+The [[file:lib/dir.org][dir]] module implements a directory history and some related
+functions. I override the built-in ~cd~ command with a function that
+calls =dir:cd= so that any directory changes are kept in the
+history. I also create a top-level wrapper for the =dir:cdb= function,
+which allows changing to the base directory of the argument. The
+module also implements a narrow-based directory history chooser,
+which I bind to ~Alt-i~.
 
-  #+BEGIN_SRC elvish
+#+BEGIN_SRC elvish
     use github.com/zzamboni/modules.elv/dir
     dir:setup
     edit:insert:binding[Alt-b] = $dir:left-word-or-prev-dir~
@@ -219,28 +230,28 @@
     edit:insert:binding[Alt-i] = $dir:history-chooser~
     fn cd [@dir]{ dir:cd $@dir }
     fn cdb [@dir]{ dir:cdb $@dir }
-  #+END_SRC
+#+END_SRC
 
 * Aliases
 
-  Elvish does not have built-in alias functionality, but this is
-  implemented easily using the [[file:lib/alias.org][alias]] module, which stores the alias
-  definitions as functions under =~/.elvish/aliases/= and loads them
-  automatically.
+Elvish does not have built-in alias functionality, but this is
+implemented easily using the [[file:lib/alias.org][alias]] module, which stores the alias
+definitions as functions under =~/.elvish/aliases/= and loads them
+automatically.
 
-  #+BEGIN_SRC elvish
+#+BEGIN_SRC elvish
     use github.com/zzamboni/modules.elv/alias
-  #+END_SRC
+#+END_SRC
 
 * Dynamic terminal title
 
-  The =set-title= function uses the standard ANSI escape sequence for
-  setting the terminal title. I add hooks to set the title before and
-  after each command, so that the terminal title will show the name of
-  the command being executed or the word ~"elvish"~, followed by the
-  current path.
+The =set-title= function uses the standard ANSI escape sequence for
+setting the terminal title. I add hooks to set the title before and
+after each command, so that the terminal title will show the name of
+the command being executed or the word ~"elvish"~, followed by the
+current path.
 
-  #+BEGIN_SRC elvish
+#+BEGIN_SRC elvish
     fn set-title [title]{ print "\e]0;"$title"\e\\" }
     prompt_hooks:add-before-readline {
       set-title "elvish "(tilde-abbr $pwd) > /dev/tty
@@ -248,54 +259,54 @@
     prompt_hooks:add-after-readline [cmd]{
       set-title (re:split '\s' $cmd | take 1)" "(tilde-abbr $pwd)
     }
-  #+END_SRC
+#+END_SRC
 
 * Miscellaneous stuff
 
-  I use the [[https://atlas.oreilly.com/][O'Reilly Atlas]] publishing platform. The [[file:lib/atlas.org][atlas]] module
-  contains some useful functions for triggering and accessing document
-  builds.
+I use the [[https://atlas.oreilly.com/][O'Reilly Atlas]] publishing platform. The [[file:lib/atlas.org][atlas]] module
+contains some useful functions for triggering and accessing document
+builds.
 
-  #+BEGIN_SRC elvish
+#+BEGIN_SRC elvish
     use github.com/zzamboni/modules.elv/atlas
-  #+END_SRC
+#+END_SRC
 
-  The =private= module sets up some private settings such as
-  authentication tokens. This is not on github :)
+The =private= module sets up some private settings such as
+authentication tokens. This is not on github :)
 
-  #+BEGIN_SRC elvish
+#+BEGIN_SRC elvish
     if ?(test -f ~/.elvish/lib/private.elv) { use private }
-  #+END_SRC
+#+END_SRC
 
-  I use the smart-matcher module from
-  https://github.com/xiaq/edit.elv/blob/master/smart-matcher.elv, which
-  tries prefix match, smart-case prefix match, substring match,
-  smart-case substring match, subsequence match and smart-case
-  subsequence match.
+I use the smart-matcher module from
+https://github.com/xiaq/edit.elv/blob/master/smart-matcher.elv, which
+tries prefix match, smart-case prefix match, substring match,
+smart-case substring match, subsequence match and smart-case
+subsequence match.
 
-   #+BEGIN_SRC elvish :noweb no-export
+#+BEGIN_SRC elvish :noweb no-export
      epm:install-if-needed github.com/xiaq/edit.elv
      use github.com/xiaq/edit.elv/smart-matcher
      edit:-matcher[''] = $smart-matcher:match~
-   #+END_SRC
+#+END_SRC
 
-  Other possible values for =edit:-matcher= are =[p]{ edit:match-prefix
-  &smart-case $p }= for smart-case completion (if your pattern is
-  entirely lower case it ignores case, otherwise it's case sensitive).
-  =&smart-case= can be replaced with =&ignore-case= to make it always
-  case-insensitive.
+Other possible values for =edit:-matcher= are =[p]{ edit:match-prefix
+&smart-case $p }= for smart-case completion (if your pattern is
+entirely lower case it ignores case, otherwise it's case sensitive).
+=&smart-case= can be replaced with =&ignore-case= to make it always
+case-insensitive.
 
-  Some general environment variables.
+Some general environment variables.
 
-  #+BEGIN_SRC elvish
+#+BEGIN_SRC elvish
     E:LESS = "-i -R"
     E:EDITOR = "vim"
     E:LC_ALL = "en_US.UTF-8"
-  #+END_SRC
+#+END_SRC
 
-  Function to shorten a string to a maximum length, followed by dots.
+Function to shorten a string to a maximum length, followed by dots.
 
-  #+BEGIN_SRC elvish
+#+BEGIN_SRC elvish
     fn dotify_string [str dotify_length]{
       if (or (== $dotify_length 0) (<= (count $str) $dotify_length)) {
         put $str
@@ -303,14 +314,14 @@
         re:replace '(.{'$dotify_length'}).*' '$1…' $str
       }
     }
-  #+END_SRC
+#+END_SRC
 
-  [[https://github.com/elves/elvish/issues/500][Parallel redirection of stdout and stderr to different commands]]. The
-  =pipesplit= function takes three lambdas. The first one is executed,
-  its stdout is redirected to the second one, and its stderr to the
-  third one.
+[[https://github.com/elves/elvish/issues/500][Parallel redirection of stdout and stderr to different commands]]. The
+=pipesplit= function takes three lambdas. The first one is executed,
+its stdout is redirected to the second one, and its stderr to the
+third one.
 
-  #+BEGIN_SRC elvish
+#+BEGIN_SRC elvish
     fn pipesplit [l1 l2 l3]{
       pout = (pipe)
       perr = (pipe)
@@ -326,12 +337,12 @@
         prclose $perr
       }
     }
-  #+END_SRC
+#+END_SRC
 
- Example:
+Example:
 
-  #+BEGIN_EXAMPLE
-    > pipesplit { echo stdout-test; echo stderr-test >&2 } { echo STDOUT: (cat) } { echo STDERR: (cat) }
-    STDOUT: stdout-test
-    STDERR: stderr-test
-  #+END_EXAMPLE
+#+BEGIN_EXAMPLE
+  > pipesplit { echo stdout-test; echo stderr-test >&2 } { echo STDOUT: (cat) } { echo STDERR: (cat) }
+  STDOUT: stdout-test
+  STDERR: stderr-test
+#+END_EXAMPLE

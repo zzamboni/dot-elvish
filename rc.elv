@@ -23,6 +23,8 @@ paths = [
 use epm
 
 epm:install-if-needed github.com/zzamboni/modules.elv
+epm:install-if-needed github.com/zzamboni/completer.elv
+epm:install-if-needed github.com/zzamboni/theme.elv
 
 use re
 
@@ -41,13 +43,11 @@ nix:multi-user-setup
 use github.com/zzamboni/modules.elv/git
 fn git [@arg]{ git:git_vcsh $@arg }
 
-epm:install-if-needed github.com/zzamboni/completer.elv
 use github.com/zzamboni/completer.elv:git
 edit:arg-completer[git] = [@args]{ completer.elv:git:git-completer $git~ (explode $args[1:]) }
 
 use github.com/zzamboni/completer.elv:vcsh
 
-epm:install-if-needed github.com/zzamboni/theme.elv
 use github.com/zzamboni/theme.elv:chain
 edit:-prompts-max-wait = 0.01
 theme.elv:chain:setup
