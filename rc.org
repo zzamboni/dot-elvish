@@ -20,6 +20,21 @@ This is my main config file for [[http://elvish.io][Elvish]].
 This file is written in [[http://www.howardism.org/Technical/Emacs/literate-programming-tutorial.html][literate programming style]], to make it easy
 to explain. See [[file:rc.elv][rc.elv]] for the generated file.
 
+* Table of Contents                                            :TOC:noexport:
+- [[#introduction][Introduction]]
+- [[#paths][Paths]]
+- [[#external-modules][External modules]]
+- [[#base-modules][Base modules]]
+- [[#nix-package-manager][Nix package manager]]
+- [[#git-related-stuff][Git-related stuff]]
+- [[#prompt-theme][Prompt theme]]
+- [[#automatic-proxy-settings][Automatic proxy settings]]
+- [[#long-running-command-notifications][Long-running-command notifications]]
+- [[#directory-and-command-navigation-and-history][Directory and command navigation and history]]
+- [[#aliases][Aliases]]
+- [[#dynamic-terminal-title][Dynamic terminal title]]
+- [[#miscellaneous-stuff][Miscellaneous stuff]]
+
 * Paths
 
 First we set up the executable paths. We set the ~GOPATH~ environment
