@@ -92,7 +92,7 @@ Load the bundled [[https://elvish.io/ref/re.html][re]] module for regular expres
     use re
 #+END_SRC
 
-The [[file:lib/prompt_hooks.org][prompt_hooks]] module provides some functions for manipulating the
+The [[https://github.com/zzamboni/modules.elv/blob/master/prompt_hooks.org][prompt_hooks]] module provides some functions for manipulating the
 before/after command hooks.
 
 #+BEGIN_SRC elvish
@@ -118,7 +118,7 @@ I add a couple of keybindings which are missing from the default
 
 * Nix package manager
 
-I use the [[https://nixos.org/nix/][Nix]] package manager on macOS, the [[file:lib/nix.org][nix]] module sets up the
+I use the [[https://nixos.org/nix/][Nix]] package manager on macOS, the [[https://github.com/zzamboni/modules.elv/blob/master/nix.org][nix]] module sets up the
 necessary environment variables.
 
 #+BEGIN_SRC elvish
@@ -128,7 +128,7 @@ necessary environment variables.
 
 * Git-related stuff
 
-The [[file:lib/git.org][git]] module defines some git-related functionality, including a
+The [[https://github.com/zzamboni/modules.elv/blob/master/git.org][git]] module defines some git-related functionality, including a
 wrapper to automatically call =vcsh= when needed.
 
 #+BEGIN_SRC elvish
@@ -136,7 +136,7 @@ wrapper to automatically call =vcsh= when needed.
     fn git [@arg]{ git:git_vcsh $@arg }
 #+END_SRC
 
-We also install and load the [[file:lib/completer/git.org][completer.elv:git]] module to provide completions
+We also install and load the [[https://github.com/zzamboni/completer.elv/blob/master/git.org][completer.elv:git]] module to provide completions
 for git and similar commands. We set the completer to call the =git= function
 defined above, so that it also works when we are in vcsh repositories.
 
@@ -145,7 +145,7 @@ defined above, so that it also works when we are in vcsh repositories.
     edit:arg-completer[git] = [@args]{ completer.elv:git:git-completer $git~ (explode $args[1:]) }
 #+END_SRC
 
-The [[file:lib/completer/vcsh.org][completer.elv:vcsh]] module provides git-like completion for vcsh.
+The [[https://github.com/zzamboni/completer.elv/blob/master/vcsh.org][completer.elv:vcsh]] module provides git-like completion for vcsh.
 
 #+BEGIN_SRC elvish
     use github.com/zzamboni/completer.elv:vcsh
@@ -153,7 +153,7 @@ The [[file:lib/completer/vcsh.org][completer.elv:vcsh]] module provides git-like
 
 * Prompt theme
 
-I use the [[file:lib/theme/chain.org][chain]] prompt theme, ported from the fish theme at
+I use the [[https://github.com/zzamboni/theme.elv/blob/master/chain.org][chain]] prompt theme, ported from the fish theme at
 https://github.com/oh-my-fish/theme-chain.
 
 #+BEGIN_SRC elvish
@@ -167,7 +167,7 @@ https://github.com/oh-my-fish/theme-chain.
 When I am in the office, I need to use a proxy to access the
 Internet. For macOS applications, the proxy is set automatically
 using a company-provided PAC file. For the command line variables,
-the [[file:lib/proxy.org][proxy]] module allows me to define a test which determines when
+the [[https://github.com/zzamboni/modules.elv/blob/master/proxy.org][proxy]] module allows me to define a test which determines when
 the proxy should be set, so that the change is done automatically.
 
 First, we load the module and set the proxy. The
@@ -192,7 +192,7 @@ the corporate network, so I can check for that.
 
 * Long-running-command notifications
 
-The [[file:lib/long-running-notifications.org][long-running-notifications]] module allows for producing a
+The [[https://github.com/zzamboni/modules.elv/blob/master/long-running-notifications.org][long-running-notifications]] module allows for producing a
 notification when a command takes longer than a certain time to
 finish (by default the period is 10 seconds). The module
 automatically detects when [[https://github.com/julienXX/terminal-notifier][terminal-notifier]] is available on macOS
@@ -221,7 +221,7 @@ below.
 #+END_SRC
 
 I have decades of muscle memory using ~!!~ and ~!$~ to insert the last
-command and its last argument, respectively. The [[file:lib/bang-bang.org][bang-bang]] module
+command and its last argument, respectively. The [[https://github.com/zzamboni/modules.elv/blob/master/bang-bang.org][bang-bang]] module
 allows me to keep using them.
 
 #+BEGIN_SRC elvish
@@ -229,7 +229,7 @@ allows me to keep using them.
     bang-bang:bind-trigger-keys
 #+END_SRC
 
-The [[file:lib/dir.org][dir]] module implements a directory history and some related
+The [[https://github.com/zzamboni/modules.elv/blob/master/dir.org][dir]] module implements a directory history and some related
 functions. I override the built-in ~cd~ command with a function that
 calls =dir:cd= so that any directory changes are kept in the
 history. I also create a top-level wrapper for the =dir:cdb= function,
@@ -250,7 +250,7 @@ which I bind to ~Alt-i~.
 * Aliases
 
 Elvish does not have built-in alias functionality, but this is
-implemented easily using the [[file:lib/alias.org][alias]] module, which stores the alias
+implemented easily using the [[https://github.com/zzamboni/modules.elv/blob/master/alias.org][alias]] module, which stores the alias
 definitions as functions under =~/.elvish/aliases/= and loads them
 automatically.
 
@@ -278,7 +278,7 @@ current path.
 
 * Miscellaneous stuff
 
-I use the [[https://atlas.oreilly.com/][O'Reilly Atlas]] publishing platform. The [[file:lib/atlas.org][atlas]] module
+I use the [[https://atlas.oreilly.com/][O'Reilly Atlas]] publishing platform. The [[https://github.com/zzamboni/modules.elv/blob/master/atlas.org][atlas]] module
 contains some useful functions for triggering and accessing document
 builds.
 
