@@ -319,6 +319,15 @@ Some general environment variables.
     E:LC_ALL = "en_US.UTF-8"
 #+END_SRC
 
+I use Vagrant from a [[https://github.com/NixOS/nixpkgs/pull/30952][Nix package]] that builds it from source, which
+works fine but prints by default a warning about Vagrant not running
+from an official installed. The following environment variable gets
+rid of the warning.
+
+#+BEGIN_SRC elvish
+  E:VAGRANT_INSTALLER_ENV = 1
+#+END_SRC
+
 Function to shorten a string to a maximum length, followed by dots.
 
 #+BEGIN_SRC elvish

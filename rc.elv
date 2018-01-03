@@ -97,6 +97,8 @@ E:LESS = "-i -R"
 E:EDITOR = "vim"
 E:LC_ALL = "en_US.UTF-8"
 
+E:VAGRANT_INSTALLER_ENV = 1
+
 fn dotify_string [str dotify_length]{
   if (or (== $dotify_length 0) (<= (count $str) $dotify_length)) {
     put $str
