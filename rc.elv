@@ -48,9 +48,9 @@ edit:arg-completer[git] = [@args]{ completer.elv:git:git-completer $git~ (explod
 
 use github.com/zzamboni/completer.elv:vcsh
 
-use github.com/zzamboni/theme.elv:chain
+use github.com/zzamboni/theme.elv/chain
 edit:-prompts-max-wait = 0.01
-theme.elv:chain:setup
+chain:setup
 
 use github.com/zzamboni/modules.elv/proxy
 proxy:host = "http://proxy.corproot.net:8079"

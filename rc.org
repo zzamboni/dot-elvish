@@ -157,9 +157,9 @@ I use the [[https://github.com/zzamboni/theme.elv/blob/master/chain.org][chain]]
 https://github.com/oh-my-fish/theme-chain.
 
 #+BEGIN_SRC elvish
-    use github.com/zzamboni/theme.elv:chain
-    edit:-prompts-max-wait = 0.01
-    theme.elv:chain:setup
+  use github.com/zzamboni/theme.elv/chain
+  edit:-prompts-max-wait = 0.01
+  chain:setup
 #+END_SRC
 
 * Automatic proxy settings
