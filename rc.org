@@ -73,10 +73,11 @@ The bundled [[https://elvish.io/ref/epm.html][epm]] module allows us to install 
 Install all my packages, the modules within them get loaded individually
 below.
 
-For now I have these packages:
+For now I have these packages:
 
-- [[https://github.com/zzamboni/modules.elv][modules.elv]] contains all my modules except completions and themes. Maybe these
-  should be separated eventually, but for now this works fine.
+- [[https://github.com/zzamboni/modules.elv][modules.elv]] contains all my modules except completions and
+  themes. Maybe these should be separated eventually, but for now this
+  works fine.
 - [[https://github.com/zzamboni/theme.elv][theme.elv]] contains my prompt themes (only [[https://github.com/zzamboni/theme.elv/blob/master/chain.org][chain]] for now).
 - [[https://github.com/zzamboni/completer.elv][completer.elv]] contains my completer definitions.
 
