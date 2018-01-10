@@ -128,21 +128,11 @@ necessary environment variables.
 
 * Git-related stuff
 
-The [[https://github.com/zzamboni/modules.elv/blob/master/git.org][git]] module defines some git-related functionality, including a
-wrapper to automatically call =vcsh= when needed.
-
-#+BEGIN_SRC elvish
-    use github.com/zzamboni/modules.elv/git
-    fn git [@arg]{ git:git_vcsh $@arg }
-#+END_SRC
-
-We also install and load the [[https://github.com/zzamboni/completer.elv/blob/master/git.org][completer.elv:git]] module to provide completions
-for git and similar commands. We set the completer to call the =git= function
-defined above, so that it also works when we are in vcsh repositories.
+The [[https://github.com/zzamboni/completer.elv/blob/master/git.org][completer.elv:git]] module provides completions for git and similar
+commands.
 
 #+BEGIN_SRC elvish
     use github.com/zzamboni/completer.elv:git
-    edit:arg-completer[git] = [@args]{ completer.elv:git:git-completer $git~ (explode $args[1:]) }
 #+END_SRC
 
 The [[https://github.com/zzamboni/completer.elv/blob/master/vcsh.org][completer.elv:vcsh]] module provides git-like completion for vcsh.

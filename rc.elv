@@ -40,11 +40,7 @@ edit:insert:binding[Alt-d] = { edit:move-dot-right-word; edit:kill-word-left }
 use github.com/zzamboni/modules.elv/nix
 nix:multi-user-setup
 
-use github.com/zzamboni/modules.elv/git
-fn git [@arg]{ git:git_vcsh $@arg }
-
 use github.com/zzamboni/completer.elv:git
-edit:arg-completer[git] = [@args]{ completer.elv:git:git-completer $git~ (explode $args[1:]) }
 
 use github.com/zzamboni/completer.elv:vcsh
 
