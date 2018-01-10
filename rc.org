@@ -62,10 +62,12 @@ path.
 
 * External modules
 
-The bundled [[https://elvish.io/ref/epm.html][epm]] module allows us to install and manage Elvish packages.
+The bundled [[https://elvish.io/ref/epm.html][epm]] module allows us to install and manage Elvish packages
+(for now I'm using a modified version of my own which includes the
+=epm:install-if-needed= function I use below).
 
 #+BEGIN_SRC elvish
-    use epm
+    use testing/epm
 #+END_SRC
 
 Install all my packages, the modules within them get loaded individually

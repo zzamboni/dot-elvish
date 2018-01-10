@@ -20,7 +20,7 @@ paths = [
   $E:GOPATH/bin
 ]
 
-use epm
+use testing/epm
 
 epm:install-if-needed github.com/zzamboni/modules.elv
 epm:install-if-needed github.com/zzamboni/completer.elv

@@ -1,6 +1,8 @@
 db
 lib/private.elv
 lib/github.com
+lib/testing
+epm-installed
 *.html
 *.pdf
 *.tex
