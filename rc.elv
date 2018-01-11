@@ -25,6 +25,7 @@ use testing/epm
 epm:install-if-needed github.com/zzamboni/modules.elv
 epm:install-if-needed github.com/zzamboni/completer.elv
 epm:install-if-needed github.com/zzamboni/theme.elv
+epm:install-if-needed github.com/xiaq/edit.elv
 
 use re
 
@@ -85,7 +86,6 @@ use github.com/zzamboni/modules.elv/atlas
 
 if ?(test -f ~/.elvish/lib/private.elv) { use private }
 
-epm:install-if-needed github.com/xiaq/edit.elv
 use github.com/xiaq/edit.elv/smart-matcher
 edit:-matcher[''] = $smart-matcher:match~
 

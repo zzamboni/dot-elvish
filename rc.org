@@ -73,18 +73,20 @@ The bundled [[https://elvish.io/ref/epm.html][epm]] module allows us to install 
 Install all my packages, the modules within them get loaded individually
 below.
 
-For now I have these packages:
+For now I use these packages:
 
-- [[https://github.com/zzamboni/modules.elv][modules.elv]] contains all my modules except completions and
+- [[https://github.com/zzamboni/modules.elv][zzamboni/modules.elv]] contains all my modules except completions and
   themes. Maybe these should be separated eventually, but for now this
   works fine.
-- [[https://github.com/zzamboni/theme.elv][theme.elv]] contains my prompt themes (only [[https://github.com/zzamboni/theme.elv/blob/master/chain.org][chain]] for now).
-- [[https://github.com/zzamboni/completer.elv][completer.elv]] contains my completer definitions.
+- [[https://github.com/zzamboni/theme.elv][zzamboni/theme.elv]] contains my prompt themes (only [[https://github.com/zzamboni/theme.elv/blob/master/chain.org][chain]] for now).
+- [[https://github.com/zzamboni/completer.elv][zzamboni/completer.elv]] contains my completer definitions.
+- [[https://github.com/xiaq/edit.elv][xiaq/edit.elv]], which includes the =smart-matcher= module used below.
 
 #+BEGIN_SRC elvish
-    epm:install-if-needed github.com/zzamboni/modules.elv
-    epm:install-if-needed github.com/zzamboni/completer.elv
-    epm:install-if-needed github.com/zzamboni/theme.elv
+  epm:install-if-needed github.com/zzamboni/modules.elv
+  epm:install-if-needed github.com/zzamboni/completer.elv
+  epm:install-if-needed github.com/zzamboni/theme.elv
+  epm:install-if-needed github.com/xiaq/edit.elv
 #+END_SRC
 
 * Base modules
@@ -286,14 +288,11 @@ authentication tokens. This is not on github :)
     if ?(test -f ~/.elvish/lib/private.elv) { use private }
 #+END_SRC
 
-I use the smart-matcher module from
-https://github.com/xiaq/edit.elv/blob/master/smart-matcher.elv, which
-tries prefix match, smart-case prefix match, substring match,
-smart-case substring match, subsequence match and smart-case
-subsequence match.
+The [[https://github.com/xiaq/edit.elv/blob/master/smart-matcher.elv][smart-matcher]] module tries prefix match, smart-case prefix match,
+substring match, smart-case substring match, subsequence match and
+smart-case subsequence match automatically.
 
 #+BEGIN_SRC elvish :noweb no-export
-     epm:install-if-needed github.com/xiaq/edit.elv
      use github.com/xiaq/edit.elv/smart-matcher
      edit:-matcher[''] = $smart-matcher:match~
 #+END_SRC
