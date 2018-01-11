@@ -47,6 +47,7 @@ use github.com/zzamboni/completer.elv:vcsh
 
 use github.com/zzamboni/theme.elv/chain
 edit:-prompts-max-wait = 0.01
+chain:bold_prompt = $true
 chain:setup
 
 use github.com/zzamboni/modules.elv/proxy

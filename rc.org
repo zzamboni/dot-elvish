@@ -154,6 +154,7 @@ https://github.com/oh-my-fish/theme-chain.
 #+BEGIN_SRC elvish
   use github.com/zzamboni/theme.elv/chain
   edit:-prompts-max-wait = 0.01
+  chain:bold_prompt = $true
   chain:setup
 #+END_SRC
 
