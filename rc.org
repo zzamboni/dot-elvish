@@ -67,7 +67,8 @@ The bundled [[https://elvish.io/ref/epm.html][epm]] module allows us to install 
 =epm:install-if-needed= function I use below).
 
 #+BEGIN_SRC elvish
-    use testing/epm
+  use testing/epm
+  epm:silent-mode = $true
 #+END_SRC
 
 Install all my packages, the modules within them get loaded individually
@@ -83,10 +84,10 @@ For now I use these packages:
 - [[https://github.com/xiaq/edit.elv][xiaq/edit.elv]], which includes the =smart-matcher= module used below.
 
 #+BEGIN_SRC elvish
-  epm:install-if-needed github.com/zzamboni/modules.elv
-  epm:install-if-needed github.com/zzamboni/completer.elv
-  epm:install-if-needed github.com/zzamboni/theme.elv
-  epm:install-if-needed github.com/xiaq/edit.elv
+  epm:install github.com/zzamboni/modules.elv
+  epm:install github.com/zzamboni/completer.elv
+  epm:install github.com/zzamboni/theme.elv
+  epm:install github.com/xiaq/edit.elv
 #+END_SRC
 
 * Base modules

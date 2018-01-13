@@ -21,11 +21,12 @@ paths = [
 ]
 
 use testing/epm
+epm:silent-mode = $true
 
-epm:install-if-needed github.com/zzamboni/modules.elv
-epm:install-if-needed github.com/zzamboni/completer.elv
-epm:install-if-needed github.com/zzamboni/theme.elv
-epm:install-if-needed github.com/xiaq/edit.elv
+epm:install github.com/zzamboni/modules.elv
+epm:install github.com/zzamboni/completer.elv
+epm:install github.com/zzamboni/theme.elv
+epm:install github.com/xiaq/edit.elv
 
 use re
 
