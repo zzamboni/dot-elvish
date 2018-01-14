@@ -1,6 +1,5 @@
 db
-lib/private.elv
-lib/github.com
+lib/*
 epm-installed
 *.html
 *.pdf
