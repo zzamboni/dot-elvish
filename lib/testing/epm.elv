@@ -1,13 +1,5 @@
 # Verbosity configuration
 debug-mode = $false
-silent-mode = $false
-
-# Internal configuration
--data-dir = ~/.elvish
--lib-dir = $-data-dir/lib
-
-# Runtime state
--domain-config = [&]
 
 # Configuration for common domains
 -default-domain-config = [
@@ -18,6 +10,14 @@ silent-mode = $false
   ]
 ]
 
+# Internal configuration
+-data-dir = ~/.elvish
+-lib-dir = $-data-dir/lib
+
+# Runtime state - records get copied from -default-domain-config
+# as needed
+-domain-config = [&]
+
 # Utility functions
 fn -debug [text]{
   if $debug-mode {
@@ -27,10 +27,8 @@ fn -debug [text]{
 }
 
 fn -info [text]{
-  if (not $silent-mode) {
-    print (edit:styled '=> ' green)
-    echo $text
-  }
+  print (edit:styled '=> ' green)
+  echo $text
 }
 
 fn -warn [text]{
@@ -51,19 +49,22 @@ fn is-installed [pkg]{
   put ?(test -e (dest $pkg))
 }
 
-# Known domain method handlers. Each entry is indexed by method name
-# (the value of the "method" key in the domain configs), and must
-# contain two keys: install and upgrade, each one must be a closure
-# that received two arguments: package name and the domain config
-# entry
+fn -package-domain [pkg]{
+  splits / $pkg | take 1
+}
+
+fn -package-without-domain [pkg]{
+  joins / [(splits / $pkg | drop 1)]
+}
+
+# Known method handlers. Each entry is indexed by method name (the
+# value of the "method" key in the domain configs), and must contain
+# two keys: install and upgrade, each one must be a closure that
+# received two arguments: package name and the domain config entry
 -method-handler = [
   &git= [
     &install= [pkg dom-cfg]{
       dest = (dest $pkg)
-      if (is-installed $pkg) {
-        -info "Package "$pkg" is already installed."
-        return
-      }
       -info "Installing "$pkg
       mkdir -p $dest
       git clone $dom-cfg[protocol]"://"$pkg $dest
@@ -71,22 +72,34 @@ fn is-installed [pkg]{
 
     &upgrade= [pkg dom-cfg]{
       dest = (dest $pkg)
+      -info "Updating "$pkg
+      git -C $dest pull
+    }
+  ]
+
+  &rsync= [
+    &install= [pkg dom-cfg]{
+      dest = (dest $pkg)
+      pkgd = (-package-without-domain $pkg)
+      -info "Installing "$pkg
+      rsync -av $dom-cfg[location]/$pkgd/ $dest
+    }
+
+    &upgrade= [pkg dom-cfg]{
+      dest = (dest $pkg)
+      pkgd = (-package-without-domain $pkg)
       if (not (is-installed $pkg)) {
         -error "Package "$pkg" is not installed."
         return
       }
       -info "Updating "$pkg
-      git -C $dest pull
+      rsync -av $dom-cfg[location]/$pkgd/ $dest
     }
   ]
 ]
 
-fn -package-domain [pkg]{
-  splits / $pkg | take 1
-}
-
 fn -domain-config-file [dom]{
-  put $-lib-dir/(-package-domain $dom)/epm-domain.cfg
+  put $-lib-dir/$dom/epm-domain.cfg
 }
 
 fn -read-domain-config [dom]{
@@ -113,25 +126,21 @@ fn -read-domain-config [dom]{
 
 # Invoke package operations defined in $-method-handler above
 fn -package-op [pkg what]{
-  res = $false
   dom = (-package-domain $pkg)
   -read-domain-config $dom
   if (has-key $-domain-config $dom) {
     cfg = $-domain-config[$dom]
-    if (has-key $-method-handler $cfg[method]) {
-      $-method-handler[$cfg[method]][$what] $pkg $cfg
+    method = $cfg[method]
+    if (has-key $-method-handler $method) {
+      if (has-key $-method-handler[$method] $what) {
+        $-method-handler[$method][$what] $pkg $cfg
+      } else {
+        fail "No handler for '"$what"' defined in method '"$method"'"
+      }
     } else {
-      fail "No handler defined for method '"$cfg[method]"', specified in in config file "(-domain-config-file $dom)
+      fail "No handler defined for method '"$method"', specified in in config file "(-domain-config-file $dom)
     }
   }
-}
-
-fn -install-package [pkg]{
-  -package-op $pkg install
-}
-
-fn -upgrade-package [pkg]{
-  -package-op $pkg upgrade
 }
 
 fn -uninstall-package [pkg]{
@@ -145,15 +154,12 @@ fn -uninstall-package [pkg]{
 }
 
 fn installed {
-  find $-lib-dir -depth 1 -type d | each [dir]{
-    dom = (replaces $-lib-dir/ "" $dir)
+  e:ls $-lib-dir | each [dom]{
     if ?(test -f (-domain-config-file $dom)) {
       -read-domain-config $dom
-      if (has-key $-domain-config $dom) {
-        lvl = $-domain-config[$dom][levels]
-        find $-lib-dir/$dom -type d -depth $lvl | each [pkg]{
-          replaces $-lib-dir/ "" $pkg
-        }
+      lvl = $-domain-config[$dom][levels]
+      find $-lib-dir/$dom -type d -depth $lvl | each [pkg]{
+        replaces $-lib-dir/ "" $pkg
       }
     }
   }
@@ -161,13 +167,15 @@ fn installed {
 
 ######################################################################
 
-fn install [@pkgs]{
-  if (eq $pkgs []) {
-    fail 'Must specify at least one package.'
-    return
-  }
+fn install [&silent-if-installed=$false @pkgs]{
   for pkg $pkgs {
-    -install-package $pkg
+    if (is-installed $pkg) {
+      if (not $silent-if-installed) {
+        -info "Package "$pkg" is already installed."
+      }
+    } else {
+      -package-op $pkg install
+    }
   }
 }
 
@@ -177,7 +185,11 @@ fn upgrade [@pkgs]{
     -info 'Upgrading all installed packages'
   }
   for pkg $pkgs {
-    -upgrade-package $pkg
+    if (not (is-installed $pkg)) {
+      -error "Package "$pkg" is not installed."
+    } else { 
+      -package-op $pkg upgrade
+    }
   }
 }
 
