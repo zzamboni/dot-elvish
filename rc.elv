@@ -20,7 +20,7 @@ paths = [
   $E:GOPATH/bin
 ]
 
-use testing/epm
+use epm
 
 epm:install &silent-if-installed=$true `
   github.com/zzamboni/modules.elv `
