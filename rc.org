@@ -20,7 +20,7 @@ This is my main config file for [[http://elvish.io][Elvish]].
 This file is written in [[http://www.howardism.org/Technical/Emacs/literate-programming-tutorial.html][literate programming style]], to make it easy
 to explain. See [[file:rc.elv][rc.elv]] for the generated file.
 
-* Table of Contents                                            :TOC:noexport:
+* Table of Contents                                            :TOC_3:noexport:
 - [[#introduction][Introduction]]
 - [[#paths][Paths]]
 - [[#external-modules][External modules]]
@@ -39,6 +39,8 @@ to explain. See [[file:rc.elv][rc.elv]] for the generated file.
   - [[#smart-matching-for-completion][Smart matching for completion]]
   - [[#environment-variables][Environment variables]]
   - [[#utility-functions][Utility functions]]
+    - [[#dotifying-strings][Dotifying strings]]
+    - [[#parallel-redirection-of-stdoutstderr-to-different-commands][Parallel redirection of stdout/stderr to different commands]]
 
 * Paths
 
