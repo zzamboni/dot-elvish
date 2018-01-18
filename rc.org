@@ -34,6 +34,7 @@ to explain. See [[file:rc.elv][rc.elv]] for the generated file.
 - [[#aliases][Aliases]]
 - [[#dynamic-terminal-title][Dynamic terminal title]]
 - [[#miscellaneous-stuff][Miscellaneous stuff]]
+  - [[#parallel-redirection-of-stdoutstderr-to-different-commands][Parallel redirection of stdout/stderr to different commands]]
 
 * Paths
 
@@ -294,7 +295,7 @@ The [[https://github.com/xiaq/edit.elv/blob/master/smart-matcher.elv][smart-matc
 substring match, smart-case substring match, subsequence match and
 smart-case subsequence match automatically.
 
-#+BEGIN_SRC elvish :noweb no-export
+#+BEGIN_SRC elvish
      use github.com/xiaq/edit.elv/smart-matcher
      edit:-matcher[''] = $smart-matcher:match~
 #+END_SRC
@@ -333,6 +334,8 @@ Function to shorten a string to a maximum length, followed by dots.
       }
     }
 #+END_SRC
+
+** Parallel redirection of stdout/stderr to different commands
 
 [[https://github.com/elves/elvish/issues/500][Parallel redirection of stdout and stderr to different commands]]. The
 =pipesplit= function takes three lambdas. The first one is executed,
