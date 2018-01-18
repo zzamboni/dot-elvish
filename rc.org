@@ -276,19 +276,20 @@ current path.
 
 * Miscellaneous stuff
 
+The =private= module sets up some private settings such as
+authentication tokens. This is not on github :) The `$private_loaded`
+variable gets set to `$ok` if the module was loaded correctly.
+
+#+BEGIN_SRC elvish
+  private_loaded = ?(use private)
+#+END_SRC
+
 I use the [[https://atlas.oreilly.com/][O'Reilly Atlas]] publishing platform. The [[https://github.com/zzamboni/modules.elv/blob/master/atlas.org][atlas]] module
 contains some useful functions for triggering and accessing document
 builds.
 
 #+BEGIN_SRC elvish
     use github.com/zzamboni/elvish-modules/atlas
-#+END_SRC
-
-The =private= module sets up some private settings such as
-authentication tokens. This is not on github :)
-
-#+BEGIN_SRC elvish
-    if ?(test -f ~/.elvish/lib/private.elv) { use private }
 #+END_SRC
 
 The [[https://github.com/xiaq/edit.elv/blob/master/smart-matcher.elv][smart-matcher]] module tries prefix match, smart-case prefix match,

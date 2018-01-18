@@ -84,9 +84,9 @@ prompt_hooks:add-after-readline [cmd]{
   set-title (re:split '\s' $cmd | take 1)" "(tilde-abbr $pwd)
 }
 
-use github.com/zzamboni/elvish-modules/atlas
+private_loaded = ?(use private)
 
-if ?(test -f ~/.elvish/lib/private.elv) { use private }
+use github.com/zzamboni/elvish-modules/atlas
 
 use github.com/xiaq/edit.elv/smart-matcher
 edit:-matcher[''] = $smart-matcher:match~
