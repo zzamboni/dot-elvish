@@ -37,6 +37,7 @@ to explain. See [[file:rc.elv][rc.elv]] for the generated file.
   - [[#loading-private-settings][Loading private settings]]
   - [[#oreilly-atlas][O'Reilly Atlas]]
   - [[#smart-matching-for-completion][Smart matching for completion]]
+  - [[#completion-for-cd][Completion for =cd=]]
   - [[#environment-variables][Environment variables]]
   - [[#utility-functions][Utility functions]]
     - [[#dotifying-strings][Dotifying strings]]
@@ -318,6 +319,28 @@ Other possible values for =edit:-matcher= are =[p]{ edit:match-prefix
 entirely lower case it ignores case, otherwise it's case sensitive).
 =&smart-case= can be replaced with =&ignore-case= to make it always
 case-insensitive.
+
+** Completion for =cd=
+
+Courtesy of @occivink at https://0x0.st/sqKT.txt
+
+#+begin_src elvish
+  edit:arg-completer[cd] = [@cmd]{
+    if (> (count $cmd) 2) {
+      return
+    }
+    prefix=
+    if (== (count $cmd) 2) {
+      prefix=$cmd[1]
+    }
+    matches=[$prefix*[nomatch-ok]]
+    if (>= (count $matches) 1) {
+      put (ls -p -L -d $@matches) |
+      each [i]{ if (re:match '/$' $i) { put $i } } |
+      each [dir]{ edit:complex-candidate $dir &style="blue;bold" }
+    }
+  }
+#+end_src
 
 ** Environment variables
 
