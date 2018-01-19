@@ -20,7 +20,7 @@ paths = [
   $E:GOPATH/bin
 ]
 
-use epm
+use dev/epm/epm
 
 epm:install &silent-if-installed=$true `
   github.com/zzamboni/elvish-modules `

@@ -74,7 +74,7 @@ The bundled [[https://elvish.io/ref/epm.html][epm]] module allows us to install 
 =epm:install-if-needed= function I use below).
 
 #+BEGIN_SRC elvish
-  use epm
+  use dev/epm/epm
 #+END_SRC
 
 Install all my packages, the modules within them get loaded individually
