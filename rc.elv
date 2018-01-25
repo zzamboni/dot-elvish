@@ -20,7 +20,8 @@ paths = [
   $E:GOPATH/bin
 ]
 
-use dev/epm/epm
+#use dev/epm/epm
+use epm
 
 epm:install &silent-if-installed=$true `
   github.com/zzamboni/elvish-modules `
@@ -45,6 +46,8 @@ nix:multi-user-setup
 use github.com/zzamboni/elvish-completions:git
 
 use github.com/zzamboni/elvish-completions:vcsh
+
+use github.com/zzamboni/elvish-completions/cd
 
 use github.com/zzamboni/elvish-themes/chain
 edit:-prompts-max-wait = 0.01
@@ -90,22 +93,6 @@ use github.com/zzamboni/elvish-modules/atlas
 
 use github.com/xiaq/edit.elv/smart-matcher
 edit:-matcher[''] = $smart-matcher:match~
-
-edit:arg-completer[cd] = [@cmd]{
-  if (> (count $cmd) 2) {
-    return
-  }
-  prefix=
-  if (== (count $cmd) 2) {
-    prefix=$cmd[1]
-  }
-  matches=[$prefix*[nomatch-ok]]
-  if (>= (count $matches) 1) {
-    put (ls -p -L -d $@matches) |
-    each [i]{ if (re:match '/$' $i) { put $i } } |
-    each [dir]{ edit:complex-candidate $dir &style="blue;bold" }
-  }
-}
 
 E:LESS = "-i -R"
 E:EDITOR = "vim"

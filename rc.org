@@ -27,6 +27,7 @@ to explain. See [[file:rc.elv][rc.elv]] for the generated file.
 - [[#base-modules][Base modules]]
 - [[#nix-package-manager][Nix package manager]]
 - [[#git-related-stuff][Git-related stuff]]
+- [[#other-completions][Other completions]]
 - [[#prompt-theme][Prompt theme]]
 - [[#automatic-proxy-settings][Automatic proxy settings]]
 - [[#long-running-command-notifications][Long-running-command notifications]]
@@ -37,7 +38,6 @@ to explain. See [[file:rc.elv][rc.elv]] for the generated file.
   - [[#loading-private-settings][Loading private settings]]
   - [[#oreilly-atlas][O'Reilly Atlas]]
   - [[#smart-matching-for-completion][Smart matching for completion]]
-  - [[#completion-for-cd][Completion for =cd=]]
   - [[#environment-variables][Environment variables]]
   - [[#utility-functions][Utility functions]]
     - [[#dotifying-strings][Dotifying strings]]
@@ -75,7 +75,8 @@ The bundled [[https://elvish.io/ref/epm.html][epm]] module allows us to install 
 =epm:install-if-needed= function I use below).
 
 #+BEGIN_SRC elvish
-  use dev/epm/epm
+  #use dev/epm/epm
+  use epm
 #+END_SRC
 
 Install all my packages, the modules within them get loaded individually
@@ -154,6 +155,14 @@ The [[https://github.com/zzamboni/elvish-completions/blob/master/vcsh.org][elvis
 #+BEGIN_SRC elvish
     use github.com/zzamboni/elvish-completions:vcsh
 #+END_SRC
+
+* Other completions
+
+For =cd=:
+
+#+begin_src elvish
+  use github.com/zzamboni/elvish-completions/cd
+#+end_src
 
 * Prompt theme
 
@@ -319,28 +328,6 @@ Other possible values for =edit:-matcher= are =[p]{ edit:match-prefix
 entirely lower case it ignores case, otherwise it's case sensitive).
 =&smart-case= can be replaced with =&ignore-case= to make it always
 case-insensitive.
-
-** Completion for =cd=
-
-Courtesy of @occivink at https://0x0.st/sqKT.txt
-
-#+begin_src elvish
-  edit:arg-completer[cd] = [@cmd]{
-    if (> (count $cmd) 2) {
-      return
-    }
-    prefix=
-    if (== (count $cmd) 2) {
-      prefix=$cmd[1]
-    }
-    matches=[$prefix*[nomatch-ok]]
-    if (>= (count $matches) 1) {
-      put (ls -p -L -d $@matches) |
-      each [i]{ if (re:match '/$' $i) { put $i } } |
-      each [dir]{ edit:complex-candidate $dir &style="blue;bold" }
-    }
-  }
-#+end_src
 
 ** Environment variables
 
