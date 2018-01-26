@@ -50,7 +50,7 @@ use github.com/zzamboni/elvish-completions:vcsh
 use github.com/zzamboni/elvish-completions/cd
 
 use github.com/zzamboni/elvish-themes/chain
-edit:-prompts-max-wait = 0.01
+edit:-prompts-max-wait = 0.03
 chain:bold_prompt = $true
 chain:setup
 
