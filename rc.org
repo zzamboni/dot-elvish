@@ -1,4 +1,4 @@
-#+PROPERTY: header-args:elvish :tangle rc.elv
+#+PROPERTY: header-args:elvish :tangle (concat (file-name-sans-extension (buffer-file-name)) ".elv")
 #+PROPERTY: header-args :mkdirp yes :comments no
 #+STARTUP: indent
 
