@@ -13,15 +13,12 @@
   # You should make any changes there and regenerate it from Emacs org-mode using C-c C-v t
 #+END_SRC
 
-* Introduction
-
 This is my main config file for [[http://elvish.io][Elvish]].
 
 This file is written in [[http://www.howardism.org/Technical/Emacs/literate-programming-tutorial.html][literate programming style]], to make it easy
 to explain. See [[file:rc.elv][rc.elv]] for the generated file.
 
 * Table of Contents                                            :TOC_3:noexport:
-- [[#introduction][Introduction]]
 - [[#paths][Paths]]
 - [[#external-modules][External modules]]
 - [[#base-modules][Base modules]]
