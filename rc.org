@@ -42,6 +42,7 @@ to explain. See [[file:rc.elv][rc.elv]] for the generated file.
   - [[#utility-functions][Utility functions]]
     - [[#dotifying-strings][Dotifying strings]]
     - [[#parallel-redirection-of-stdoutstderr-to-different-commands][Parallel redirection of stdout/stderr to different commands]]
+    - [[#evaluating-code][Evaluating code]]
 
 * Paths
 
@@ -396,3 +397,17 @@ Example:
   STDOUT: stdout-test
   STDERR: stderr-test
 #+END_EXAMPLE
+
+*** Evaluating code
+
+Elvish does not include an =eval= function, but we emulate one using the
+=-source= command.
+
+#+begin_src elvish
+  fn eval [str]{
+    tmpf = (mktemp)
+    echo $str > $tmpf
+    -source $tmpf
+    rm -f $tmpf
+  }
+#+end_src

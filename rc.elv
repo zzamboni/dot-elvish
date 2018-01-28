@@ -123,3 +123,10 @@ fn pipesplit [l1 l2 l3]{
     prclose $perr
   }
 }
+
+fn eval [str]{
+  tmpf = (mktemp)
+  echo $str > $tmpf
+  -source $tmpf
+  rm -f $tmpf
+}
