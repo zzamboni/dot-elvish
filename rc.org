@@ -90,10 +90,10 @@ For now I use these packages:
 - [[https://github.com/xiaq/edit.elv][xiaq/edit.elv]], which includes the =smart-matcher= module used below.
 
 #+BEGIN_SRC elvish
-  epm:install &silent-if-installed=$true `
-    github.com/zzamboni/elvish-modules `
-    github.com/zzamboni/elvish-completions `
-    github.com/zzamboni/elvish-themes `
+  epm:install &silent-if-installed=$true \
+    github.com/zzamboni/elvish-modules \
+    github.com/zzamboni/elvish-completions \
+    github.com/zzamboni/elvish-themes \
     github.com/xiaq/edit.elv
 #+END_SRC
 
