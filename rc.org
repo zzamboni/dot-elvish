@@ -279,9 +279,9 @@ the command being executed or the word ~"elvish"~, followed by the
 current path.
 
 #+begin_src elvish
-  fn set-title [title]{ print "\e]0;"$title"\e\\" }
+  fn set-title [title]{ print "\e]0;"$title"\e\\" > /dev/tty }
   prompt_hooks:add-before-readline {
-    set-title "elvish "(tilde-abbr $pwd) > /dev/tty
+    set-title "elvish "(tilde-abbr $pwd)
   }
   prompt_hooks:add-after-readline [cmd]{
     set-title (re:split '\s' $cmd | take 1)" "(tilde-abbr $pwd)
