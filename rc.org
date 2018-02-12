@@ -272,7 +272,7 @@ automatically.
 
 * Dynamic terminal title
 
-The =terminal-title= module handles setting the terminal title
+The [[https://github.com/zzamboni/elvish-modules/blob/master/terminal-title.org][terminal-title]] module handles setting the terminal title
 dynamically according to the current directory or the current command
 being executed.
 
