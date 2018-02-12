@@ -68,9 +68,8 @@ path.
 
 * External modules
 
-The bundled [[https://elvish.io/ref/epm.html][epm]] module allows us to install and manage Elvish packages
-(for now I'm using a modified version of my own which includes the
-=epm:install-if-needed= function I use below).
+The bundled [[https://elvish.io/ref/epm.html][epm]] module allows us to install and manage Elvish
+packages.
 
 #+begin_src elvish
   #use dev/epm/epm
@@ -82,12 +81,12 @@ below.
 
 For now I use these packages:
 
-- [[https://github.com/zzamboni/elvish-modules][zzamboni/elvish-modules]] contains all my modules except completions and
+- [[https://github.com/zzamboni/elvish-modules][github.com/zzamboni/elvish-modules]] contains all my modules except completions and
   themes. Maybe these should be separated eventually, but for now this
   works fine.
-- [[https://github.com/zzamboni/elvish-themes][zzamboni/elvish-themes]] contains my prompt themes (only [[https://github.com/zzamboni/elvish-themes/blob/master/chain.org][chain]] for now).
-- [[https://github.com/zzamboni/elvish-completions][zzamboni/elvish-completions]] contains my completer definitions.
-- [[https://github.com/xiaq/edit.elv][xiaq/edit.elv]], which includes the =smart-matcher= module used below.
+- [[https://github.com/zzamboni/elvish-themes][github.com/zzamboni/elvish-themes]] contains my prompt themes (only [[https://github.com/zzamboni/elvish-themes/blob/master/chain.org][chain]] for now).
+- [[https://github.com/zzamboni/elvish-completions][github.com/zzamboni/elvish-completions]] contains my completer definitions.
+- [[https://github.com/xiaq/edit.elv][github.com/xiaq/edit.elv]], which includes the =smart-matcher= module used below.
 
 #+begin_src elvish
   epm:install &silent-if-installed=$true \
