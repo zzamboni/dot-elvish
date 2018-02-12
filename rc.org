@@ -69,7 +69,6 @@ The bundled [[https://elvish.io/ref/epm.html][epm]] module allows us to install 
 packages.
 
 #+begin_src elvish
-  #use dev/epm/epm
   use epm
 #+end_src
 

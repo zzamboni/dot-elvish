@@ -20,7 +20,6 @@ paths = [
   $E:GOPATH/bin
 ]
 
-#use dev/epm/epm
 use epm
 
 epm:install &silent-if-installed=$true \
