@@ -272,20 +272,13 @@ automatically.
 
 * Dynamic terminal title
 
-The =set-title= function uses the standard ANSI escape sequence for
-setting the terminal title. I add hooks to set the title before and
-after each command, so that the terminal title will show the name of
-the command being executed or the word ~"elvish"~, followed by the
-current path.
+The =terminal-title= module handles setting the terminal title
+dynamically according to the current directory or the current command
+being executed.
 
 #+begin_src elvish
-  fn set-title [title]{ print "\e]0;"$title"\e\\" > /dev/tty }
-  prompt_hooks:add-before-readline {
-    set-title "elvish "(tilde-abbr $pwd)
-  }
-  prompt_hooks:add-after-readline [cmd]{
-    set-title (re:split '\s' $cmd | take 1)" "(tilde-abbr $pwd)
-  }
+  use github.com/zzamboni/elvish-modules/terminal-title
+  terminal-title:setup
 #+end_src
 
 * Miscellaneous stuff

@@ -79,13 +79,8 @@ fn cdb [@dir]{ dir:cdb $@dir }
 
 use github.com/zzamboni/elvish-modules/alias
 
-fn set-title [title]{ print "\e]0;"$title"\e\\" > /dev/tty }
-prompt_hooks:add-before-readline {
-  set-title "elvish "(tilde-abbr $pwd)
-}
-prompt_hooks:add-after-readline [cmd]{
-  set-title (re:split '\s' $cmd | take 1)" "(tilde-abbr $pwd)
-}
+use github.com/zzamboni/elvish-modules/terminal-title
+terminal-title:setup
 
 private_loaded = ?(use private)
 
