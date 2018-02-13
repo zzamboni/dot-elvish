@@ -166,7 +166,6 @@ https://github.com/oh-my-fish/theme-chain.
   use github.com/zzamboni/elvish-themes/chain
   edit:-prompts-max-wait = 0.03
   chain:bold_prompt = $true
-  chain:setup
 #+end_src
 
 * Automatic proxy settings
@@ -177,21 +176,17 @@ using a company-provided PAC file. For the command line variables,
 the [[https://github.com/zzamboni/modules.elv/blob/master/proxy.org][proxy]] module allows me to define a test which determines when
 the proxy should be set, so that the change is done automatically.
 
-First, we load the module and set the proxy. The
-=proxy:setup_autoset= function adds the =proxy:autoset= function to
-both the pre- and post-command hooks, so that the proxy is
-automatically set/unset as soon as possible, even if the conditions
-change while I am typing a command.
+First, we load the module and set the proxy host.
 
 #+begin_src elvish
   use github.com/zzamboni/elvish-modules/proxy
   proxy:host = "http://proxy.corproot.net:8079"
-  proxy:setup_autoset
 #+end_src
 
-Next, we set the test function. In my case, the =/etc/resolv.conf=
-file contains the ~corproot.net~ domain (set through DHCP) when I'm in
-the corporate network, so I can check for that.
+Next, we set the test function to enable proxy auto-setting. In my
+case, the =/etc/resolv.conf= file contains the ~corproot.net~ domain (set
+through DHCP) when I'm in the corporate network, so I can check for
+that.
 
 #+begin_src elvish
   proxy:test = { and ?(test -f /etc/resolv.conf) ?(egrep -q '^(search|domain).*corproot.net' /etc/resolv.conf) }
@@ -208,7 +203,6 @@ a notification on the terminal.
 
 #+begin_src elvish
   use github.com/zzamboni/elvish-modules/long-running-notifications
-  long-running-notifications:setup
 #+end_src
 
 * Directory and command navigation and history
@@ -233,7 +227,6 @@ allows me to keep using them.
 
 #+begin_src elvish
   use github.com/zzamboni/elvish-modules/bang-bang
-  bang-bang:bind-trigger-keys
 #+end_src
 
 The [[https://github.com/zzamboni/modules.elv/blob/master/dir.org][dir]] module implements a directory history and some related
@@ -246,7 +239,6 @@ which I bind to ~Alt-i~.
 
 #+begin_src elvish
   use github.com/zzamboni/elvish-modules/dir
-  dir:setup
   edit:insert:binding[Alt-b] = $dir:left-word-or-prev-dir~
   edit:insert:binding[Alt-f] = $dir:right-word-or-next-dir~
   edit:insert:binding[Alt-i] = $dir:history-chooser~
@@ -273,7 +265,6 @@ being executed.
 
 #+begin_src elvish
   use github.com/zzamboni/elvish-modules/terminal-title
-  terminal-title:setup
 #+end_src
 
 * Miscellaneous stuff

@@ -51,25 +51,20 @@ use github.com/zzamboni/elvish-completions/cd
 use github.com/zzamboni/elvish-themes/chain
 edit:-prompts-max-wait = 0.03
 chain:bold_prompt = $true
-chain:setup
 
 use github.com/zzamboni/elvish-modules/proxy
 proxy:host = "http://proxy.corproot.net:8079"
-proxy:setup_autoset
 
 proxy:test = { and ?(test -f /etc/resolv.conf) ?(egrep -q '^(search|domain).*corproot.net' /etc/resolv.conf) }
 
 use github.com/zzamboni/elvish-modules/long-running-notifications
-long-running-notifications:setup
 
 use narrow
 narrow:bind-trigger-keys &location=Alt-l &lastcmd=""
 
 use github.com/zzamboni/elvish-modules/bang-bang
-bang-bang:bind-trigger-keys
 
 use github.com/zzamboni/elvish-modules/dir
-dir:setup
 edit:insert:binding[Alt-b] = $dir:left-word-or-prev-dir~
 edit:insert:binding[Alt-f] = $dir:right-word-or-next-dir~
 edit:insert:binding[Alt-i] = $dir:history-chooser~
@@ -79,7 +74,6 @@ fn cdb [@dir]{ dir:cdb $@dir }
 use github.com/zzamboni/elvish-modules/alias
 
 use github.com/zzamboni/elvish-modules/terminal-title
-terminal-title:setup
 
 private_loaded = ?(use private)
 
