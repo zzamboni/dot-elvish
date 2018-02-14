@@ -22,40 +22,41 @@ paths = [
 
 use epm
 
-epm:install &silent-if-installed=$true \
-  github.com/zzamboni/elvish-modules \
+epm:install &silent-if-installed=$true   \
+  github.com/zzamboni/elvish-modules     \
   github.com/zzamboni/elvish-completions \
-  github.com/zzamboni/elvish-themes \
+  github.com/zzamboni/elvish-themes      \
   github.com/xiaq/edit.elv
 
 use re
 
-use github.com/zzamboni/elvish-modules/prompt_hooks
-
 use readline-binding
 
-# Alt-backspace to delete word
 edit:insert:binding[Alt-Backspace] = $edit:kill-small-word-left~
-# Alt-d to delete the word under the cursor
+
 edit:insert:binding[Alt-d] = { edit:move-dot-right-word; edit:kill-word-left }
 
 use github.com/zzamboni/elvish-modules/nix
 nix:multi-user-setup
 
-use github.com/zzamboni/elvish-completions:git
+use github.com/zzamboni/elvish-completions/git
 
-use github.com/zzamboni/elvish-completions:vcsh
+use github.com/zzamboni/elvish-completions/vcsh
 
 use github.com/zzamboni/elvish-completions/cd
 
 use github.com/zzamboni/elvish-themes/chain
-edit:-prompts-max-wait = 0.03
 chain:bold_prompt = $true
+
+edit:-prompts-max-wait = 0.03
 
 use github.com/zzamboni/elvish-modules/proxy
 proxy:host = "http://proxy.corproot.net:8079"
 
-proxy:test = { and ?(test -f /etc/resolv.conf) ?(egrep -q '^(search|domain).*corproot.net' /etc/resolv.conf) }
+proxy:test = {
+  and ?(test -f /etc/resolv.conf) \
+  ?(egrep -q '^(search|domain).*corproot.net' /etc/resolv.conf)
+}
 
 use github.com/zzamboni/elvish-modules/long-running-notifications
 
@@ -83,9 +84,9 @@ use github.com/xiaq/edit.elv/smart-matcher
 edit:-matcher[''] = $smart-matcher:match~
 
 E:LESS = "-i -R"
-E:EDITOR = "vim"
-E:LC_ALL = "en_US.UTF-8"
 
-E:VAGRANT_INSTALLER_ENV = 1
+E:EDITOR = "vim"
+
+E:LC_ALL = "en_US.UTF-8"
 
 use github.com/zzamboni/elvish-modules/util

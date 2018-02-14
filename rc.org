@@ -20,23 +20,21 @@ to explain. See [[file:rc.elv][rc.elv]] for the generated file.
 
 * Table of Contents                                          :TOC_3:noexport:
 - [[#paths][Paths]]
-- [[#external-modules][External modules]]
+- [[#package-installation][Package installation]]
 - [[#base-modules][Base modules]]
 - [[#nix-package-manager][Nix package manager]]
-- [[#git-related-stuff][Git-related stuff]]
-- [[#other-completions][Other completions]]
+- [[#completions][Completions]]
 - [[#prompt-theme][Prompt theme]]
 - [[#automatic-proxy-settings][Automatic proxy settings]]
 - [[#long-running-command-notifications][Long-running-command notifications]]
 - [[#directory-and-command-navigation-and-history][Directory and command navigation and history]]
 - [[#aliases][Aliases]]
 - [[#dynamic-terminal-title][Dynamic terminal title]]
-- [[#miscellaneous-stuff][Miscellaneous stuff]]
-  - [[#loading-private-settings][Loading private settings]]
-  - [[#oreilly-atlas][O'Reilly Atlas]]
-  - [[#smart-matching-for-completion][Smart matching for completion]]
-  - [[#environment-variables][Environment variables]]
-  - [[#utility-functions][Utility functions]]
+- [[#loading-private-settings][Loading private settings]]
+- [[#oreilly-atlas][O'Reilly Atlas]]
+- [[#smart-matching-for-completion][Smart matching for completion]]
+- [[#environment-variables][Environment variables]]
+- [[#utility-functions][Utility functions]]
 
 * Paths
 
@@ -63,7 +61,7 @@ path.
   ]
 #+end_src
 
-* External modules
+* Package installation
 
 The bundled [[https://elvish.io/ref/epm.html][epm]] module allows us to install and manage Elvish
 packages.
@@ -71,9 +69,6 @@ packages.
 #+begin_src elvish
   use epm
 #+end_src
-
-Install all my packages, the modules within them get loaded individually
-below.
 
 For now I use these packages:
 
@@ -85,26 +80,22 @@ For now I use these packages:
 - [[https://github.com/xiaq/edit.elv][github.com/xiaq/edit.elv]], which includes the =smart-matcher= module used below.
 
 #+begin_src elvish
-  epm:install &silent-if-installed=$true \
-    github.com/zzamboni/elvish-modules \
+  epm:install &silent-if-installed=$true   \
+    github.com/zzamboni/elvish-modules     \
     github.com/zzamboni/elvish-completions \
-    github.com/zzamboni/elvish-themes \
+    github.com/zzamboni/elvish-themes      \
     github.com/xiaq/edit.elv
 #+end_src
 
+The modules within each package get loaded individually below.
+
 * Base modules
 
-Load the bundled [[https://elvish.io/ref/re.html][re]] module for regular expression functions.
+Load the bundled [[https://elvish.io/ref/re.html][re]] module to have access to regular expression
+functions.
 
 #+begin_src elvish
   use re
-#+end_src
-
-The [[https://github.com/zzamboni/modules.elv/blob/master/prompt_hooks.org][prompt_hooks]] module provides some functions for manipulating the
-before/after command hooks.
-
-#+begin_src elvish
-  use github.com/zzamboni/elvish-modules/prompt_hooks
 #+end_src
 
 The bundled [[https://elvish.io/ref/bundled.html][readline-binding]] module associates some Emacs-like
@@ -115,14 +106,19 @@ keybindings for manipulation of the command line.
 #+end_src
 
 I add a couple of keybindings which are missing from the default
-=readline-binding= module.
+=readline-binding= module:
 
-#+begin_src elvish
-  # Alt-backspace to delete word
-  edit:insert:binding[Alt-Backspace] = $edit:kill-small-word-left~
-  # Alt-d to delete the word under the cursor
-  edit:insert:binding[Alt-d] = { edit:move-dot-right-word; edit:kill-word-left }
-#+end_src
+- =Alt-backspace= to delete word
+
+  #+begin_src elvish
+    edit:insert:binding[Alt-Backspace] = $edit:kill-small-word-left~
+  #+end_src
+
+- =Alt-d= to delete the word under the cursor
+
+  #+begin_src elvish
+    edit:insert:binding[Alt-d] = { edit:move-dot-right-word; edit:kill-word-left }
+  #+end_src
 
 * Nix package manager
 
@@ -134,22 +130,21 @@ necessary environment variables.
   nix:multi-user-setup
 #+end_src
 
-* Git-related stuff
+* Completions
 
-The [[https://github.com/zzamboni/elvish-completions/blob/master/git.org][elvish-completions:git]] module provides completions for git and similar
-commands.
+From the  [[https://github.com/zzamboni/elvish-completions][elvish-completions]] package:
 
-#+begin_src elvish
-  use github.com/zzamboni/elvish-completions:git
-#+end_src
-
-The [[https://github.com/zzamboni/elvish-completions/blob/master/vcsh.org][elvish-completions:vcsh]] module provides git-like completion for vcsh.
+For =git=:
 
 #+begin_src elvish
-  use github.com/zzamboni/elvish-completions:vcsh
+  use github.com/zzamboni/elvish-completions/git
 #+end_src
 
-* Other completions
+For =vcsh= (uses the git completer):
+
+#+begin_src elvish
+  use github.com/zzamboni/elvish-completions/vcsh
+#+end_src
 
 For =cd=:
 
@@ -164,17 +159,24 @@ https://github.com/oh-my-fish/theme-chain.
 
 #+begin_src elvish
   use github.com/zzamboni/elvish-themes/chain
-  edit:-prompts-max-wait = 0.03
   chain:bold_prompt = $true
+#+end_src
+
+Since the git chain segments can slow things down a bit in large
+repositories, I set the prompt caching timeout parameter.
+
+#+begin_src elvish
+  edit:-prompts-max-wait = 0.03
 #+end_src
 
 * Automatic proxy settings
 
 When I am in the office, I need to use a proxy to access the
-Internet. For macOS applications, the proxy is set automatically
-using a company-provided PAC file. For the command line variables,
-the [[https://github.com/zzamboni/modules.elv/blob/master/proxy.org][proxy]] module allows me to define a test which determines when
-the proxy should be set, so that the change is done automatically.
+Internet. For macOS applications, the proxy is set automatically using
+a company-provided PAC file. For the environment variables =http_proxy=
+and =https_proxy=, commonly used by command-line programs, the [[https://github.com/zzamboni/modules.elv/blob/master/proxy.org][proxy]]
+module allows me to define a test which determines when the proxy
+should be used, so that the change is done automatically.
 
 First, we load the module and set the proxy host.
 
@@ -189,7 +191,10 @@ through DHCP) when I'm in the corporate network, so I can check for
 that.
 
 #+begin_src elvish
-  proxy:test = { and ?(test -f /etc/resolv.conf) ?(egrep -q '^(search|domain).*corproot.net' /etc/resolv.conf) }
+  proxy:test = {
+    and ?(test -f /etc/resolv.conf) \
+    ?(egrep -q '^(search|domain).*corproot.net' /etc/resolv.conf)
+  }
 #+end_src
 
 * Long-running-command notifications
@@ -231,11 +236,17 @@ allows me to keep using them.
 
 The [[https://github.com/zzamboni/modules.elv/blob/master/dir.org][dir]] module implements a directory history and some related
 functions. I override the built-in ~cd~ command with a function that
-calls =dir:cd= so that any directory changes are kept in the
-history. I also create a top-level wrapper for the =dir:cdb= function,
-which allows changing to the base directory of the argument. The
-module also implements a narrow-based directory history chooser,
-which I bind to ~Alt-i~.
+calls =dir:cd= so that any directory changes are kept in the history. I
+also create a top-level wrapper for the =dir:cdb= function, which allows
+changing to the base directory of the argument. The module also
+implements a narrow-based directory history chooser, which I bind to
+~Alt-i~. I have Terminal.app configured to produce =Alt-b= when =Alt-left=
+is pressed, and =Alt-f= when =Alt-right= is pressed, so I bind those keys
+to the =dir:left-word-or-prev-dir= and =dir:right-word-or-next-dir=
+functions, which do the right thing depending on the current content
+of the command prompt (i.e. if it's empty, they move back/forward in
+the directory history, otherwise they move through the words of the
+current command).
 
 #+begin_src elvish
   use github.com/zzamboni/elvish-modules/dir
@@ -250,7 +261,7 @@ which I bind to ~Alt-i~.
 
 Elvish does not have built-in alias functionality, but this is
 implemented easily using the [[https://github.com/zzamboni/modules.elv/blob/master/alias.org][alias]] module, which stores the alias
-definitions as functions under =~/.elvish/aliases/= and loads them
+definitions as functions under [[https://github.com/zzamboni/dot_elvish/tree/master/aliases][~/.elvish/aliases/]] and loads them
 automatically.
 
 #+begin_src elvish
@@ -267,9 +278,7 @@ being executed.
   use github.com/zzamboni/elvish-modules/terminal-title
 #+end_src
 
-* Miscellaneous stuff
-
-** Loading private settings
+* Loading private settings
 
 The =private= module sets up some private settings such as
 authentication tokens. This is not on github :) The =$private_loaded=
@@ -279,17 +288,17 @@ variable gets set to =$ok= if the module was loaded correctly.
   private_loaded = ?(use private)
 #+end_src
 
-** O'Reilly Atlas
+* O'Reilly Atlas
 
-I use the [[https://atlas.oreilly.com/][O'Reilly Atlas]] publishing platform. The [[https://github.com/zzamboni/modules.elv/blob/master/atlas.org][atlas]] module
-contains some useful functions for triggering and accessing document
-builds.
+I sometimes use the [[https://atlas.oreilly.com/][O'Reilly Atlas]] publishing platform. The [[https://github.com/zzamboni/modules.elv/blob/master/atlas.org][atlas]]
+module contains some useful functions for triggering and accessing
+document builds.
 
 #+begin_src elvish
   use github.com/zzamboni/elvish-modules/atlas
 #+end_src
 
-** Smart matching for completion
+* Smart matching for completion
 
 The [[https://github.com/xiaq/edit.elv/blob/master/smart-matcher.elv][smart-matcher]] module tries prefix match, smart-case prefix match,
 substring match, smart-case substring match, subsequence match and
@@ -306,26 +315,28 @@ entirely lower case it ignores case, otherwise it's case sensitive).
 =&smart-case= can be replaced with =&ignore-case= to make it always
 case-insensitive.
 
-** Environment variables
+* Environment variables
 
-Some general environment variables.
+Default options to =less=.
 
 #+begin_src elvish
   E:LESS = "-i -R"
+#+end_src
+
+Use vim as the editor from the command line (although I am an Emacs
+fan, I still prefer vim for quick editing).
+
+#+begin_src elvish
   E:EDITOR = "vim"
+#+end_src
+
+Locale setting.
+
+#+begin_src elvish
   E:LC_ALL = "en_US.UTF-8"
 #+end_src
 
-I use Vagrant from a [[https://github.com/NixOS/nixpkgs/pull/30952][Nix package]] that builds it from source, which
-works fine but prints by default a warning about Vagrant not running
-from an official installed. The following environment variable gets
-rid of the warning.
-
-#+begin_src elvish
-  E:VAGRANT_INSTALLER_ENV = 1
-#+end_src
-
-** Utility functions
+* Utility functions
 
 The [[https://github.com/zzamboni/elvish-modules/blob/master/util.org][util]] module includes various utility functions.
 
