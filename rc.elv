@@ -35,6 +35,13 @@ edit:insert:binding[Alt-Backspace] = $edit:kill-small-word-left~
 
 edit:insert:binding[Alt-d] = { edit:move-dot-right-word; edit:kill-word-left }
 
+use github.com/zzamboni/elvish-modules/alias
+
+alias:new dfc e:dfc -W -l -p -/dev/disk1s4,devfs
+alias:new ls e:ls --color=auto
+alias:new more less
+alias:new v vagrant
+
 use github.com/zzamboni/elvish-modules/nix
 nix:multi-user-setup
 
@@ -65,13 +72,13 @@ narrow:bind-trigger-keys &location=Alt-l &lastcmd=""
 use github.com/zzamboni/elvish-modules/bang-bang
 
 use github.com/zzamboni/elvish-modules/dir
+alias:new cd dir:cd
+alias:new cdb dir:cdb
+
+edit:insert:binding[Alt-i] = $dir:history-chooser~
+
 edit:insert:binding[Alt-b] = $dir:left-word-or-prev-dir~
 edit:insert:binding[Alt-f] = $dir:right-word-or-next-dir~
-edit:insert:binding[Alt-i] = $dir:history-chooser~
-fn cd [@dir]{ dir:cd $@dir }
-fn cdb [@dir]{ dir:cdb $@dir }
-
-use github.com/zzamboni/elvish-modules/alias
 
 use github.com/zzamboni/elvish-modules/terminal-title
 

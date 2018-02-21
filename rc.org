@@ -22,13 +22,13 @@ to explain. See [[file:rc.elv][rc.elv]] for the generated file.
 - [[#paths][Paths]]
 - [[#package-installation][Package installation]]
 - [[#base-modules][Base modules]]
+- [[#aliases][Aliases]]
 - [[#nix-package-manager][Nix package manager]]
 - [[#completions][Completions]]
 - [[#prompt-theme][Prompt theme]]
 - [[#automatic-proxy-settings][Automatic proxy settings]]
 - [[#long-running-command-notifications][Long-running-command notifications]]
 - [[#directory-and-command-navigation-and-history][Directory and command navigation and history]]
-- [[#aliases][Aliases]]
 - [[#dynamic-terminal-title][Dynamic terminal title]]
 - [[#loading-private-settings][Loading private settings]]
 - [[#oreilly-atlas][O'Reilly Atlas]]
@@ -118,6 +118,26 @@ I add a couple of keybindings which are missing from the default
   #+begin_src elvish
     edit:insert:binding[Alt-d] = { edit:move-dot-right-word; edit:kill-word-left }
   #+end_src
+
+* Aliases
+
+Elvish does not have built-in alias functionality, but this is
+implemented easily using the [[https://github.com/zzamboni/modules.elv/blob/master/alias.org][alias]] module, which stores the alias
+definitions as functions under [[https://github.com/zzamboni/dot-elvish/tree/master/aliases][~/.elvish/aliases/]] and loads them
+automatically.
+
+#+begin_src elvish
+  use github.com/zzamboni/elvish-modules/alias
+#+end_src
+
+For reference, I define here a few of my commonly-used aliases:
+
+#+begin_src elvish
+  alias:new dfc e:dfc -W -l -p -/dev/disk1s4,devfs
+  alias:new ls e:ls --color=auto
+  alias:new more less
+  alias:new v vagrant
+#+end_src
 
 * Nix package manager
 
@@ -234,37 +254,35 @@ allows me to keep using them.
 #+end_src
 
 The [[https://github.com/zzamboni/modules.elv/blob/master/dir.org][dir]] module implements a directory history and some related
-functions. I override the built-in ~cd~ command with a function that
-calls =dir:cd= so that any directory changes are kept in the history. I
-also create a top-level wrapper for the =dir:cdb= function, which allows
-changing to the base directory of the argument. The module also
-implements a narrow-based directory history chooser, which I bind to
-~Alt-i~. I have Terminal.app configured to produce =Alt-b= when =Alt-left=
-is pressed, and =Alt-f= when =Alt-right= is pressed, so I bind those keys
-to the =dir:left-word-or-prev-dir= and =dir:right-word-or-next-dir=
-functions, which do the right thing depending on the current content
-of the command prompt (i.e. if it's empty, they move back/forward in
-the directory history, otherwise they move through the words of the
-current command).
+functions. I alias the ~cd~ command to =dir:cd= so that any directory
+changes are kept in the history. I also alias =cdb= to =dir:cdb= function,
+which allows changing to the base directory of the argument.
 
 #+begin_src elvish
   use github.com/zzamboni/elvish-modules/dir
-  edit:insert:binding[Alt-b] = $dir:left-word-or-prev-dir~
-  edit:insert:binding[Alt-f] = $dir:right-word-or-next-dir~
-  edit:insert:binding[Alt-i] = $dir:history-chooser~
-  fn cd [@dir]{ dir:cd $@dir }
-  fn cdb [@dir]{ dir:cdb $@dir }
+  alias:new cd dir:cd
+  alias:new cdb dir:cdb
 #+end_src
 
-* Aliases
-
-Elvish does not have built-in alias functionality, but this is
-implemented easily using the [[https://github.com/zzamboni/modules.elv/blob/master/alias.org][alias]] module, which stores the alias
-definitions as functions under [[https://github.com/zzamboni/dot-elvish/tree/master/aliases][~/.elvish/aliases/]] and loads them
-automatically.
+=dir= also implements a narrow-based directory history chooser, which I
+bind to ~Alt-i~ (I have found I don't use this as much as I thought I
+would - the built-in location mode works nicely).
 
 #+begin_src elvish
-  use github.com/zzamboni/elvish-modules/alias
+  edit:insert:binding[Alt-i] = $dir:history-chooser~
+#+end_src
+
+I bind =Alt-b/f= to =dir:left-word-or-prev-dir= and
+=dir:right-word-or-next-dir= respectively, which "do the right thing"
+depending on the current content of the command prompt: if it's empty,
+they move back/forward in the directory history, otherwise they move
+through the words of the current command. In my Terminal.app setup,
+=Alt-left/right= also produce =Alt-b/f=, so these bindings work for those
+keys as well.
+
+#+begin_src elvish
+  edit:insert:binding[Alt-b] = $dir:left-word-or-prev-dir~
+  edit:insert:binding[Alt-f] = $dir:right-word-or-next-dir~
 #+end_src
 
 * Dynamic terminal title
