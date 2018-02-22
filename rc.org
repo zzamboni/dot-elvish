@@ -130,7 +130,7 @@ automatically.
   use github.com/zzamboni/elvish-modules/alias
 #+end_src
 
-For reference, I these are my currently-defined aliases:
+For reference, these are my currently-defined aliases:
 
 #+begin_src elvish :tangle no
   use github.com/zzamboni/elvish-modules/alias
