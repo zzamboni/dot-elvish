@@ -37,11 +37,6 @@ edit:insert:binding[Alt-d] = { edit:move-dot-right-word; edit:kill-word-left }
 
 use github.com/zzamboni/elvish-modules/alias
 
-alias:new dfc e:dfc -W -l -p -/dev/disk1s4,devfs
-alias:new ls e:ls --color=auto
-alias:new more less
-alias:new v vagrant
-
 use github.com/zzamboni/elvish-modules/nix
 nix:multi-user-setup
 

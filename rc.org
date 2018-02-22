@@ -130,13 +130,31 @@ automatically.
   use github.com/zzamboni/elvish-modules/alias
 #+end_src
 
-For reference, I define here a few of my commonly-used aliases:
+For reference, I these are my currently-defined aliases:
 
-#+begin_src elvish
-  alias:new dfc e:dfc -W -l -p -/dev/disk1s4,devfs
-  alias:new ls e:ls --color=auto
-  alias:new more less
-  alias:new v vagrant
+#+begin_src elvish :exports results :tangle no
+  use github.com/zzamboni/elvish-modules/alias
+  alias:list
+#+end_src
+
+#+RESULTS:
+: alias:def cd dir:cd
+: alias:def cdb dir:cdb
+: alias:def dfc e:dfc -W -l -p -/dev/disk1s4,devfs
+: alias:def git hub
+: alias:def ls e:ls --color=auto
+: alias:def more less
+: alias:def v vagrant
+
+#+RESULTS:  :tangle yes
+#+begin_src
+alias:def cd dir:cd
+alias:def cdb dir:cdb
+alias:def dfc e:dfc -W -l -p -/dev/disk1s4,devfs
+alias:def git hub
+alias:def ls e:ls --color=auto
+alias:def more less
+alias:def v vagrant
 #+end_src
 
 * Nix package manager
