@@ -146,17 +146,6 @@ For reference, I these are my currently-defined aliases:
 : alias:def more less
 : alias:def v vagrant
 
-#+RESULTS:  :tangle yes
-#+begin_src
-alias:def cd dir:cd
-alias:def cdb dir:cdb
-alias:def dfc e:dfc -W -l -p -/dev/disk1s4,devfs
-alias:def git hub
-alias:def ls e:ls --color=auto
-alias:def more less
-alias:def v vagrant
-#+end_src
-
 * Nix package manager
 
 I use the [[https://nixos.org/nix/][Nix]] package manager on macOS, the [[https://github.com/zzamboni/modules.elv/blob/master/nix.org][nix]] module sets up the
