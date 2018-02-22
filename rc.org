@@ -132,7 +132,7 @@ automatically.
 
 For reference, I these are my currently-defined aliases:
 
-#+begin_src elvish :exports none :tangle no
+#+begin_src elvish :exports results :tangle no
   use github.com/zzamboni/elvish-modules/alias
   alias:list
 #+end_src
