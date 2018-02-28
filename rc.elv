@@ -25,7 +25,8 @@ epm:install &silent-if-installed=$true   \
   github.com/zzamboni/elvish-modules     \
   github.com/zzamboni/elvish-completions \
   github.com/zzamboni/elvish-themes      \
-  github.com/xiaq/edit.elv
+  github.com/xiaq/edit.elv               \
+  github.com/muesli/elvish-libs
 
 use re
 
@@ -34,6 +35,8 @@ use readline-binding
 edit:insert:binding[Alt-Backspace] = $edit:kill-small-word-left~
 
 edit:insert:binding[Alt-d] = { edit:move-dot-right-word; edit:kill-word-left }
+
+use github.com/muesli/elvish-libs/git
 
 use github.com/zzamboni/elvish-modules/alias
 
@@ -45,11 +48,11 @@ alias:new v vagrant
 use github.com/zzamboni/elvish-modules/nix
 nix:multi-user-setup
 
-use github.com/zzamboni/elvish-completions/git
+use github.com/zzamboni/elvish-completions:git
 
-use github.com/zzamboni/elvish-completions/vcsh
+use github.com/zzamboni/elvish-completions:vcsh
 
-use github.com/zzamboni/elvish-completions/cd
+use github.com/zzamboni/elvish-completions:cd
 
 use github.com/zzamboni/elvish-themes/chain
 chain:bold-prompt = $true

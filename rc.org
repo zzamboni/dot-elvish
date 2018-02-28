@@ -22,6 +22,7 @@ to explain. See [[file:rc.elv][rc.elv]] for the generated file.
 - [[#paths][Paths]]
 - [[#package-installation][Package installation]]
 - [[#base-modules][Base modules]]
+- [[#git-utilities][Git utilities]]
 - [[#aliases][Aliases]]
 - [[#nix-package-manager][Nix package manager]]
 - [[#completions][Completions]]
@@ -77,13 +78,15 @@ For now I use these packages:
 - [[https://github.com/zzamboni/elvish-themes][github.com/zzamboni/elvish-themes]] contains my prompt themes (only [[https://github.com/zzamboni/elvish-themes/blob/master/chain.org][chain]] for now).
 - [[https://github.com/zzamboni/elvish-completions][github.com/zzamboni/elvish-completions]] contains my completer definitions.
 - [[https://github.com/xiaq/edit.elv][github.com/xiaq/edit.elv]], which includes the =smart-matcher= module used below.
+- [[https://github.com/muesli/elvish-libs][github.com/muesli/elvish-libs]] for the git utilities module.
 
 #+begin_src elvish
   epm:install &silent-if-installed=$true   \
     github.com/zzamboni/elvish-modules     \
     github.com/zzamboni/elvish-completions \
     github.com/zzamboni/elvish-themes      \
-    github.com/xiaq/edit.elv
+    github.com/xiaq/edit.elv               \
+    github.com/muesli/elvish-libs
 #+end_src
 
 The modules within each package get loaded individually below.
@@ -118,6 +121,14 @@ I add a couple of keybindings which are missing from the default
   #+begin_src elvish
     edit:insert:binding[Alt-d] = { edit:move-dot-right-word; edit:kill-word-left }
   #+end_src
+
+* Git utilities
+
+I use muesli's git utilities module.
+
+#+begin_src elvish
+  use github.com/muesli/elvish-libs/git
+#+end_src
 
 * Aliases
 
@@ -156,19 +167,19 @@ From the  [[https://github.com/zzamboni/elvish-completions][elvish-completions]]
 For =git=:
 
 #+begin_src elvish
-  use github.com/zzamboni/elvish-completions/git
+  use github.com/zzamboni/elvish-completions:git
 #+end_src
 
 For =vcsh= (uses the git completer):
 
 #+begin_src elvish
-  use github.com/zzamboni/elvish-completions/vcsh
+  use github.com/zzamboni/elvish-completions:vcsh
 #+end_src
 
 For =cd=:
 
 #+begin_src elvish
-  use github.com/zzamboni/elvish-completions/cd
+  use github.com/zzamboni/elvish-completions:cd
 #+end_src
 
 * Prompt theme
