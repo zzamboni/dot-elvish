@@ -36,6 +36,7 @@ to explain. See [[file:rc.elv][rc.elv]] for the generated file.
 - [[#smart-matching-for-completion][Smart matching for completion]]
 - [[#environment-variables][Environment variables]]
 - [[#utility-functions][Utility functions]]
+- [[#exporting-aliases][Exporting aliases]]
 
 * Paths
 
@@ -271,8 +272,8 @@ which allows changing to the base directory of the argument.
 
 #+begin_src elvish
   use github.com/zzamboni/elvish-modules/dir
-  alias:new cd dir:cd
-  alias:new cdb dir:cdb
+  alias:new cd "use github.com/zzamboni/elvish-modules/dir; dir:cd"
+  alias:new cdb "use github.com/zzamboni/elvish-modules/dir; dir:cdb"
 #+end_src
 
 =dir= also implements a narrow-based directory history chooser, which I
@@ -370,4 +371,12 @@ The [[https://github.com/zzamboni/elvish-modules/blob/master/util.org][util]] mo
 
 #+begin_src elvish
   use github.com/zzamboni/elvish-modules/util
+#+end_src
+* Exporting aliases
+
+We populate =$-exports-= with the alias definitions so that they become
+available in the interactive namespace.
+
+#+begin_src elvish
+  -exports- = (alias:export)
 #+end_src

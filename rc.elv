@@ -75,8 +75,8 @@ narrow:bind-trigger-keys &location=Alt-l &lastcmd=""
 use github.com/zzamboni/elvish-modules/bang-bang
 
 use github.com/zzamboni/elvish-modules/dir
-alias:new cd dir:cd
-alias:new cdb dir:cdb
+alias:new cd "use github.com/zzamboni/elvish-modules/dir; dir:cd"
+alias:new cdb "use github.com/zzamboni/elvish-modules/dir; dir:cdb"
 
 edit:insert:binding[Alt-i] = $dir:history-chooser~
 
@@ -99,3 +99,5 @@ E:EDITOR = "vim"
 E:LC_ALL = "en_US.UTF-8"
 
 use github.com/zzamboni/elvish-modules/util
+
+-exports- = (alias:export)

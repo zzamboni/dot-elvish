@@ -1,2 +1,2 @@
-#alias:def v vagrant
-fn v [@_args]{ vagrant $@_args }
+#alias:new v vagrant
+alias[v] = [@_args]{ vagrant $@_args }

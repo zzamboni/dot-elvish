@@ -1,2 +1,2 @@
-#alias:def cd dir:cd
-fn cd [@_args]{ dir:cd $@_args }
+#alias:new cd use github.com/zzamboni/elvish-modules/dir; dir:cd
+alias[cd] = [@_args]{ use github.com/zzamboni/elvish-modules/dir; dir:cd $@_args }
