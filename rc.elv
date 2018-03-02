@@ -90,7 +90,7 @@ private-loaded = ?(use private)
 use github.com/zzamboni/elvish-modules/atlas
 
 use github.com/xiaq/edit.elv/smart-matcher
-edit:-matcher[''] = $smart-matcher:match~
+edit:completion:matcher[''] = $smart-matcher:match~
 
 E:LESS = "-i -R"
 

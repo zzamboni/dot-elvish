@@ -334,14 +334,14 @@ smart-case subsequence match automatically.
 
 #+begin_src elvish
   use github.com/xiaq/edit.elv/smart-matcher
-  edit:-matcher[''] = $smart-matcher:match~
+  edit:completion:matcher[''] = $smart-matcher:match~
 #+end_src
 
-Other possible values for =edit:-matcher= are =[p]{ edit:match-prefix
-&smart-case $p }= for smart-case completion (if your pattern is
-entirely lower case it ignores case, otherwise it's case sensitive).
-=&smart-case= can be replaced with =&ignore-case= to make it always
-case-insensitive.
+Other possible values for =edit:completion:matcher= are =[p]{
+edit:match-prefix &smart-case $p }= for smart-case completion (if your
+pattern is entirely lower case it ignores case, otherwise it's case
+sensitive).  =&smart-case= can be replaced with =&ignore-case= to make it
+always case-insensitive.
 
 * Environment variables
 
