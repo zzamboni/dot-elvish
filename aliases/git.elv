@@ -1,2 +1,2 @@
 #alias:new git hub
-alias[git] = [@_args]{ hub $@_args }
+fn git [@_args]{ hub $@_args }

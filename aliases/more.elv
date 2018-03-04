@@ -1,2 +1,2 @@
 #alias:new more less
-alias[more] = [@_args]{ less $@_args }
+fn more [@_args]{ less $@_args }
