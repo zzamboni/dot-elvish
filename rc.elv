@@ -57,7 +57,9 @@ use github.com/zzamboni/elvish-completions:cd
 use github.com/zzamboni/elvish-themes/chain
 chain:bold-prompt = $true
 
-edit:-prompts-max-wait = 0.03
+edit:prompt-stale-transform = $all~
+
+edit:-prompt-eagerness = 10
 
 use github.com/zzamboni/elvish-modules/proxy
 proxy:host = "http://proxy.corproot.net:8079"

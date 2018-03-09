@@ -193,11 +193,31 @@ https://github.com/oh-my-fish/theme-chain.
   chain:bold-prompt = $true
 #+end_src
 
-Since the git chain segments can slow things down a bit in large
-repositories, I set the prompt caching timeout parameter.
+Elvish has a [[https://elvish.io/ref/edit.html#prompts][comprehensive mechanism]] for displaying prompts with
+useful information while avoiding getting blocked by prompt functions
+which take too long to finish. For the most part the defaults work
+well. One change I like to make is to change the [[https://elvish.io/ref/edit.html#stale-prompt][stale prompt
+transformer]] function to make the prompt the same when stale, to avoid
+distractions:
 
 #+begin_src elvish
-  edit:-prompts-max-wait = 0.03
+  edit:prompt-stale-transform = $all~
+#+end_src
+
+Another possibility is to make the prompt dim instead of inverting it
+(disabled for now):
+
+#+begin_src elvish :tangle no
+  edit:prompt-stale-transform = { each [x]{ edit:styled $x[text] "gray" } }
+#+end_src
+
+I also like the continuous update of the prompt as I type (by default
+it only updates on Enter and on =$pwd= changes, but I like also git
+status changes to be updated automatically), so I increase its
+eagerness.
+
+#+begin_src elvish
+  edit:-prompt-eagerness = 10
 #+end_src
 
 * Automatic proxy settings
