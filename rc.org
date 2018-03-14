@@ -200,14 +200,14 @@ well. One change I like to make is to change the [[https://elvish.io/ref/edit.ht
 transformer]] function to make the prompt the same when stale, to avoid
 distractions:
 
-#+begin_src elvish
+#+begin_src elvish :tangle no
   edit:prompt-stale-transform = $all~
 #+end_src
 
 Another possibility is to make the prompt dim instead of inverting it
 (disabled for now):
 
-#+begin_src elvish :tangle no
+#+begin_src elvish
   edit:prompt-stale-transform = { each [x]{ edit:styled $x[text] "gray" } }
 #+end_src
 

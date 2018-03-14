@@ -57,7 +57,7 @@ use github.com/zzamboni/elvish-completions:cd
 use github.com/zzamboni/elvish-themes/chain
 chain:bold-prompt = $true
 
-edit:prompt-stale-transform = $all~
+edit:prompt-stale-transform = { each [x]{ edit:styled $x[text] "gray" } }
 
 edit:-prompt-eagerness = 10
 
