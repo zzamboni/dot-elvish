@@ -57,7 +57,11 @@ use github.com/zzamboni/elvish-completions:cd
 use github.com/zzamboni/elvish-themes/chain
 chain:bold-prompt = $true
 
-chain:segment-style[dir] = session
+chain:segment-style = [
+  &dir=   session
+  &chain= session
+  &arrow= session
+]
 
 edit:prompt-stale-transform = { each [x]{ edit:styled $x[text] "gray" } }
 
