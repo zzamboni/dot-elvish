@@ -78,53 +78,11 @@ proxy:test = {
 
 use github.com/zzamboni/elvish-modules/long-running-notifications
 
-use narrow
-
-narrow:location~ = {
-  for hook $narrow:before-location { $hook }
-  candidates = [(dir-history | each [arg]{
-        score = (splits . $arg[score] | take 1)
-        put [
-          &content=$arg[path]
-          &display=$score" "(tilde-abbr $arg[path])
-        ]
-  })]
-
-  edit:-narrow-read {
-    put $@candidates
-  } [arg]{
-    cd $arg[content]
-    for hook $narrow:after-location { $hook }
-  } &modeline="[narrow] Location " &ignore-case=$true
-}
-
-narrow:history~ = {
-  for hook $narrow:before-history { $hook }
-  candidates = []
-  hist-time = (-time {
-      candidates = [(edit:command-history | each [arg]{
-            put [
-              &content=$arg[cmd]
-              &display=$arg[id]" "$arg[cmd]
-            ]
-      })]
-  })
-
-  edit:-narrow-read {
-    put $@candidates
-  } [arg]{
-    edit:replace-input $arg[content]
-    for hook $narrow:after-history { $hook }
-  } &modeline="[narrow] History " &keep-bottom=$true &ignore-case=$true
-}
-
-narrow:bind-trigger-keys &location=Alt-l &lastcmd=""
-
 use github.com/zzamboni/elvish-modules/bang-bang
 
 use github.com/zzamboni/elvish-modules/dir
-alias:new cd "use github.com/zzamboni/elvish-modules/dir; dir:cd"
-alias:new cdb "use github.com/zzamboni/elvish-modules/dir; dir:cdb"
+alias:new cd &use=[github.com/zzamboni/elvish-modules/dir] dir:cd
+alias:new cdb &use=[github.com/zzamboni/elvish-modules/dir] dir:cdb
 
 edit:insert:binding[Alt-i] = $dir:history-chooser~
 

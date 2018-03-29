@@ -241,13 +241,15 @@ The [[https://github.com/zzamboni/modules.elv/blob/master/long-running-notificat
 
 Elvish comes with built-in location and command history modes. I use the =narrow= module, which allow for more customization, including pre- and after- hooks for each of the modes.
 
-#+begin_src elvish
+=narrow= is disabled for now because I'm testing the built-in modes again, since they have evolved quite a bit.
+
+#+begin_src elvish :tangle no
   use narrow
 #+end_src
 
 Testing a new version of the location mode which tilde-abbreviates entries before showing them.
 
-#+begin_src elvish
+#+begin_src elvish :tangle no
   narrow:location~ = {
     for hook $narrow:before-location { $hook }
     candidates = [(dir-history | each [arg]{
@@ -289,7 +291,7 @@ Testing a new version of the location mode which tilde-abbreviates entries befor
 
 I use the default binding for history mode (~C-r~), but change the location mode binding to ~Alt-l~ to avoid conflicting with the binding of ~C-l~ to "clear screen" in =readline-binding=. I disable the lastcmd binding because it is taken over by the =bang-bang= module below.
 
-#+begin_src elvish
+#+begin_src elvish :tangle no
   narrow:bind-trigger-keys &location=Alt-l &lastcmd=""
 #+end_src
 
@@ -303,8 +305,8 @@ The [[https://github.com/zzamboni/modules.elv/blob/master/dir.org][dir]] module 
 
 #+begin_src elvish
   use github.com/zzamboni/elvish-modules/dir
-  alias:new cd "use github.com/zzamboni/elvish-modules/dir; dir:cd"
-  alias:new cdb "use github.com/zzamboni/elvish-modules/dir; dir:cdb"
+  alias:new cd &use=[github.com/zzamboni/elvish-modules/dir] dir:cd
+  alias:new cdb &use=[github.com/zzamboni/elvish-modules/dir] dir:cdb
 #+end_src
 
 =dir= also implements a narrow-based directory history chooser, which I bind to ~Alt-i~ (I have found I don't use this as much as I thought I would - the built-in location mode works nicely).
