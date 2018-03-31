@@ -239,61 +239,7 @@ The [[https://github.com/zzamboni/modules.elv/blob/master/long-running-notificat
 
 * Directory and command navigation and history
 
-Elvish comes with built-in location and command history modes. I use the =narrow= module, which allow for more customization, including pre- and after- hooks for each of the modes.
-
-=narrow= is disabled for now because I'm testing the built-in modes again, since they have evolved quite a bit.
-
-#+begin_src elvish :tangle no
-  use narrow
-#+end_src
-
-Testing a new version of the location mode which tilde-abbreviates entries before showing them.
-
-#+begin_src elvish :tangle no
-  narrow:location~ = {
-    for hook $narrow:before-location { $hook }
-    candidates = [(dir-history | each [arg]{
-          score = (splits . $arg[score] | take 1)
-          put [
-            &content=$arg[path]
-            &display=$score" "(tilde-abbr $arg[path])
-          ]
-    })]
-
-    edit:-narrow-read {
-      put $@candidates
-    } [arg]{
-      cd $arg[content]
-      for hook $narrow:after-location { $hook }
-    } &modeline="[narrow] Location " &ignore-case=$true
-  }
-
-  narrow:history~ = {
-    for hook $narrow:before-history { $hook }
-    candidates = []
-    hist-time = (-time {
-        candidates = [(edit:command-history | each [arg]{
-              put [
-                &content=$arg[cmd]
-                &display=$arg[id]" "$arg[cmd]
-              ]
-        })]
-    })
-
-    edit:-narrow-read {
-      put $@candidates
-    } [arg]{
-      edit:replace-input $arg[content]
-      for hook $narrow:after-history { $hook }
-    } &modeline="[narrow] History " &keep-bottom=$true &ignore-case=$true
-  }
-#+end_src
-
-I use the default binding for history mode (~C-r~), but change the location mode binding to ~Alt-l~ to avoid conflicting with the binding of ~C-l~ to "clear screen" in =readline-binding=. I disable the lastcmd binding because it is taken over by the =bang-bang= module below.
-
-#+begin_src elvish :tangle no
-  narrow:bind-trigger-keys &location=Alt-l &lastcmd=""
-#+end_src
+Elvish comes with built-in location and command history modes, and these are the main mechanism for accessing prior directories and commands. The weight-keeping in location mode makes the most-used directories automatically raise to the top of the list over time.
 
 I have decades of muscle memory using ~!!~ and ~!$~ to insert the last command and its last argument, respectively. The [[https://github.com/zzamboni/elvish-modules/blob/master/bang-bang.org][bang-bang]] module allows me to keep using them.
 
