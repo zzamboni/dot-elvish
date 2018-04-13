@@ -23,7 +23,6 @@ This file is written in [[http://www.howardism.org/Technical/Emacs/literate-prog
 - [[#base-modules][Base modules]]
 - [[#git-utilities][Git utilities]]
 - [[#aliases][Aliases]]
-- [[#nix-package-manager][Nix package manager]]
 - [[#completions][Completions]]
 - [[#prompt-theme][Prompt theme]]
 - [[#automatic-proxy-settings][Automatic proxy settings]]
@@ -138,15 +137,6 @@ For reference, I define here a few of my commonly-used aliases:
   alias:new ls e:ls --color=auto
   alias:new more less
   alias:new v vagrant
-#+end_src
-
-* Nix package manager
-
-I use the [[https://nixos.org/nix/][Nix]] package manager on macOS, the [[https://github.com/zzamboni/modules.elv/blob/master/nix.org][nix]] module sets up the necessary environment variables.
-
-#+begin_src elvish
-  use github.com/zzamboni/elvish-modules/nix
-  nix:multi-user-setup
 #+end_src
 
 * Completions

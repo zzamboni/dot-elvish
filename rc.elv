@@ -46,9 +46,6 @@ alias:new ls e:ls --color=auto
 alias:new more less
 alias:new v vagrant
 
-use github.com/zzamboni/elvish-modules/nix
-nix:multi-user-setup
-
 use github.com/zzamboni/elvish-completions:git
 
 use github.com/zzamboni/elvish-completions:vcsh
