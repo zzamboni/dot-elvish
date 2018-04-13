@@ -7,6 +7,7 @@ E:GOPATH = ~/Personal/devel/go/
 paths = [
   ~/bin
   $E:GOPATH/bin
+  /usr/local/opt/coreutils/libexec/gnubin
   ~/Dropbox/Personal/devel/hammerspoon/spoon/bin
   ~/.gem/ruby/2.4.0/bin
   /opt/X11/bin
