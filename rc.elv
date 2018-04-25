@@ -46,6 +46,11 @@ alias:new ls e:ls --color=auto
 alias:new more less
 alias:new v vagrant
 
+use github.com/xiaq/edit.elv/smart-matcher
+smart-matcher:apply
+
+edit:insert:binding[Tab] = { edit:completion:smart-start; edit:completion:trigger-filter }
+
 use github.com/zzamboni/elvish-completions:git
 
 use github.com/zzamboni/elvish-completions:vcsh
@@ -92,9 +97,6 @@ use github.com/zzamboni/elvish-modules/terminal-title
 private-loaded = ?(use private)
 
 use github.com/zzamboni/elvish-modules/atlas
-
-use github.com/xiaq/edit.elv/smart-matcher
-edit:completion:matcher[''] = $smart-matcher:match~
 
 E:LESS = "-i -R"
 

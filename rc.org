@@ -31,7 +31,6 @@ This file is written in [[http://www.howardism.org/Technical/Emacs/literate-prog
 - [[#dynamic-terminal-title][Dynamic terminal title]]
 - [[#loading-private-settings][Loading private settings]]
 - [[#oreilly-atlas][O'Reilly Atlas]]
-- [[#smart-matching-for-completion][Smart matching for completion]]
 - [[#environment-variables][Environment variables]]
 - [[#utility-functions][Utility functions]]
 - [[#exporting-aliases][Exporting aliases]]
@@ -141,7 +140,22 @@ For reference, I define here a few of my commonly-used aliases:
 
 * Completions
 
-From the  [[https://github.com/zzamboni/elvish-completions][elvish-completions]] package:
+The [[https://github.com/xiaq/edit.elv/blob/master/smart-matcher.elv][smart-matcher]] module tries prefix match, smart-case prefix match, substring match, smart-case substring match, subsequence match and smart-case subsequence match automatically.
+
+#+begin_src elvish
+  use github.com/xiaq/edit.elv/smart-matcher
+  smart-matcher:apply
+#+end_src
+
+Other possible values for =edit:completion:matcher= are =[p]{ edit:match-prefix &smart-case $p }= for smart-case completion (if your pattern is entirely lower case it ignores case, otherwise it's case sensitive).  =&smart-case= can be replaced with =&ignore-case= to make it always case-insensitive.
+
+I also configure ~Tab~ to trigger completion mode, but also to automatically enter "filter mode", so I can keep typing the filename I want, without having to use the arrow keys.
+
+#+begin_src elvish
+  edit:insert:binding[Tab] = { edit:completion:smart-start; edit:completion:trigger-filter }
+#+end_src
+
+I load some command-specific completions from the  [[https://github.com/zzamboni/elvish-completions][elvish-completions]] package:
 
 For =git=:
 
@@ -282,17 +296,6 @@ I sometimes use the [[https://atlas.oreilly.com/][O'Reilly Atlas]] publishing pl
 #+begin_src elvish
   use github.com/zzamboni/elvish-modules/atlas
 #+end_src
-
-* Smart matching for completion
-
-The [[https://github.com/xiaq/edit.elv/blob/master/smart-matcher.elv][smart-matcher]] module tries prefix match, smart-case prefix match, substring match, smart-case substring match, subsequence match and smart-case subsequence match automatically.
-
-#+begin_src elvish
-  use github.com/xiaq/edit.elv/smart-matcher
-  edit:completion:matcher[''] = $smart-matcher:match~
-#+end_src
-
-Other possible values for =edit:completion:matcher= are =[p]{ edit:match-prefix &smart-case $p }= for smart-case completion (if your pattern is entirely lower case it ignores case, otherwise it's case sensitive).  =&smart-case= can be replaced with =&ignore-case= to make it always case-insensitive.
 
 * Environment variables
 
