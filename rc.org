@@ -157,21 +157,9 @@ I also configure ~Tab~ to trigger completion mode, but also to automatically ent
 
 I load some command-specific completions from the  [[https://github.com/zzamboni/elvish-completions][elvish-completions]] package:
 
-For =git=:
-
 #+begin_src elvish
   use github.com/zzamboni/elvish-completions:git
-#+end_src
-
-For =vcsh= (uses the git completer):
-
-#+begin_src elvish
   use github.com/zzamboni/elvish-completions:vcsh
-#+end_src
-
-For =cd=:
-
-#+begin_src elvish
   use github.com/zzamboni/elvish-completions:cd
 #+end_src
 
