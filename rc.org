@@ -162,6 +162,7 @@ I load some command-specific completions from the  [[https://github.com/zzamboni
   use github.com/zzamboni/elvish-completions:git
   use github.com/zzamboni/elvish-completions:vcsh
   use github.com/zzamboni/elvish-completions:cd
+  use github.com/zzamboni/elvish-completions:ssh
 #+end_src
 
 * Prompt theme

@@ -55,6 +55,7 @@ edit:insert:binding[Tab] = { edit:completion:smart-start; edit:completion:trigge
 use github.com/zzamboni/elvish-completions:git
 use github.com/zzamboni/elvish-completions:vcsh
 use github.com/zzamboni/elvish-completions:cd
+use github.com/zzamboni/elvish-completions:ssh
 
 use github.com/zzamboni/elvish-themes/chain
 chain:bold-prompt = $true
