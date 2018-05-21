@@ -21,7 +21,6 @@ This file is written in [[http://www.howardism.org/Technical/Emacs/literate-prog
 - [[#paths][Paths]]
 - [[#package-installation][Package installation]]
 - [[#base-modules][Base modules]]
-- [[#git-utilities][Git utilities]]
 - [[#aliases][Aliases]]
 - [[#completions][Completions]]
 - [[#prompt-theme][Prompt theme]]
@@ -114,14 +113,6 @@ I add a couple of keybindings which are missing from the default =readline-bindi
     edit:insert:binding[Alt-d] = { edit:move-dot-right-word; edit:kill-word-left }
   #+end_src
 
-* Git utilities
-
-I use muesli's git utilities module.
-
-#+begin_src elvish
-  use github.com/muesli/elvish-libs/git
-#+end_src
-
 * Aliases
 
 Elvish does not have built-in alias functionality, but this is implemented easily using the [[https://github.com/zzamboni/modules.elv/blob/master/alias.org][alias]] module, which stores the alias definitions as functions under [[https://github.com/zzamboni/dot-elvish/tree/master/aliases][~/.elvish/aliases/]] and loads them automatically.
@@ -159,10 +150,11 @@ I also configure ~Tab~ to trigger completion mode, but also to automatically ent
 I load some command-specific completions from the  [[https://github.com/zzamboni/elvish-completions][elvish-completions]] package:
 
 #+begin_src elvish
-  use github.com/zzamboni/elvish-completions:git
-  use github.com/zzamboni/elvish-completions:vcsh
-  use github.com/zzamboni/elvish-completions:cd
-  use github.com/zzamboni/elvish-completions:ssh
+  use github.com/zzamboni/elvish-completions/git
+  use github.com/zzamboni/elvish-completions/vcsh
+  use github.com/zzamboni/elvish-completions/cd
+  use github.com/zzamboni/elvish-completions/ssh
+  use github.com/zzamboni/elvish-completions/builtins
 #+end_src
 
 * Prompt theme
@@ -313,6 +305,12 @@ The [[https://github.com/zzamboni/elvish-modules/blob/master/util.org][util]] mo
 
 #+begin_src elvish
   use github.com/zzamboni/elvish-modules/util
+#+end_src
+
+I use muesli's git utilities module.
+
+#+begin_src elvish
+  use github.com/muesli/elvish-libs/git
 #+end_src
 
 * Exporting aliases

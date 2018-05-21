@@ -38,8 +38,6 @@ edit:insert:binding[Alt-Backspace] = $edit:kill-small-word-left~
 
 edit:insert:binding[Alt-d] = { edit:move-dot-right-word; edit:kill-word-left }
 
-use github.com/muesli/elvish-libs/git
-
 use github.com/zzamboni/elvish-modules/alias
 
 alias:new dfc e:dfc -W -l -p -/dev/disk1s4,devfs
@@ -52,10 +50,11 @@ smart-matcher:apply
 
 edit:insert:binding[Tab] = { edit:completion:smart-start; edit:completion:trigger-filter }
 
-use github.com/zzamboni/elvish-completions:git
-use github.com/zzamboni/elvish-completions:vcsh
-use github.com/zzamboni/elvish-completions:cd
-use github.com/zzamboni/elvish-completions:ssh
+use github.com/zzamboni/elvish-completions/git
+use github.com/zzamboni/elvish-completions/vcsh
+use github.com/zzamboni/elvish-completions/cd
+use github.com/zzamboni/elvish-completions/ssh
+use github.com/zzamboni/elvish-completions/builtins
 
 use github.com/zzamboni/elvish-themes/chain
 chain:bold-prompt = $true
@@ -105,5 +104,7 @@ E:EDITOR = "vim"
 E:LC_ALL = "en_US.UTF-8"
 
 use github.com/zzamboni/elvish-modules/util
+
+use github.com/muesli/elvish-libs/git
 
 -exports- = (alias:export)
