@@ -28,7 +28,8 @@ epm:install &silent-if-installed=$true   \
   github.com/zzamboni/elvish-completions \
   github.com/zzamboni/elvish-themes      \
   github.com/xiaq/edit.elv               \
-  github.com/muesli/elvish-libs
+  github.com/muesli/elvish-libs          \
+  github.com/iwoloschin/elvish-packages
 
 use re
 
@@ -106,5 +107,7 @@ E:LC_ALL = "en_US.UTF-8"
 use github.com/zzamboni/elvish-modules/util
 
 use github.com/muesli/elvish-libs/git
+
+use github.com/iwoloschin/elvish-packages/update
 
 -exports- = (alias:export)

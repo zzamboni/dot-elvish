@@ -73,6 +73,8 @@ For now I use these packages:
 - [[https://github.com/zzamboni/elvish-completions][github.com/zzamboni/elvish-completions]] contains my completer definitions.
 - [[https://github.com/xiaq/edit.elv][github.com/xiaq/edit.elv]], which includes the =smart-matcher= module used below.
 - [[https://github.com/muesli/elvish-libs][github.com/muesli/elvish-libs]] for the git utilities module.
+- https://github.com/iwoloschin/elvish-packages for the update.elv package.
+
 
 #+begin_src elvish
   epm:install &silent-if-installed=$true   \
@@ -80,7 +82,8 @@ For now I use these packages:
     github.com/zzamboni/elvish-completions \
     github.com/zzamboni/elvish-themes      \
     github.com/xiaq/edit.elv               \
-    github.com/muesli/elvish-libs
+    github.com/muesli/elvish-libs          \
+    github.com/iwoloschin/elvish-packages
 #+end_src
 
 The modules within each package get loaded individually below.
@@ -311,6 +314,12 @@ I use muesli's git utilities module.
 
 #+begin_src elvish
   use github.com/muesli/elvish-libs/git
+#+end_src
+
+The [[https://github.com/iwoloschin/elvish-packages/blob/master/update.elv][update.elv]] package prints a message if there are new commits in Elvish after the running version.
+
+#+begin_src elvish
+  use github.com/iwoloschin/elvish-packages/update
 #+end_src
 
 * Exporting aliases
