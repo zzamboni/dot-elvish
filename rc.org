@@ -184,7 +184,7 @@ prompt arrow in my prompt to a session-identifying color.
 Elvish has a [[https://elvish.io/ref/edit.html#prompts][comprehensive mechanism]] for displaying prompts with useful information while avoiding getting blocked by prompt functions which take too long to finish. For the most part the defaults work well. One change I like to make is to change the [[https://elvish.io/ref/edit.html#stale-prompt][stale prompt transformer]] function to make the prompt dim when stale:
 
 #+begin_src elvish
-  edit:prompt-stale-transform = { each [x]{ edit:styled $x[text] "gray" } }
+  edit:prompt-stale-transform = { each [x]{ styled $x[text] "gray" } }
 #+end_src
 
 Another possibility is to make the prompt stay the same when stale - useful to avoid distractions (disabled for now):

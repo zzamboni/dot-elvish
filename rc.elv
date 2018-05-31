@@ -67,7 +67,7 @@ chain:segment-style = [
   &git-combined= session
 ]
 
-edit:prompt-stale-transform = { each [x]{ edit:styled $x[text] "gray" } }
+edit:prompt-stale-transform = { each [x]{ styled $x[text] "gray" } }
 
 edit:-prompt-eagerness = 10
 
