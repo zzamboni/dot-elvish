@@ -73,8 +73,7 @@ For now I use these packages:
 - [[https://github.com/zzamboni/elvish-completions][github.com/zzamboni/elvish-completions]] contains my completer definitions.
 - [[https://github.com/xiaq/edit.elv][github.com/xiaq/edit.elv]], which includes the =smart-matcher= module used below.
 - [[https://github.com/muesli/elvish-libs][github.com/muesli/elvish-libs]] for the git utilities module.
-- https://github.com/iwoloschin/elvish-packages for the update.elv package.
-
+- [[https://github.com/iwoloschin/elvish-packages][github.com/iwoloschin/elvish-packages]] for the update.elv package.
 
 #+begin_src elvish
   epm:install &silent-if-installed=$true   \
