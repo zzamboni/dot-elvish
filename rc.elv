@@ -31,6 +31,16 @@ epm:install &silent-if-installed=$true   \
   github.com/muesli/elvish-libs          \
   github.com/iwoloschin/elvish-packages
 
+use github.com/zzamboni/elvish-modules/proxy
+proxy:host = "http://proxy.corproot.net:8079"
+
+proxy:test = {
+  and ?(test -f /etc/resolv.conf) \
+  ?(egrep -q '^(search|domain).*corproot.net' /etc/resolv.conf)
+}
+
+proxy:autoset
+
 use re
 
 use readline-binding
@@ -71,14 +81,6 @@ edit:prompt-stale-transform = { each [x]{ styled $x[text] "gray" } }
 
 edit:-prompt-eagerness = 10
 
-use github.com/zzamboni/elvish-modules/proxy
-proxy:host = "http://proxy.corproot.net:8079"
-
-proxy:test = {
-  and ?(test -f /etc/resolv.conf) \
-  ?(egrep -q '^(search|domain).*corproot.net' /etc/resolv.conf)
-}
-
 use github.com/zzamboni/elvish-modules/long-running-notifications
 
 use github.com/zzamboni/elvish-modules/bang-bang
@@ -109,5 +111,6 @@ use github.com/zzamboni/elvish-modules/util
 use github.com/muesli/elvish-libs/git
 
 use github.com/iwoloschin/elvish-packages/update
+update:check-commit
 
 -exports- = (alias:export)

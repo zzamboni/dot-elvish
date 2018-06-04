@@ -20,11 +20,11 @@ This file is written in [[http://www.howardism.org/Technical/Emacs/literate-prog
 * Table of Contents                                          :TOC_3:noexport:
 - [[#paths][Paths]]
 - [[#package-installation][Package installation]]
+- [[#automatic-proxy-settings][Automatic proxy settings]]
 - [[#base-modules][Base modules]]
 - [[#aliases][Aliases]]
 - [[#completions][Completions]]
 - [[#prompt-theme][Prompt theme]]
-- [[#automatic-proxy-settings][Automatic proxy settings]]
 - [[#long-running-command-notifications][Long-running-command notifications]]
 - [[#directory-and-command-navigation-and-history][Directory and command navigation and history]]
 - [[#dynamic-terminal-title][Dynamic terminal title]]
@@ -86,6 +86,32 @@ For now I use these packages:
 #+end_src
 
 The modules within each package get loaded individually below.
+
+* Automatic proxy settings
+
+When I am in the office, I need to use a proxy to access the Internet. For macOS applications, the proxy is set automatically using a company-provided PAC file. For the environment variables =http_proxy= and =https_proxy=, commonly used by command-line programs, the [[https://github.com/zzamboni/modules.elv/blob/master/proxy.org][proxy]] module allows me to define a test which determines when the proxy should be used, so that the change is done automatically. We load this early on so that other modules which need to access the network get the correct settings already.
+
+First, we load the module and set the proxy host.
+
+#+begin_src elvish
+  use github.com/zzamboni/elvish-modules/proxy
+  proxy:host = "http://proxy.corproot.net:8079"
+#+end_src
+
+Next, we set the test function to enable proxy auto-setting. In my case, the =/etc/resolv.conf= file contains the =corproot.net= domain (set through DHCP) when I'm in the corporate network, so I can check for that.
+
+#+begin_src elvish
+  proxy:test = {
+    and ?(test -f /etc/resolv.conf) \
+    ?(egrep -q '^(search|domain).*corproot.net' /etc/resolv.conf)
+  }
+#+end_src
+
+We run an initial check so that other commands in rc.org get the correctd settings already, even before the first prompt.
+
+#+begin_src elvish
+  proxy:autoset
+#+end_src
 
 * Base modules
 
@@ -198,26 +224,6 @@ I also like the continuous update of the prompt as I type (by default it only up
   edit:-prompt-eagerness = 10
 #+end_src
 
-* Automatic proxy settings
-
-When I am in the office, I need to use a proxy to access the Internet. For macOS applications, the proxy is set automatically using a company-provided PAC file. For the environment variables =http_proxy= and =https_proxy=, commonly used by command-line programs, the [[https://github.com/zzamboni/modules.elv/blob/master/proxy.org][proxy]] module allows me to define a test which determines when the proxy should be used, so that the change is done automatically.
-
-First, we load the module and set the proxy host.
-
-#+begin_src elvish
-  use github.com/zzamboni/elvish-modules/proxy
-  proxy:host = "http://proxy.corproot.net:8079"
-#+end_src
-
-Next, we set the test function to enable proxy auto-setting. In my case, the =/etc/resolv.conf= file contains the =corproot.net= domain (set through DHCP) when I'm in the corporate network, so I can check for that.
-
-#+begin_src elvish
-  proxy:test = {
-    and ?(test -f /etc/resolv.conf) \
-    ?(egrep -q '^(search|domain).*corproot.net' /etc/resolv.conf)
-  }
-#+end_src
-
 * Long-running-command notifications
 
 The [[https://github.com/zzamboni/modules.elv/blob/master/long-running-notifications.org][long-running-notifications]] module allows for producing a notification when a command takes longer than a certain time to finish (by default the period is 10 seconds). The module automatically detects when [[https://github.com/julienXX/terminal-notifier][terminal-notifier]] is available on macOS and uses it to produce Mac-style notifications, otherwise it prints a notification on the terminal.
@@ -319,6 +325,7 @@ The [[https://github.com/iwoloschin/elvish-packages/blob/master/update.elv][upda
 
 #+begin_src elvish
   use github.com/iwoloschin/elvish-packages/update
+  update:check-commit
 #+end_src
 
 * Exporting aliases
