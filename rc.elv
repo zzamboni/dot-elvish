@@ -67,6 +67,8 @@ use github.com/zzamboni/elvish-completions/cd
 use github.com/zzamboni/elvish-completions/ssh
 use github.com/zzamboni/elvish-completions/builtins
 
+use github.com/zzamboni/elvish-completions/comp
+
 use github.com/zzamboni/elvish-themes/chain
 chain:bold-prompt = $true
 

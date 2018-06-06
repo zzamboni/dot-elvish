@@ -185,6 +185,12 @@ I load some command-specific completions from the  [[https://github.com/zzamboni
   use github.com/zzamboni/elvish-completions/builtins
 #+end_src
 
+This is not usually necessary, but I load the =comp= library specifically since I do a lot of tests and development of completions.
+
+#+begin_src elvish
+  use github.com/zzamboni/elvish-completions/comp
+#+end_src
+
 * Prompt theme
 
 I use the [[https://github.com/zzamboni/theme.elv/blob/master/chain.org][chain]] prompt theme, ported from the fish theme at https://github.com/oh-my-fish/theme-chain.
