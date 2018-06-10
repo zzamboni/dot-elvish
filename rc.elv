@@ -61,11 +61,14 @@ smart-matcher:apply
 
 edit:insert:binding[Tab] = { edit:completion:smart-start; edit:completion:trigger-filter }
 
-use github.com/zzamboni/elvish-completions/git
 use github.com/zzamboni/elvish-completions/vcsh
 use github.com/zzamboni/elvish-completions/cd
 use github.com/zzamboni/elvish-completions/ssh
 use github.com/zzamboni/elvish-completions/builtins
+
+use github.com/zzamboni/elvish-completions/git
+git:git-command = hub
+git:init
 
 use github.com/zzamboni/elvish-completions/comp
 
