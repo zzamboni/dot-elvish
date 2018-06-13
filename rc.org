@@ -338,7 +338,7 @@ The [[https://github.com/iwoloschin/elvish-packages/blob/master/update.elv][upda
 
 #+begin_src elvish
   use github.com/iwoloschin/elvish-packages/update
-  update:check-commit
+  update:check-commit &verbose
 #+end_src
 
 * Exporting aliases

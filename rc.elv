@@ -116,6 +116,6 @@ use github.com/zzamboni/elvish-modules/util
 use github.com/muesli/elvish-libs/git
 
 use github.com/iwoloschin/elvish-packages/update
-update:check-commit
+update:check-commit &verbose
 
 -exports- = (alias:export)
