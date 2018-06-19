@@ -39,7 +39,7 @@ This file is written in [[http://www.howardism.org/Technical/Emacs/literate-prog
 First we set up the executable paths. We set the =GOPATH= environment variable while we are at it, since we need to use it as part of the path.
 
 #+begin_src elvish
-  E:GOPATH = ~/Personal/devel/go/
+  E:GOPATH = ~/Dropbox/Personal/devel/go
   paths = [
     ~/bin
     $E:GOPATH/bin

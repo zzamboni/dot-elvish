@@ -3,7 +3,7 @@
 # https://github.com/zzamboni/dot-elvish/blob/master/rc.org.
 # You should make any changes there and regenerate it from Emacs org-mode using C-c C-v t
 
-E:GOPATH = ~/Personal/devel/go/
+E:GOPATH = ~/Dropbox/Personal/devel/go
 paths = [
   ~/bin
   $E:GOPATH/bin
