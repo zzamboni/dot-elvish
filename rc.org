@@ -210,14 +210,14 @@ I use the [[https://github.com/zzamboni/theme.elv/blob/master/chain.org][chain]]
 I set the color of the directory segment, the prompt chains and the
 prompt arrow in my prompt to a session-identifying color.
 
-#+BEGIN_SRC elvish
+#+begin_src elvish
   chain:segment-style = [
     &dir=          session
     &chain=        session
     &arrow=        session
     &git-combined= session
   ]
-#+END_SRC
+#+end_src
 
 Elvish has a [[https://elvish.io/ref/edit.html#prompts][comprehensive mechanism]] for displaying prompts with useful information while avoiding getting blocked by prompt functions which take too long to finish. For the most part the defaults work well. One change I like to make is to change the [[https://elvish.io/ref/edit.html#stale-prompt][stale prompt transformer]] function to make the prompt dim when stale:
 
