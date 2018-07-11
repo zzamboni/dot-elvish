@@ -169,9 +169,9 @@ The [[https://github.com/xiaq/edit.elv/blob/master/smart-matcher.elv][smart-matc
 
 Other possible values for =edit:completion:matcher= are =[p]{ edit:match-prefix &smart-case $p }= for smart-case completion (if your pattern is entirely lower case it ignores case, otherwise it's case sensitive).  =&smart-case= can be replaced with =&ignore-case= to make it always case-insensitive.
 
-I also configure ~Tab~ to trigger completion mode, but also to automatically enter "filter mode", so I can keep typing the filename I want, without having to use the arrow keys.
+I also configure ~Tab~ to trigger completion mode, but also to automatically enter "filter mode", so I can keep typing the filename I want, without having to use the arrow keys. Disabled as this is the default behavior starting with commit [[https://github.com/elves/elvish/commit/b24e4a73ccd948b8c08d4081c2bcfb7cf603a02b][b24e4a7]], but you may need it if you are running an older version for any reason and want this behavior.
 
-#+begin_src elvish
+#+begin_src elvish :tangle no
   edit:insert:binding[Tab] = { edit:completion:smart-start; edit:completion:trigger-filter }
 #+end_src
 

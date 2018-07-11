@@ -59,8 +59,6 @@ alias:new v vagrant
 use github.com/xiaq/edit.elv/smart-matcher
 smart-matcher:apply
 
-edit:insert:binding[Tab] = { edit:completion:smart-start; edit:completion:trigger-filter }
-
 use github.com/zzamboni/elvish-completions/vcsh
 use github.com/zzamboni/elvish-completions/cd
 use github.com/zzamboni/elvish-completions/ssh
