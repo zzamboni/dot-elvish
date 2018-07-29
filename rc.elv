@@ -94,8 +94,8 @@ alias:new cdb &use=[github.com/zzamboni/elvish-modules/dir] dir:cdb
 
 edit:insert:binding[Alt-i] = $dir:history-chooser~
 
-edit:insert:binding[Alt-b] = $dir:left-word-or-prev-dir~
-edit:insert:binding[Alt-f] = $dir:right-word-or-next-dir~
+edit:insert:binding[Alt-b] = $dir:left-small-word-or-prev-dir~
+edit:insert:binding[Alt-f] = $dir:right-small-word-or-next-dir~
 
 use github.com/zzamboni/elvish-modules/terminal-title
 
