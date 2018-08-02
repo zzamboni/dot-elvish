@@ -47,7 +47,7 @@ use readline-binding
 
 edit:insert:binding[Alt-Backspace] = $edit:kill-small-word-left~
 
-edit:insert:binding[Alt-d] = { edit:move-dot-right-word; edit:kill-word-left }
+edit:insert:binding[Alt-d] = { edit:move-dot-right-small-word; edit:kill-small-word-left }
 
 use github.com/zzamboni/elvish-modules/alias
 
@@ -114,6 +114,7 @@ use github.com/zzamboni/elvish-modules/util
 use github.com/muesli/elvish-libs/git
 
 use github.com/iwoloschin/elvish-packages/update
+update:curl-timeout = 3
 update:check-commit &verbose
 
 -exports- = (alias:export)

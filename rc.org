@@ -138,7 +138,7 @@ I add a couple of keybindings which are missing from the default =readline-bindi
 - =Alt-d= to delete the word under the cursor
 
   #+begin_src elvish
-    edit:insert:binding[Alt-d] = { edit:move-dot-right-word; edit:kill-word-left }
+    edit:insert:binding[Alt-d] = { edit:move-dot-right-small-word; edit:kill-small-word-left }
   #+end_src
 
 * Aliases
@@ -338,6 +338,7 @@ The [[https://github.com/iwoloschin/elvish-packages/blob/master/update.elv][upda
 
 #+begin_src elvish
   use github.com/iwoloschin/elvish-packages/update
+  update:curl-timeout = 3
   update:check-commit &verbose
 #+end_src
 
