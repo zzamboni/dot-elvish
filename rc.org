@@ -30,8 +30,10 @@ This file is written in [[http://www.howardism.org/Technical/Emacs/literate-prog
 - [[#dynamic-terminal-title][Dynamic terminal title]]
 - [[#loading-private-settings][Loading private settings]]
 - [[#oreilly-atlas][O'Reilly Atlas]]
+- [[#opsgenie][OpsGenie]]
 - [[#environment-variables][Environment variables]]
 - [[#utility-functions][Utility functions]]
+- [[#work-specific-stuff][Work-specific stuff]]
 - [[#exporting-aliases][Exporting aliases]]
 
 * Paths
@@ -300,6 +302,14 @@ I sometimes use the [[https://atlas.oreilly.com/][O'Reilly Atlas]] publishing pl
   use github.com/zzamboni/elvish-modules/atlas
 #+end_src
 
+* OpsGenie
+
+I use OpsGenie at work, so I have put together the [[https://github.com/zzamboni/elvish-modules/blob/master/opsgenie.org][opsgenie]] library to make API operations easier.
+
+#+begin_src elvish
+  use github.com/zzamboni/elvish-modules/opsgenie
+#+end_src
+
 * Environment variables
 
 Default options to =less=.
@@ -340,6 +350,14 @@ The [[https://github.com/iwoloschin/elvish-packages/blob/master/update.elv][upda
   use github.com/iwoloschin/elvish-packages/update
   update:curl-timeout = 3
   update:check-commit &verbose
+#+end_src
+
+* Work-specific stuff
+
+I have a private library which contains some work-specific functions.
+
+#+begin_src elvish
+  use swisscom
 #+end_src
 
 * Exporting aliases

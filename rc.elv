@@ -103,6 +103,8 @@ private-loaded = ?(use private)
 
 use github.com/zzamboni/elvish-modules/atlas
 
+use github.com/zzamboni/elvish-modules/opsgenie
+
 E:LESS = "-i -R"
 
 E:EDITOR = "vim"
@@ -116,5 +118,7 @@ use github.com/muesli/elvish-libs/git
 use github.com/iwoloschin/elvish-packages/update
 update:curl-timeout = 3
 update:check-commit &verbose
+
+use swisscom
 
 -exports- = (alias:export)
