@@ -47,7 +47,7 @@ use readline-binding
 
 edit:insert:binding[Alt-Backspace] = $edit:kill-small-word-left~
 
-edit:insert:binding[Alt-d] = { edit:move-dot-right-small-word; edit:kill-small-word-left }
+edit:insert:binding[Alt-d] = $edit:kill-small-word-right~
 
 use github.com/zzamboni/elvish-modules/alias
 

@@ -131,16 +131,16 @@ The bundled [[https://elvish.io/ref/bundled.html][readline-binding]] module asso
 
 I add a couple of keybindings which are missing from the default =readline-binding= module:
 
-- =Alt-backspace= to delete word
+- =Alt-backspace= to delete small-word
 
   #+begin_src elvish
     edit:insert:binding[Alt-Backspace] = $edit:kill-small-word-left~
   #+end_src
 
-- =Alt-d= to delete the word under the cursor
+- =Alt-d= to delete the small-word under the cursor
 
   #+begin_src elvish
-    edit:insert:binding[Alt-d] = { edit:move-dot-right-small-word; edit:kill-small-word-left }
+    edit:insert:binding[Alt-d] = $edit:kill-small-word-right~
   #+end_src
 
 * Aliases
