@@ -36,7 +36,7 @@ proxy:host = "http://proxy.corproot.net:8079"
 
 proxy:test = {
   and ?(test -f /etc/resolv.conf) \
-  ?(egrep -q '^(search|domain).*corproot.net' /etc/resolv.conf)
+  ?(egrep -q '^(search|domain).*(corproot.net|swissptt.ch)' /etc/resolv.conf)
 }
 
 proxy:autoset

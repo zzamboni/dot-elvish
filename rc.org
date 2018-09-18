@@ -105,7 +105,7 @@ Next, we set the test function to enable proxy auto-setting. In my case, the =/e
 #+begin_src elvish
   proxy:test = {
     and ?(test -f /etc/resolv.conf) \
-    ?(egrep -q '^(search|domain).*corproot.net' /etc/resolv.conf)
+    ?(egrep -q '^(search|domain).*(corproot.net|swissptt.ch)' /etc/resolv.conf)
   }
 #+end_src
 
