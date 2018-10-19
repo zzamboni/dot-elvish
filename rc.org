@@ -31,6 +31,7 @@ This file is written in [[http://www.howardism.org/Technical/Emacs/literate-prog
 - [[#loading-private-settings][Loading private settings]]
 - [[#oreilly-atlas][O'Reilly Atlas]]
 - [[#opsgenie][OpsGenie]]
+- [[#leanpub][LeanPub]]
 - [[#environment-variables][Environment variables]]
 - [[#utility-functions][Utility functions]]
 - [[#work-specific-stuff][Work-specific stuff]]
@@ -308,6 +309,14 @@ I use OpsGenie at work, so I have put together the [[https://github.com/zzamboni
 
 #+begin_src elvish
   use github.com/zzamboni/elvish-modules/opsgenie
+#+end_src
+
+* LeanPub
+
+I use [[https://leanpub.com/help/api][LeanPub]] for publishing my books, so I have written a few utility functions.
+
+#+begin_src elvish
+  use github.com/zzamboni/elvish-modules/leanpub
 #+end_src
 
 * Environment variables

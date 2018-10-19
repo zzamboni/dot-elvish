@@ -105,6 +105,8 @@ use github.com/zzamboni/elvish-modules/atlas
 
 use github.com/zzamboni/elvish-modules/opsgenie
 
+use github.com/zzamboni/elvish-modules/leanpub
+
 E:LESS = "-i -R"
 
 E:EDITOR = "vim"
