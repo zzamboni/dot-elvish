@@ -43,9 +43,11 @@ First we set up the executable paths. We set the =GOPATH= environment variable w
 
 #+begin_src elvish
   E:GOPATH = ~/Dropbox/Personal/devel/go
+  E:RACKETPATH = ~/Library/Racket/7.1
   paths = [
     ~/bin
     $E:GOPATH/bin
+    $E:RACKETPATH/bin
     /usr/local/opt/coreutils/libexec/gnubin
     /usr/local/opt/python/libexec/bin
     ~/Dropbox/Personal/devel/hammerspoon/spoon/bin

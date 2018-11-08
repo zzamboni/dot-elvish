@@ -4,9 +4,11 @@
 # You should make any changes there and regenerate it from Emacs org-mode using C-c C-v t
 
 E:GOPATH = ~/Dropbox/Personal/devel/go
+E:RACKETPATH = ~/Library/Racket/7.1
 paths = [
   ~/bin
   $E:GOPATH/bin
+  $E:RACKETPATH/bin
   /usr/local/opt/coreutils/libexec/gnubin
   /usr/local/opt/python/libexec/bin
   ~/Dropbox/Personal/devel/hammerspoon/spoon/bin
