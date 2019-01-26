@@ -54,7 +54,7 @@ edit:insert:binding[Alt-d] = $edit:kill-small-word-right~
 use github.com/zzamboni/elvish-modules/alias
 
 alias:new dfc e:dfc -W -l -p -/dev/disk1s4,devfs
-alias:new ls e:ls --color=auto
+alias:new ls e:lsd
 alias:new more less
 alias:new v vagrant
 

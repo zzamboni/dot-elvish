@@ -1,2 +1,2 @@
-#alias:new ls e:ls --color=auto
-fn ls [@_args]{ e:ls --color=auto $@_args }
+#alias:new ls e:lsd
+fn ls [@_args]{ e:lsd $@_args }

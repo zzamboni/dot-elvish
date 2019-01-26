@@ -158,7 +158,7 @@ For reference, I define here a few of my commonly-used aliases:
 
 #+begin_src elvish
   alias:new dfc e:dfc -W -l -p -/dev/disk1s4,devfs
-  alias:new ls e:ls --color=auto
+  alias:new ls e:lsd
   alias:new more less
   alias:new v vagrant
 #+end_src
