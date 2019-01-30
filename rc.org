@@ -224,6 +224,12 @@ prompt arrow in my prompt to a session-identifying color.
   ]
 #+end_src
 
+Customize some of the glyphs for the font I use in my terminal.
+
+#+begin_src elvish
+  chain:glyph[git-ahead] = "⬆ "
+#+end_src
+
 Elvish has a [[https://elvish.io/ref/edit.html#prompts][comprehensive mechanism]] for displaying prompts with useful information while avoiding getting blocked by prompt functions which take too long to finish. For the most part the defaults work well. One change I like to make is to change the [[https://elvish.io/ref/edit.html#stale-prompt][stale prompt transformer]] function to make the prompt dim when stale:
 
 #+begin_src elvish

@@ -82,6 +82,8 @@ chain:segment-style = [
   &git-combined= session
 ]
 
+chain:glyph[git-ahead] = "⬆ "
+
 edit:prompt-stale-transform = { each [x]{ styled $x[text] "gray" } }
 
 edit:-prompt-eagerness = 10
