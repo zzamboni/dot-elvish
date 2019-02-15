@@ -17,7 +17,7 @@ This is my main config file for [[http://elvish.io][Elvish]].
 
 This file is written in [[http://www.howardism.org/Technical/Emacs/literate-programming-tutorial.html][literate programming style]] using [[https://orgmode.org/][org-mode]]. See [[file:rc.elv][rc.elv]] for the generated file. You can see this in a nicer format on my blog post [[http://zzamboni.org/post/my-elvish-configuration-with-commentary/][My Elvish Configuration With Commentary]].
 
-* Table of Contents                                          :TOC_3:noexport:
+* Table of Contents :TOC_3:noexport:
 - [[#paths][Paths]]
 - [[#package-installation][Package installation]]
 - [[#automatic-proxy-settings][Automatic proxy settings]]
@@ -82,12 +82,12 @@ For now I use these packages:
 
 #+begin_src elvish
   epm:install &silent-if-installed=$true   \
-    github.com/zzamboni/elvish-modules     \
-    github.com/zzamboni/elvish-completions \
-    github.com/zzamboni/elvish-themes      \
-    github.com/xiaq/edit.elv               \
-    github.com/muesli/elvish-libs          \
-    github.com/iwoloschin/elvish-packages
+  github.com/zzamboni/elvish-modules     \
+  github.com/zzamboni/elvish-completions \
+  github.com/zzamboni/elvish-themes      \
+  github.com/xiaq/edit.elv               \
+  github.com/muesli/elvish-libs          \
+  github.com/iwoloschin/elvish-packages
 #+end_src
 
 The modules within each package get loaded individually below.
