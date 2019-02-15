@@ -4,7 +4,7 @@
 # You should make any changes there and regenerate it from Emacs org-mode using C-c C-v t
 
 E:GOPATH = ~/Dropbox/Personal/devel/go
-E:RACKETPATH = ~/Library/Racket/7.1
+E:RACKETPATH = ~/Library/Racket/7.2
 paths = [
   ~/bin
   $E:GOPATH/bin
