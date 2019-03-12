@@ -10,6 +10,7 @@ paths = [
   $E:GOPATH/bin
   $E:RACKETPATH/bin
   /usr/local/opt/coreutils/libexec/gnubin
+  /usr/local/opt/texinfo/bin
   /usr/local/opt/python/libexec/bin
   ~/Dropbox/Personal/devel/hammerspoon/spoon/bin
   ~/.gem/ruby/2.4.0/bin
