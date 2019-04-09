@@ -9,9 +9,11 @@ paths = [
   ~/bin
   $E:GOPATH/bin
   $E:RACKETPATH/bin
+  ~/Library/Python/3.7/bin
   /usr/local/opt/coreutils/libexec/gnubin
   /usr/local/opt/texinfo/bin
   /usr/local/opt/python/libexec/bin
+  /usr/local/opt/ruby/bin
   ~/Dropbox/Personal/devel/hammerspoon/spoon/bin
   ~/.gem/ruby/2.4.0/bin
   /opt/X11/bin
