@@ -1,2 +1,2 @@
-#alias:new ls e:lsd
-fn ls [@_args]{ e:lsd $@_args }
+#alias:new ls e:exa --color-scale --git --group-directories-first
+fn ls [@_args]{ e:exa --color-scale --git --group-directories-first $@_args }
