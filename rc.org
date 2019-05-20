@@ -291,6 +291,12 @@ I bind =Alt-b/f= to =dir:left-small-word-or-prev-dir= and =dir:right-small-word-
   edit:insert:binding[Alt-f] = $dir:right-small-word-or-next-dir~
 #+end_src
 
+The following makes the location mode filter be case-insensitive by default:
+
+#+begin_src elvish
+  edit:location:matcher = [@a]{ edit:location:match-dir-pattern &ignore-case $@a }
+#+end_src
+
 * Dynamic terminal title
 
 The [[https://github.com/zzamboni/elvish-modules/blob/master/terminal-title.org][terminal-title]] module handles setting the terminal title dynamically according to the current directory or the current command being executed.
