@@ -4,3 +4,4 @@ epm-installed
 *.html
 *.pdf
 *.tex
+package-data/*
