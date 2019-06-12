@@ -181,7 +181,7 @@ Other possible values for =edit:completion:matcher= are =[p]{ edit:match-prefix 
 I also configure ~Tab~ to trigger completion mode, but also to automatically enter "filter mode", so I can keep typing the filename I want, without having to use the arrow keys. Disabled as this is the default behavior starting with commit [[https://github.com/elves/elvish/commit/b24e4a73ccd948b8c08d4081c2bcfb7cf603a02b][b24e4a7]], but you may need it if you are running an older version for any reason and want this behavior.
 
 #+begin_src elvish :tangle no
-  edit:insert:binding[Tab] = { edit:completion:smart-start; edit:completion:trigger-filter }
+#  edit:insert:binding[Tab] = { edit:completion:smart-start; edit:completion:trigger-filter }
 #+end_src
 
 I load some command-specific completions from the  [[https://github.com/zzamboni/elvish-completions][elvish-completions]] package:
@@ -244,7 +244,7 @@ Elvish has a [[https://elvish.io/ref/edit.html#prompts][comprehensive mechanism]
 Another possibility is to make the prompt stay the same when stale - useful to avoid distractions (disabled for now):
 
 #+begin_src elvish :tangle no
-  edit:prompt-stale-transform = $all~
+#  edit:prompt-stale-transform = $all~
 #+end_src
 
 I also like the continuous update of the prompt as I type (by default it only updates on Enter and on =$pwd= changes, but I like also git status changes to be updated automatically), so I increase its eagerness.
