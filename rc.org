@@ -292,10 +292,11 @@ I bind =Alt-b/f= to =dir:left-small-word-or-prev-dir= and =dir:right-small-word-
   edit:insert:binding[Alt-f] = $dir:right-small-word-or-next-dir~
 #+end_src
 
-The following makes the location mode filter be case-insensitive by default:
+The following makes the location and history modes be case-insensitive by default:
 
 #+begin_src elvish
   edit:location:matcher = [@a]{ edit:location:match-dir-pattern &ignore-case $@a }
+  edit:insert:binding[Ctrl-R] = { edit:histlist:start; edit:histlist:toggle-case-sensitivity }
 #+end_src
 
 * Dynamic terminal title
