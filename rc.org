@@ -325,7 +325,7 @@ I sometimes use the [[https://atlas.oreilly.com/][O'Reilly Atlas]] publishing pl
 
 * OpsGenie
 
-I use OpsGenie at work, so I have put together the [[https://github.com/zzamboni/elvish-modules/blob/master/opsgenie.org][opsgenie]] library to make API operations easier.
+I used OpsGenie at work for a while, so I put together the [[https://github.com/zzamboni/elvish-modules/blob/master/opsgenie.org][opsgenie]] library to make API operations easier. I don't actively use or maintain this anymore.
 
 #+begin_src elvish
   use github.com/zzamboni/elvish-modules/opsgenie
@@ -333,7 +333,7 @@ I use OpsGenie at work, so I have put together the [[https://github.com/zzamboni
 
 * LeanPub
 
-I use [[https://leanpub.com/help/api][LeanPub]] for publishing my books, so I have written a few utility functions.
+I use [[https://leanpub.com/help/api][LeanPub]] for publishing my books, so I have written a few utility functions. I don't use this regularly, I have much better integration using Hammerspoon and CircleCI, I wrote about it in my blog: [[https://zzamboni.org/post/automating-leanpub-book-publishing-with-hammerspoon-and-circleci/][Automating Leanpub book publishing with Hammerspoon and CircleCI]].
 
 #+begin_src elvish
   use github.com/zzamboni/elvish-modules/leanpub
