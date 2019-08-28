@@ -160,7 +160,7 @@ Elvish does not have built-in alias functionality, but this is implemented easil
 For reference, I define here a few of my commonly-used aliases:
 
 #+begin_src elvish
-  alias:new dfc e:dfc -W -l -p -/dev/disk1s4,devfs
+  alias:new dfc e:dfc -W -p -/dev/disk1s4,devfs,map
   alias:new ls e:exa --color-scale --git --group-directories-first
   alias:new cat bat
   alias:new more bat --paging always
