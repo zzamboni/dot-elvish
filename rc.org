@@ -385,9 +385,14 @@ The [[https://github.com/iwoloschin/elvish-packages/blob/master/update.elv][upda
 
 I have a private library which contains some work-specific functions.
 
-#+begin_src elvish
+#+begin_src elvish :exports none
   use swisscom
 #+end_src
+
+#+begin_src elvish :tangle no
+  use work
+#+end_src
+
 
 * Exporting aliases
 
