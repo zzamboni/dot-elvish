@@ -57,10 +57,10 @@ edit:insert:binding[Alt-d] = $edit:kill-small-word-right~
 use github.com/zzamboni/elvish-modules/alias
 
 alias:new dfc e:dfc -W -p -/dev/disk1s4,devfs,map
-alias:new ls e:exa --color-scale --git --group-directories-first
-alias:new cat bat
-alias:new more bat --paging always
-alias:new v vagrant
+#  alias:new ls e:exa --color-scale --git --group-directories-first
+  alias:new cat bat
+  alias:new more bat --paging always
+  alias:new v vagrant
 
 use github.com/xiaq/edit.elv/smart-matcher
 smart-matcher:apply
@@ -110,6 +110,12 @@ edit:location:matcher = [@a]{ edit:location:match-dir-pattern &ignore-case $@a }
 edit:insert:binding[Ctrl-R] = {
   edit:histlist:start
   edit:histlist:toggle-case-sensitivity
+}
+
+fn ls [@_args]{
+  e:exa --color-scale --git --group-directories-first (each [o]{
+      if (eq $o "-lrt") { put "-lsnew" } else { put $o }
+  } $_args)
 }
 
 use github.com/zzamboni/elvish-modules/terminal-title

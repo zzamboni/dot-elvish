@@ -161,7 +161,7 @@ For reference, I define here a few of my commonly-used aliases:
 
 #+begin_src elvish
   alias:new dfc e:dfc -W -p -/dev/disk1s4,devfs,map
-  alias:new ls e:exa --color-scale --git --group-directories-first
+#  alias:new ls e:exa --color-scale --git --group-directories-first
   alias:new cat bat
   alias:new more bat --paging always
   alias:new v vagrant
@@ -305,6 +305,15 @@ The following makes the location and history modes be case-insensitive by defaul
   }
 #+end_src
 
+I use [[https://the.exa.website/][exa]] as a replacement for the =ls= command, so I alias =ls= to it. Unfortunately, =exa= does not understand the =-t= option to sort files by modification time, so I explicitly look for the =-lrt= option combination (which I use very often, and it /always/ trips me off) and replace them with the correct options for =exa=. All other options are passed as-is.
+
+#+begin_src elvish
+  fn ls [@_args]{
+    e:exa --color-scale --git --group-directories-first (each [o]{
+        if (eq $o "-lrt") { put "-lsnew" } else { put $o }
+    } $_args)
+  }
+#+end_src
 * Dynamic terminal title
 
 The [[https://github.com/zzamboni/elvish-modules/blob/master/terminal-title.org][terminal-title]] module handles setting the terminal title dynamically according to the current directory or the current command being executed.
