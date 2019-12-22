@@ -106,7 +106,6 @@ edit:insert:binding[Alt-i] = $dir:history-chooser~
 edit:insert:binding[Alt-b] = $dir:left-small-word-or-prev-dir~
 edit:insert:binding[Alt-f] = $dir:right-small-word-or-next-dir~
 
-edit:location:matcher = [@a]{ edit:location:match-dir-pattern &ignore-case $@a }
 edit:insert:binding[Ctrl-R] = {
   edit:histlist:start
   edit:histlist:toggle-case-sensitivity

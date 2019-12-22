@@ -277,15 +277,15 @@ I have decades of muscle memory using ~!!~ and ~!$~ to insert the last command a
 The [[https://github.com/zzamboni/modules.elv/blob/master/dir.org][dir]] module implements a directory history and some related functions. I alias the =cd= command to =dir:cd= so that any directory changes are kept in the history. I also alias =cdb= to =dir:cdb= function, which allows changing to the base directory of the argument.
 
 #+begin_src elvish
-  use github.com/zzamboni/elvish-modules/dir
-  alias:new cd &use=[github.com/zzamboni/elvish-modules/dir] dir:cd
-  alias:new cdb &use=[github.com/zzamboni/elvish-modules/dir] dir:cdb
+use github.com/zzamboni/elvish-modules/dir
+alias:new cd &use=[github.com/zzamboni/elvish-modules/dir] dir:cd
+alias:new cdb &use=[github.com/zzamboni/elvish-modules/dir] dir:cdb
 #+end_src
 
-=dir= also implements a narrow-based directory history chooser, which I bind to ~Alt-i~ (I have found I don't use this as much as I thought I would - the built-in location mode works nicely).
+=dir= also implements a custom directory history chooser, which I bind to ~Alt-i~ (I have found I don't use this as much as I thought I would - the built-in location mode works nicely).
 
 #+begin_src elvish
-  edit:insert:binding[Alt-i] = $dir:history-chooser~
+edit:insert:binding[Alt-i] = $dir:history-chooser~
 #+end_src
 
 I bind =Alt-b/f= to =dir:left-small-word-or-prev-dir= and =dir:right-small-word-or-next-dir= respectively, which "do the right thing" depending on the current content of the command prompt: if it's empty, they move back/forward in the directory history, otherwise they move through the words of the current command. In my Terminal.app setup, =Alt-left/right= also produce =Alt-b/f=, so these bindings work for those keys as well.
@@ -298,7 +298,6 @@ I bind =Alt-b/f= to =dir:left-small-word-or-prev-dir= and =dir:right-small-word-
 The following makes the location and history modes be case-insensitive by default:
 
 #+begin_src elvish
-  edit:location:matcher = [@a]{ edit:location:match-dir-pattern &ignore-case $@a }
   edit:insert:binding[Ctrl-R] = {
     edit:histlist:start
     edit:histlist:toggle-case-sensitivity
