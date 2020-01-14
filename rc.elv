@@ -127,6 +127,8 @@ use github.com/zzamboni/elvish-modules/opsgenie
 
 use github.com/zzamboni/elvish-modules/leanpub
 
+use github.com/zzamboni/elvish-modules/tinytex
+
 E:LESS = "-i -R"
 
 E:EDITOR = "vim"

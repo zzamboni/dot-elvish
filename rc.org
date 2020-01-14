@@ -32,6 +32,7 @@ This file is written in [[http://www.howardism.org/Technical/Emacs/literate-prog
 - [[#oreilly-atlas][O'Reilly Atlas]]
 - [[#opsgenie][OpsGenie]]
 - [[#leanpub][LeanPub]]
+- [[#tinytex][TinyTeX]]
 - [[#environment-variables][Environment variables]]
 - [[#utility-functions][Utility functions]]
 - [[#work-specific-stuff][Work-specific stuff]]
@@ -351,6 +352,14 @@ I use [[https://leanpub.com/help/api][LeanPub]] for publishing my books, so I ha
 
 #+begin_src elvish
   use github.com/zzamboni/elvish-modules/leanpub
+#+end_src
+
+* TinyTeX
+
+Tiny module with some utility functions for using [[https://yihui.org/tinytex/][TinyTeX]].
+
+#+begin_src elvish
+  use github.com/zzamboni/elvish-modules/tinytex
 #+end_src
 
 * Environment variables
