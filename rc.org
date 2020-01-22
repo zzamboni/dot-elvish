@@ -150,6 +150,12 @@ I add a couple of keybindings which are missing from the default =readline-bindi
     edit:insert:binding[Alt-d] = $edit:kill-small-word-right~
   #+end_src
 
+I also bind "[[https://elv.sh/ref/edit.html#edit-instantstart][instant preview mode]]" to ~Alt-m~. This is useful to see the results of a command while you are typing it.
+
+#+begin_src elvish
+  edit:insert:binding[Alt-m] = $edit:-instant:start~
+#+end_src
+
 * Aliases
 
 Elvish does not have built-in alias functionality, but this is implemented easily using the [[https://github.com/zzamboni/modules.elv/blob/master/alias.org][alias]] module, which stores the alias definitions as functions under [[https://github.com/zzamboni/dot-elvish/tree/master/aliases][~/.elvish/aliases/]] and loads them automatically.

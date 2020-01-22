@@ -54,6 +54,8 @@ edit:insert:binding[Alt-Backspace] = $edit:kill-small-word-left~
 
 edit:insert:binding[Alt-d] = $edit:kill-small-word-right~
 
+edit:insert:binding[Alt-m] = $edit:-instant:start~
+
 use github.com/zzamboni/elvish-modules/alias
 
 alias:new dfc e:dfc -W -p -/dev/disk1s4,devfs,map
