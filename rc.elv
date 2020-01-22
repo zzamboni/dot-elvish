@@ -15,9 +15,6 @@ paths = [
   /usr/local/opt/python/libexec/bin
   /usr/local/opt/ruby/bin
   ~/Dropbox/Personal/devel/hammerspoon/spoon/bin
-  ~/.gem/ruby/2.4.0/bin
-  /opt/X11/bin
-  /Library/TeX/texbin
   /usr/local/bin
   /usr/local/sbin
   /usr/sbin
