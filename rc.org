@@ -203,9 +203,9 @@ I load some command-specific completions from the  [[https://github.com/zzamboni
 I configure the git completer to use =hub= instead of =git= (if you use plain git, you don't need to call =git:init=)
 
 #+begin_src elvish
-  use github.com/zzamboni/elvish-completions/git
-  git:git-command = hub
-  git:init
+  use github.com/zzamboni/elvish-completions/git git-completions
+  git-completions:git-command = hub
+  git-completions:init
 #+end_src
 
 This is not usually necessary, but I load the =comp= library specifically since I do a lot of tests and development of completions.

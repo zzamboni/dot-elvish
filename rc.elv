@@ -69,9 +69,9 @@ use github.com/zzamboni/elvish-completions/cd
 use github.com/zzamboni/elvish-completions/ssh
 use github.com/zzamboni/elvish-completions/builtins
 
-use github.com/zzamboni/elvish-completions/git
-git:git-command = hub
-git:init
+use github.com/zzamboni/elvish-completions/git git-completions
+git-completions:git-command = hub
+git-completions:init
 
 use github.com/zzamboni/elvish-completions/comp
 
