@@ -142,6 +142,8 @@ use github.com/iwoloschin/elvish-packages/update
 update:curl-timeout = 3
 update:check-commit &verbose
 
+util:electric-delimiters
+
 use swisscom
 
 -exports- = (alias:export)

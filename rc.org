@@ -407,6 +407,11 @@ The [[https://github.com/iwoloschin/elvish-packages/blob/master/update.elv][upda
   update:check-commit &verbose
 #+end_src
 
+Set up electric delimiters in the command line.
+
+#+begin_src elvish
+  util:electric-delimiters
+#+end_src
 * Work-specific stuff
 
 I have a private library which contains some work-specific functions.
