@@ -76,7 +76,7 @@ git-completions:init
 use github.com/zzamboni/elvish-completions/comp
 
 use github.com/zzamboni/elvish-themes/chain
-chain:bold-prompt = $true
+chain:bold-prompt = $false
 
 chain:segment-style = [
   &dir=          session

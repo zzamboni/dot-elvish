@@ -220,7 +220,7 @@ I use the [[https://github.com/zzamboni/theme.elv/blob/master/chain.org][chain]]
 
 #+begin_src elvish
   use github.com/zzamboni/elvish-themes/chain
-  chain:bold-prompt = $true
+  chain:bold-prompt = $false
 #+end_src
 
 I set the color of the directory segment, the prompt chains and the
