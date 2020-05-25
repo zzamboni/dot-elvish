@@ -223,8 +223,7 @@ I use the [[https://github.com/zzamboni/theme.elv/blob/master/chain.org][chain]]
   chain:bold-prompt = $false
 #+end_src
 
-I set the color of the directory segment, the prompt chains and the
-prompt arrow in my prompt to a session-identifying color.
+I set the color of the directory segment, the prompt chains and the prompt arrow in my prompt to a session-identifying color (a different color for each session).
 
 #+begin_src elvish
   chain:segment-style = [
