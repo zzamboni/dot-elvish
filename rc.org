@@ -101,7 +101,7 @@ First, we load the module and set the proxy host.
 
 #+begin_src elvish
   use github.com/zzamboni/elvish-modules/proxy
-  proxy:host = "http://proxy.corproot.net:8079"
+  proxy:host = "http://aproxy.corproot.net:8080"
 #+end_src
 
 Next, we set the test function to enable proxy auto-setting. In my case, the =/etc/resolv.conf= file contains the =corproot.net= domain (set through DHCP) when I'm in the corporate network, so I can check for that.

@@ -34,7 +34,7 @@ epm:install &silent-if-installed=$true   \
   github.com/iwoloschin/elvish-packages
 
 use github.com/zzamboni/elvish-modules/proxy
-proxy:host = "http://proxy.corproot.net:8079"
+proxy:host = "http://aproxy.corproot.net:8080"
 
 proxy:test = {
   and ?(test -f /etc/resolv.conf) \
