@@ -85,8 +85,8 @@ chain:segment-style = [
   &git-combined= session
 ]
 
-chain:glyph[git-ahead]  = "⬆"
-chain:glyph[git-staged] = "✔"
+chain:glyph[arrow]  = "=>"
+chain:show-last-chain = $false
 
 edit:prompt-stale-transform = [x]{ styled $x "bright-black" }
 

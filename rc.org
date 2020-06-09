@@ -234,11 +234,11 @@ I set the color of the directory segment, the prompt chains and the prompt arrow
   ]
 #+end_src
 
-Customize some of the glyphs for the font I use in my terminal.
+Customize some of the glyphs for the font I use in my terminal. I use the [[https://github.com/tonsky/FiraCode][Fira Code]] font which includes ligatures, so I disable the last chain, and set the =arrow= segment to a combination of characters which shows up as a nice arrow.
 
 #+begin_src elvish
-  chain:glyph[git-ahead]  = "⬆"
-  chain:glyph[git-staged] = "✔"
+  chain:glyph[arrow]  = "=>"
+  chain:show-last-chain = $false
 #+end_src
 
 Elvish has a [[https://elvish.io/ref/edit.html#prompts][comprehensive mechanism]] for displaying prompts with useful information while avoiding getting blocked by prompt functions which take too long to finish. For the most part the defaults work well. One change I like to make is to change the [[https://elvish.io/ref/edit.html#stale-prompt][stale prompt transformer]] function to make the prompt dim when stale (the default is to show the prompt in inverse video):
