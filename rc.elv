@@ -56,10 +56,9 @@ edit:insert:binding[Alt-m] = $edit:-instant:start~
 use github.com/zzamboni/elvish-modules/alias
 
 alias:new dfc e:dfc -W -p -/dev/disk1s4,devfs,map
-#  alias:new ls e:exa --color-scale --git --group-directories-first
-  alias:new cat bat
-  alias:new more bat --paging always
-  alias:new v vagrant
+alias:new cat bat
+alias:new more bat --paging always
+alias:new v vagrant
 
 use github.com/xiaq/edit.elv/smart-matcher
 smart-matcher:apply
