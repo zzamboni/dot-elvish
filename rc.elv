@@ -82,6 +82,7 @@ chain:segment-style = [
   &chain=        session
   &arrow=        session
   &git-combined= session
+  &git-repo=     bright-blue
 ]
 
 chain:glyph[arrow]  = "=>"

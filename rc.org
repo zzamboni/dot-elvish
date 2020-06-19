@@ -230,6 +230,7 @@ I set the color of the directory segment, the prompt chains and the prompt arrow
     &chain=        session
     &arrow=        session
     &git-combined= session
+    &git-repo=     bright-blue
   ]
 #+end_src
 
