@@ -92,6 +92,9 @@ edit:prompt-stale-transform = [x]{ styled $x "bright-black" }
 
 edit:-prompt-eagerness = 10
 
+use github.com/zzamboni/elvish-modules/iterm2
+iterm2:init
+
 use github.com/zzamboni/elvish-modules/long-running-notifications
 
 use github.com/zzamboni/elvish-modules/bang-bang

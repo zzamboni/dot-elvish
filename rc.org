@@ -25,6 +25,7 @@ This file is written in [[http://www.howardism.org/Technical/Emacs/literate-prog
 - [[#aliases][Aliases]]
 - [[#completions][Completions]]
 - [[#prompt-theme][Prompt theme]]
+- [[#iterm2-shell-integration-support][iTerm2 shell integration support]]
 - [[#long-running-command-notifications][Long-running-command notifications]]
 - [[#directory-and-command-navigation-and-history][Directory and command navigation and history]]
 - [[#dynamic-terminal-title][Dynamic terminal title]]
@@ -257,6 +258,15 @@ I also like the continuous update of the prompt as I type (by default it only up
 
 #+begin_src elvish
   edit:-prompt-eagerness = 10
+#+end_src
+
+* iTerm2 shell integration support
+
+The =iterm2= module provides support for iTerm2's [[https://iterm2.com/documentation-shell-integration.html][Shell Integration]] features. Note that =iterm2:init= must be called after setting up the prompt, hence this is done after loading the =chain= module above.
+
+#+begin_src elvish
+  use github.com/zzamboni/elvish-modules/iterm2
+  iterm2:init
 #+end_src
 
 * Long-running-command notifications
