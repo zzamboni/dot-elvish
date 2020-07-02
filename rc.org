@@ -21,7 +21,7 @@ This file is written in [[http://www.howardism.org/Technical/Emacs/literate-prog
 - [[#paths][Paths]]
 - [[#package-installation][Package installation]]
 - [[#automatic-proxy-settings][Automatic proxy settings]]
-- [[#base-modules][Base modules]]
+- [[#general-modules-and-settings][General modules and settings]]
 - [[#aliases][Aliases]]
 - [[#completions][Completions]]
 - [[#prompt-theme][Prompt theme]]
@@ -120,7 +120,7 @@ We run an initial check so that other commands in rc.org get the correctd settin
   proxy:autoset
 #+end_src
 
-* Base modules
+* General modules and settings
 
 Load the bundled [[https://elvish.io/ref/re.html][re]] module to have access to regular expression functions.
 
@@ -148,11 +148,17 @@ I add a couple of keybindings which are missing from the default =readline-bindi
     edit:insert:binding[Alt-d] = $edit:kill-small-word-right~
   #+end_src
 
-I also bind "[[https://elv.sh/ref/edit.html#edit-instantstart][instant preview mode]]" to ~Alt-m~. This is useful to see the results of a command while you are typing it.
+- I also bind "[[https://elv.sh/ref/edit.html#edit-instantstart][instant preview mode]]" to ~Alt-m~. This is useful to see the results of a command while you are typing it.
 
-#+begin_src elvish
-  edit:insert:binding[Alt-m] = $edit:-instant:start~
-#+end_src
+  #+begin_src elvish
+    edit:insert:binding[Alt-m] = $edit:-instant:start~
+  #+end_src
+
+- Limit the height of location and history mode so that they don't cover the whole screen.
+
+  #+begin_src elvish
+    edit:max-height = 20
+  #+end_src
 
 * Aliases
 
@@ -267,6 +273,7 @@ The =iterm2= module provides support for iTerm2's [[https://iterm2.com/documenta
 #+begin_src elvish
   use github.com/zzamboni/elvish-modules/iterm2
   iterm2:init
+  edit:insert:binding[Ctrl-L] = $iterm2:clear-screen~
 #+end_src
 
 * Long-running-command notifications

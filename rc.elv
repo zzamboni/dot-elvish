@@ -53,6 +53,8 @@ edit:insert:binding[Alt-d] = $edit:kill-small-word-right~
 
 edit:insert:binding[Alt-m] = $edit:-instant:start~
 
+edit:max-height = 20
+
 use github.com/zzamboni/elvish-modules/alias
 
 alias:new dfc e:dfc -W -p -/dev/disk1s4,devfs,map
@@ -94,6 +96,7 @@ edit:-prompt-eagerness = 10
 
 use github.com/zzamboni/elvish-modules/iterm2
 iterm2:init
+edit:insert:binding[Ctrl-L] = $iterm2:clear-screen~
 
 use github.com/zzamboni/elvish-modules/long-running-notifications
 
