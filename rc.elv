@@ -4,17 +4,13 @@
 # You should make any changes there and regenerate it from Emacs org-mode using C-c C-v t
 
 E:GOPATH = ~/Dropbox/Personal/devel/go
-E:RACKETPATH = ~/Library/Racket/7.2
 paths = [
   ~/bin
   $E:GOPATH/bin
-  $E:RACKETPATH/bin
-  ~/Library/Python/3.7/bin
   /usr/local/opt/coreutils/libexec/gnubin
   /usr/local/opt/texinfo/bin
   /usr/local/opt/python/libexec/bin
-  /usr/local/opt/ruby/bin
-  ~/Dropbox/Personal/devel/hammerspoon/spoon/bin
+  /usr/local/opt/ruby@2.6/bin
   /usr/local/bin
   /usr/local/sbin
   /usr/sbin
@@ -22,6 +18,12 @@ paths = [
   /usr/bin
   /bin
 ]
+
+each [p]{
+  if (not (-is-dir $p)) {
+    echo (styled "Warning: directory "$p" in $paths no longer exists." red)
+  }
+} $paths
 
 use epm
 
