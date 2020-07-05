@@ -64,6 +64,12 @@ alias:new cat bat
 alias:new more bat --paging always
 alias:new v vagrant
 
+fn manpdf [@cmds]{
+  each [c]{
+    man -t $c | open -f -a /System/Applications/Preview.app
+  } $cmds
+}
+
 use github.com/xiaq/edit.elv/smart-matcher
 smart-matcher:apply
 

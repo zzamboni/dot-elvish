@@ -22,7 +22,7 @@ This file is written in [[http://www.howardism.org/Technical/Emacs/literate-prog
 - [[#package-installation][Package installation]]
 - [[#automatic-proxy-settings][Automatic proxy settings]]
 - [[#general-modules-and-settings][General modules and settings]]
-- [[#aliases][Aliases]]
+- [[#aliases-and-miscellaneous-functions][Aliases and miscellaneous functions]]
 - [[#completions][Completions]]
 - [[#prompt-theme][Prompt theme]]
 - [[#iterm2-shell-integration-support][iTerm2 shell integration support]]
@@ -165,7 +165,7 @@ I add a couple of keybindings which are missing from the default =readline-bindi
     edit:max-height = 20
   #+end_src
 
-* Aliases
+* Aliases and miscellaneous functions
 
 Elvish does not have built-in alias functionality, but this is implemented easily using the [[https://github.com/zzamboni/modules.elv/blob/master/alias.org][alias]] module, which stores the alias definitions as functions under [[https://github.com/zzamboni/dot-elvish/tree/master/aliases][~/.elvish/aliases/]] and loads them automatically.
 
@@ -180,6 +180,16 @@ For reference, I define here a few of my commonly-used aliases:
   alias:new cat bat
   alias:new more bat --paging always
   alias:new v vagrant
+#+end_src
+
+Open man pages as PDF, I gathered this tip from https://twitter.com/MrAhmadAwais/status/1279066968981635075.
+
+#+begin_src elvish
+  fn manpdf [@cmds]{
+    each [c]{
+      man -t $c | open -f -a /System/Applications/Preview.app
+    } $cmds
+  }
 #+end_src
 
 * Completions
