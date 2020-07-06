@@ -27,19 +27,19 @@ each [p]{
 
 use epm
 
-epm:install &silent-if-installed=$true   \
-  github.com/zzamboni/elvish-modules     \
-  github.com/zzamboni/elvish-completions \
-  github.com/zzamboni/elvish-themes      \
-  github.com/xiaq/edit.elv               \
-  github.com/muesli/elvish-libs          \
+epm:install &silent-if-installed=$true   ^
+  github.com/zzamboni/elvish-modules     ^
+  github.com/zzamboni/elvish-completions ^
+  github.com/zzamboni/elvish-themes      ^
+  github.com/xiaq/edit.elv               ^
+  github.com/muesli/elvish-libs          ^
   github.com/iwoloschin/elvish-packages
 
 use github.com/zzamboni/elvish-modules/proxy
 proxy:host = "http://aproxy.corproot.net:8080"
 
 proxy:test = {
-  and ?(test -f /etc/resolv.conf) \
+  and ?(test -f /etc/resolv.conf) ^
   ?(egrep -q '^(search|domain).*(corproot.net|swissptt.ch)' /etc/resolv.conf)
 }
 
