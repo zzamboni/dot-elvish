@@ -64,6 +64,8 @@ alias:new cat bat
 alias:new more bat --paging always
 alias:new v vagrant
 
+E:MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
 fn manpdf [@cmds]{
   each [c]{
     man -t $c | open -f -a /System/Applications/Preview.app

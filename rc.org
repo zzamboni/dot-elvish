@@ -182,7 +182,13 @@ For reference, I define here a few of my commonly-used aliases:
   alias:new v vagrant
 #+end_src
 
-Open man pages as PDF, I gathered this tip from https://twitter.com/MrAhmadAwais/status/1279066968981635075.
+=bat= =man= ([[https://github.com/sharkdp/bat#man][using =bat= as the pager for =man= pages]]).
+
+#+begin_src elvish
+  E:MANPAGER="sh -c 'col -bx | bat -l man -p'"
+#+end_src
+
+Open man pages as PDF, I gathered this tip from https://twitter.com/MrAhmadAwais/status/1279066968981635075. Neat but not very useful for daily use, particularly with the =bat= integration above.
 
 #+begin_src elvish
   fn manpdf [@cmds]{
