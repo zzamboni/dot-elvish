@@ -88,12 +88,12 @@ For now I use these packages:
 - [[https://github.com/iwoloschin/elvish-packages][github.com/iwoloschin/elvish-packages]] for the update.elv package.
 
 #+begin_src elvish
-  epm:install &silent-if-installed=$true   \
-    github.com/zzamboni/elvish-modules     \
-    github.com/zzamboni/elvish-completions \
-    github.com/zzamboni/elvish-themes      \
-    github.com/xiaq/edit.elv               \
-    github.com/muesli/elvish-libs          \
+  epm:install &silent-if-installed=$true   ^
+    github.com/zzamboni/elvish-modules     ^
+    github.com/zzamboni/elvish-completions ^
+    github.com/zzamboni/elvish-themes      ^
+    github.com/xiaq/edit.elv               ^
+    github.com/muesli/elvish-libs          ^
     github.com/iwoloschin/elvish-packages
 #+end_src
 
@@ -114,7 +114,7 @@ Next, we set the test function to enable proxy auto-setting. In my case, the =/e
 
 #+begin_src elvish
   proxy:test = {
-    and ?(test -f /etc/resolv.conf) \
+    and ?(test -f /etc/resolv.conf) ^
     ?(egrep -q '^(search|domain).*(corproot.net|swissptt.ch)' /etc/resolv.conf)
   }
 #+end_src
