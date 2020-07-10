@@ -59,7 +59,7 @@ edit:max-height = 20
 
 use github.com/zzamboni/elvish-modules/alias
 
-alias:new dfc e:dfc -p -/dev/disk1s4,devfs,map
+alias:new dfc e:dfc -p -/dev/disk1s4,devfs,map,com.apple.TimeMachine
 alias:new cat bat
 alias:new more bat --paging always
 alias:new v vagrant
