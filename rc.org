@@ -265,7 +265,7 @@ I set the color of the directory segment, the prompt chains and the prompt arrow
 Customize some of the glyphs for the font I use in my terminal. I use the [[https://github.com/tonsky/FiraCode][Fira Code]] font which includes ligatures, so I disable the last chain, and set the =arrow= segment to a combination of characters which shows up as a nice arrow.
 
 #+begin_src elvish
-  chain:glyph[arrow]  = "=>"
+  chain:glyph[arrow]  = "|>"
   chain:show-last-chain = $false
 #+end_src
 
