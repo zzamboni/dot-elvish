@@ -88,7 +88,7 @@ For now I use these packages:
 - [[https://github.com/iwoloschin/elvish-packages][github.com/iwoloschin/elvish-packages]] for the update.elv package.
 
 #+begin_src elvish
-  epm:install &silent-if-installed=$true   ^
+  epm:install &silent-if-installed         ^
     github.com/zzamboni/elvish-modules     ^
     github.com/zzamboni/elvish-completions ^
     github.com/zzamboni/elvish-themes      ^

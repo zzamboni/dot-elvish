@@ -27,7 +27,7 @@ each [p]{
 
 use epm
 
-epm:install &silent-if-installed=$true   ^
+epm:install &silent-if-installed         ^
   github.com/zzamboni/elvish-modules     ^
   github.com/zzamboni/elvish-completions ^
   github.com/zzamboni/elvish-themes      ^
