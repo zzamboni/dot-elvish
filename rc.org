@@ -454,6 +454,14 @@ Set up electric delimiters in the command line.
 #+begin_src elvish
   util:electric-delimiters
 #+end_src
+
+ASCII spinners and TTY escape code generation.
+
+#+begin_src elvish
+  use github.com/zzamboni/elvish-modules/spinners
+  use github.com/zzamboni/elvish-modules/tty
+#+end_src
+
 * Work-specific stuff
 
 I have a private library which contains some work-specific functions.

@@ -162,6 +162,9 @@ update:check-commit &verbose
 
 util:electric-delimiters
 
+use github.com/zzamboni/elvish-modules/spinners
+use github.com/zzamboni/elvish-modules/tty
+
 use swisscom
 
 -exports- = (alias:export)
