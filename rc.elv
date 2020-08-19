@@ -6,6 +6,7 @@
 E:GOPATH = ~/Dropbox/Personal/devel/go
 paths = [
   ~/bin
+  ~/.emacs.d/bin
   $E:GOPATH/bin
   /usr/local/opt/coreutils/libexec/gnubin
   /usr/local/opt/texinfo/bin
