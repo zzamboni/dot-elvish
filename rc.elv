@@ -11,6 +11,7 @@ paths = [
   /usr/local/opt/coreutils/libexec/gnubin
   /usr/local/opt/texinfo/bin
   /usr/local/opt/python/libexec/bin
+  ~/Library/Python/3.8/bin
   /usr/local/opt/ruby@2.6/bin
   /usr/local/bin
   /usr/local/sbin

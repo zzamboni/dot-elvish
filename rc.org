@@ -44,39 +44,40 @@ This file is written in [[http://www.howardism.org/Technical/Emacs/literate-prog
 First we set up the executable paths. We set the =GOPATH= environment variable while we are at it, since we need to use it as part of the path.
 
 #+begin_src elvish
-  E:GOPATH = ~/Dropbox/Personal/devel/go
-  paths = [
-    ~/bin
-    ~/.emacs.d/bin
-    $E:GOPATH/bin
-    /usr/local/opt/coreutils/libexec/gnubin
-    /usr/local/opt/texinfo/bin
-    /usr/local/opt/python/libexec/bin
-    /usr/local/opt/ruby@2.6/bin
-    /usr/local/bin
-    /usr/local/sbin
-    /usr/sbin
-    /sbin
-    /usr/bin
-    /bin
-  ]
+E:GOPATH = ~/Dropbox/Personal/devel/go
+paths = [
+  ~/bin
+  ~/.emacs.d/bin
+  $E:GOPATH/bin
+  /usr/local/opt/coreutils/libexec/gnubin
+  /usr/local/opt/texinfo/bin
+  /usr/local/opt/python/libexec/bin
+  ~/Library/Python/3.8/bin
+  /usr/local/opt/ruby@2.6/bin
+  /usr/local/bin
+  /usr/local/sbin
+  /usr/sbin
+  /sbin
+  /usr/bin
+  /bin
+]
 #+end_src
 
 I have a quick sanity check because sometimes certain paths disappear depending on new versions, etc. This prints a warning when opening a new shell, if there are any non-existing directories in =$paths=.
 
 #+begin_src elvish
-  each [p]{
-    if (not (-is-dir $p)) {
-      echo (styled "Warning: directory "$p" in $paths no longer exists." red)
-    }
-  } $paths
+each [p]{
+  if (not (-is-dir $p)) {
+    echo (styled "Warning: directory "$p" in $paths no longer exists." red)
+  }
+} $paths
 #+end_src
 * Package installation
 
 The bundled [[https://elvish.io/ref/epm.html][epm]] module allows us to install and manage Elvish packages.
 
 #+begin_src elvish
-  use epm
+use epm
 #+end_src
 
 For now I use these packages:
