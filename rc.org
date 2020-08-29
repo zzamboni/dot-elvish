@@ -45,7 +45,10 @@ First we set up the executable paths. We set the =GOPATH= environment variable w
 
 #+begin_src elvish
 E:GOPATH = ~/Dropbox/Personal/devel/go
+# gccemacs
+E:EMACSPATH = ~/Applications/Emacs.app/Contents/MacOS
 paths = [
+  $E:EMACSPATH
   ~/bin
   ~/.emacs.d/bin
   $E:GOPATH/bin

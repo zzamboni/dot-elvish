@@ -4,7 +4,10 @@
 # You should make any changes there and regenerate it from Emacs org-mode using C-c C-v t
 
 E:GOPATH = ~/Dropbox/Personal/devel/go
+# gccemacs
+E:EMACSPATH = ~/Applications/Emacs.app/Contents/MacOS
 paths = [
+  $E:EMACSPATH
   ~/bin
   ~/.emacs.d/bin
   $E:GOPATH/bin
