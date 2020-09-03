@@ -5,9 +5,9 @@
 
 E:GOPATH = ~/Dropbox/Personal/devel/go
 # gccemacs
-E:EMACSPATH = ~/Applications/Emacs.app/Contents/MacOS
+# E:EMACSPATH = ~/Applications/Emacs.app/Contents/MacOS
 paths = [
-  $E:EMACSPATH
+  ~/Applications/Emacs.app/Contents/MacOS
   ~/bin
   ~/.emacs.d/bin
   $E:GOPATH/bin
