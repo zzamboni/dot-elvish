@@ -44,11 +44,13 @@ This file is written in [[http://www.howardism.org/Technical/Emacs/literate-prog
 First we set up the executable paths. We set the =GOPATH= environment variable while we are at it, since we need to use it as part of the path.
 
 #+begin_src elvish
+# Where all the Go stuff is
 E:GOPATH = ~/Dropbox/Personal/devel/go
-# gccemacs
-# E:EMACSPATH = ~/Applications/Emacs.app/Contents/MacOS
+# I use the gccemacs build for macOS, from https://github.com/jimeh/build-emacs-for-macos
+emacs-path=~/Applications/Emacs.app/Contents/MacOS
+
 paths = [
-  ~/Applications/Emacs.app/Contents/MacOS
+  $emacs-path $emacs-path/bin
   ~/bin
   ~/.emacs.d/bin
   $E:GOPATH/bin

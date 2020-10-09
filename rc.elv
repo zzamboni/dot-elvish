@@ -3,11 +3,13 @@
 # https://gitlab.com/zzamboni/dot-elvish/-/blob/master/rc.org
 # You should make any changes there and regenerate it from Emacs org-mode using C-c C-v t
 
+# Where all the Go stuff is
 E:GOPATH = ~/Dropbox/Personal/devel/go
-# gccemacs
-# E:EMACSPATH = ~/Applications/Emacs.app/Contents/MacOS
+# I use the gccemacs build for macOS, from https://github.com/jimeh/build-emacs-for-macos
+emacs-path=~/Applications/Emacs.app/Contents/MacOS
+
 paths = [
-  ~/Applications/Emacs.app/Contents/MacOS
+  $emacs-path $emacs-path/bin
   ~/bin
   ~/.emacs.d/bin
   $E:GOPATH/bin
