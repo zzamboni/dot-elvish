@@ -5,8 +5,9 @@
 
 # Where all the Go stuff is
 E:GOPATH = ~/Dropbox/Personal/devel/go
-# I use the gccemacs build for macOS, from https://github.com/jimeh/build-emacs-for-macos
-emacs-path=~/Applications/Emacs.app/Contents/MacOS
+# I use the gccemacs build for macOS, from
+# https://github.com/jimeh/build-emacs-for-macos
+emacs-path = ~/Applications/Emacs.app/Contents/MacOS
 
 paths = [
   $emacs-path $emacs-path/bin
