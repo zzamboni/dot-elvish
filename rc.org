@@ -360,12 +360,17 @@ edit:insert:binding[Ctrl-R] = {
 }
 #+end_src
 
-I use [[https://the.exa.website/][exa]] as a replacement for the =ls= command, so I alias =ls= to it. Unfortunately, =exa= does not understand the =-t= option to sort files by modification time, so I explicitly look for the =-lrt= option combination (which I use very often, and it /always/ trips me off) and replace them with the correct options for =exa=. All other options are passed as-is.
+I use [[https://the.exa.website/][exa]] as a replacement for the =ls= command, so I alias =ls= to it. Unfortunately, =exa= does not understand the =-t= option to sort files by modification time, so I explicitly look for the =-lrt= and =-lrta= option combinations (which I use very often, and /always/ trip me off) and replace them with the correct options for =exa=. All other options are passed as-is.
 
 #+begin_src elvish
 fn ls [@_args]{
+  use github.com/zzamboni/elvish-modules/util
   e:exa --color-scale --git --group-directories-first (each [o]{
-      if (eq $o "-lrt") { put "-lsnew" } else { put $o }
+      util:cond [
+        { eq $o "-lrt" }  "-lsnew"
+        { eq $o "-lrta" } "-alsnew"
+        :else             $o
+      ]
   } $_args)
 }
 #+end_src

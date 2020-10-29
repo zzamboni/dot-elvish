@@ -134,8 +134,13 @@ edit:insert:binding[Ctrl-R] = {
 }
 
 fn ls [@_args]{
+  use github.com/zzamboni/elvish-modules/util
   e:exa --color-scale --git --group-directories-first (each [o]{
-      if (eq $o "-lrt") { put "-lsnew" } else { put $o }
+      util:cond [
+        { eq $o "-lrt" }  "-lsnew"
+        { eq $o "-lrta" } "-alsnew"
+        :else             $o
+      ]
   } $_args)
 }
 
