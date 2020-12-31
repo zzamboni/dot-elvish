@@ -83,7 +83,6 @@ fn manpdf [@cmds]{
 use github.com/xiaq/edit.elv/smart-matcher
 smart-matcher:apply
 
-use github.com/zzamboni/elvish-completions/vcsh
 use github.com/zzamboni/elvish-completions/cd
 use github.com/zzamboni/elvish-completions/ssh
 use github.com/zzamboni/elvish-completions/builtins

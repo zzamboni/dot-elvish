@@ -236,7 +236,6 @@ I also configure ~Tab~ to trigger completion mode, but also to automatically ent
 I load some command-specific completions from the  [[https://github.com/zzamboni/elvish-completions][elvish-completions]] package:
 
 #+begin_src elvish
-use github.com/zzamboni/elvish-completions/vcsh
 use github.com/zzamboni/elvish-completions/cd
 use github.com/zzamboni/elvish-completions/ssh
 use github.com/zzamboni/elvish-completions/builtins
