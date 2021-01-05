@@ -177,6 +177,10 @@ util:electric-delimiters
 use github.com/zzamboni/elvish-modules/spinners
 use github.com/zzamboni/elvish-modules/tty
 
+chain:find-all-user-repos = {
+  fd -H -I -t d -E '.emacs.d/' '^.git$' ~ | each $path-dir~
+}
+
 use swisscom
 
 -exports- = (alias:export)

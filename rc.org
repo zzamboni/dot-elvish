@@ -481,6 +481,13 @@ use github.com/zzamboni/elvish-modules/spinners
 use github.com/zzamboni/elvish-modules/tty
 #+end_src
 
+Customize the command used for finding git repos for =chain:summary-status &all=, to ignore some uninteresting repos.
+
+#+begin_src elvish
+chain:find-all-user-repos = {
+  fd -H -I -t d -E '.emacs.d/' '^.git$' ~ | each $path-dir~
+}
+#+end_src
 * Work-specific stuff
 
 I have a private library which contains some work-specific functions.
