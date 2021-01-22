@@ -189,5 +189,3 @@ chain:find-all-user-repos = {
 }
 
 use swisscom
-
--exports- = (alias:export)

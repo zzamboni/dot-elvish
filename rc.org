@@ -38,7 +38,6 @@ This file is written in [[https://leanpub.com/lit-config][literate programming s
 - [[#environment-variables][Environment variables]]
 - [[#utility-functions][Utility functions]]
 - [[#work-specific-stuff][Work-specific stuff]]
-- [[#exporting-aliases][Exporting aliases]]
 
 * Module loading
 
@@ -518,13 +517,4 @@ use swisscom
 
 #+begin_src elvish :tangle no
 use work
-#+end_src
-
-
-* Exporting aliases
-
-We populate =$-exports-= with the alias definitions so that they become available in the interactive namespace.
-
-#+begin_src elvish
--exports- = (alias:export)
 #+end_src
