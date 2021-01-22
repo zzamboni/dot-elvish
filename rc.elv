@@ -3,6 +3,15 @@
 # https://gitlab.com/zzamboni/dot-elvish/-/blob/master/rc.org
 # You should make any changes there and regenerate it from Emacs org-mode using C-c C-v t
 
+use re
+
+use readline-binding
+
+use path
+
+use str
+use math
+
 # Where all the Go stuff is
 E:GOPATH = ~/Dropbox/Personal/devel/go
 # I use the gccemacs build for macOS, from
@@ -28,7 +37,7 @@ paths = [
 ]
 
 each [p]{
-  if (not (-is-dir $p)) {
+  if (not (path:is-dir $p)) {
     echo (styled "Warning: directory "$p" in $paths no longer exists." red)
   }
 } $paths
@@ -53,10 +62,6 @@ proxy:test = {
 
 proxy:autoset
 
-use re
-
-use readline-binding
-
 edit:insert:binding[Alt-Backspace] = $edit:kill-small-word-left~
 
 edit:insert:binding[Alt-d] = $edit:kill-small-word-right~
@@ -72,7 +77,7 @@ alias:new cat bat
 alias:new more bat --paging always
 alias:new v vagrant
 
-E:MANPAGER="sh -c 'col -bx | bat -l man -p'"
+E:MANPAGER = "sh -c 'col -bx | bat -l man -p'"
 
 fn manpdf [@cmds]{
   each [c]{
@@ -162,7 +167,7 @@ E:EDITOR = "vim"
 
 E:LC_ALL = "en_US.UTF-8"
 
-E:PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig"
+E:PKG_CONFIG_PATH = "/usr/local/opt/icu4c/lib/pkgconfig"
 
 use github.com/zzamboni/elvish-modules/util
 
@@ -180,7 +185,7 @@ use github.com/zzamboni/elvish-modules/tty
 chain-repos-to-exclude = [.emacs.d/ .emacs.d.mine/quelpa/ Library/Caches Dropbox/Personal/devel/go/src]
 chain-fd-exclude-opts = [(each [d]{ put -E $d } $chain-repos-to-exclude)]
 chain:find-all-user-repos = {
-  fd -H -I -t d $@chain-fd-exclude-opts '^.git$' ~ | each $path-dir~
+  fd -H -I -t d $@chain-fd-exclude-opts '^.git$' ~ | each $path:dir~
 }
 
 use swisscom

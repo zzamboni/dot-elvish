@@ -18,6 +18,7 @@ This is my main config file for [[http://elv.sh][Elvish]].
 This file is written in [[https://leanpub.com/lit-config][literate programming style]] using [[https://orgmode.org/][org-mode]]. See [[https://gitlab.com/zzamboni/dot-elvish/-/blob/master/rc.elv][rc.elv]] for the generated file. You can see this in a nicer format on my blog post [[http://zzamboni.org/post/my-elvish-configuration-with-commentary/][My Elvish Configuration With Commentary]].
 
 * Table of Contents :TOC_3:noexport:
+- [[#module-loading][Module loading]]
 - [[#paths][Paths]]
 - [[#package-installation][Package installation]]
 - [[#automatic-proxy-settings][Automatic proxy settings]]
@@ -38,6 +39,35 @@ This file is written in [[https://leanpub.com/lit-config][literate programming s
 - [[#utility-functions][Utility functions]]
 - [[#work-specific-stuff][Work-specific stuff]]
 - [[#exporting-aliases][Exporting aliases]]
+
+* Module loading
+
+Load a number of commonly-used modules so that they are available in my interactive session.
+
+Load the bundled [[https://elvish.io/ref/re.html][re]] module to have access to regular expression functions.
+
+#+begin_src elvish
+use re
+#+end_src
+
+The bundled [[https://elvish.io/ref/bundled.html][readline-binding]] module associates some Emacs-like keybindings for manipulation of the command line.
+
+#+begin_src elvish
+use readline-binding
+#+end_src
+
+The bundled =path= module contains path manipulation functions.
+
+#+begin_src elvish
+use path
+#+end_src
+
+The bundled =str= and =math= modules for string manipulation and math operations.
+
+#+begin_src elvish
+use str
+use math
+#+end_src
 
 * Paths
 
@@ -73,7 +103,7 @@ I have a quick sanity check because sometimes certain paths disappear depending 
 
 #+begin_src elvish
 each [p]{
-  if (not (-is-dir $p)) {
+  if (not (path:is-dir $p)) {
     echo (styled "Warning: directory "$p" in $paths no longer exists." red)
   }
 } $paths
@@ -142,18 +172,6 @@ proxy:autoset
 
 * General modules and settings
 
-Load the bundled [[https://elvish.io/ref/re.html][re]] module to have access to regular expression functions.
-
-#+begin_src elvish
-use re
-#+end_src
-
-The bundled [[https://elvish.io/ref/bundled.html][readline-binding]] module associates some Emacs-like keybindings for manipulation of the command line.
-
-#+begin_src elvish
-use readline-binding
-#+end_src
-
 I add a couple of keybindings which are missing from the default =readline-binding= module:
 
 - =Alt-backspace= to delete small-word
@@ -200,7 +218,7 @@ alias:new v vagrant
 =bat= =man= ([[https://github.com/sharkdp/bat#man][using =bat= as the pager for =man= pages]]).
 
 #+begin_src elvish
-E:MANPAGER="sh -c 'col -bx | bat -l man -p'"
+E:MANPAGER = "sh -c 'col -bx | bat -l man -p'"
 #+end_src
 
 Open man pages as PDF, I gathered this tip from https://twitter.com/MrAhmadAwais/status/1279066968981635075. Neat but not very useful for daily use, particularly with the =bat= integration above.
@@ -443,7 +461,7 @@ E:LC_ALL = "en_US.UTF-8"
 
 PKG_CONFIG configuration
 #+begin_src elvish
-E:PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig"
+E:PKG_CONFIG_PATH = "/usr/local/opt/icu4c/lib/pkgconfig"
 #+end_src
 
 * Utility functions
@@ -487,7 +505,7 @@ Customize the command used for finding git repos for =chain:summary-status &all=
 chain-repos-to-exclude = [.emacs.d/ .emacs.d.mine/quelpa/ Library/Caches Dropbox/Personal/devel/go/src]
 chain-fd-exclude-opts = [(each [d]{ put -E $d } $chain-repos-to-exclude)]
 chain:find-all-user-repos = {
-  fd -H -I -t d $@chain-fd-exclude-opts '^.git$' ~ | each $path-dir~
+  fd -H -I -t d $@chain-fd-exclude-opts '^.git$' ~ | each $path:dir~
 }
 #+end_src
 * Work-specific stuff
