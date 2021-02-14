@@ -37,7 +37,7 @@ paths = [
 ]
 
 each [p]{
-  if (not (path:is-dir $p)) {
+  if (not (path:is-dir (path:eval-symlinks $p))) {
     echo (styled "Warning: directory "$p" in $paths no longer exists." red)
   }
 } $paths
