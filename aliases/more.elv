@@ -1,2 +1,2 @@
 #alias:new more bat --paging always
-fn more [@_args]{ bat --paging always $@_args }
+edit:add-var more~ [@_args]{ bat --paging always $@_args }

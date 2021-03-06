@@ -1,2 +1,2 @@
 #alias:new cat bat
-fn cat [@_args]{ bat $@_args }
+edit:add-var cat~ [@_args]{ bat $@_args }

@@ -1,2 +1,2 @@
 #alias:new v vagrant
-fn v [@_args]{ vagrant $@_args }
+edit:add-var v~ [@_args]{ vagrant $@_args }

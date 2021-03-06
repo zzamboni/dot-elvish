@@ -1,2 +1,2 @@
 #alias:new git hub
-fn git [@_args]{ hub $@_args }
+edit:add-var git~ [@_args]{ hub $@_args }
