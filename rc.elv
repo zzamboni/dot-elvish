@@ -76,6 +76,7 @@ alias:new dfc e:dfc -p -/dev/disk1s4,devfs,map,com.apple.TimeMachine
 alias:new cat bat
 alias:new more bat --paging always
 alias:new v vagrant
+alias:new git hub
 
 E:MANPAGER = "sh -c 'col -bx | bat -l man -p'"
 
