@@ -66,6 +66,13 @@ edit:insert:binding[Alt-m] = $edit:-instant:start~
 
 edit:max-height = 20
 
+use github.com/zzamboni/elvish-modules/1pass
+
+use github.com/zzamboni/elvish-modules/lazy-vars
+
+lazy-vars:add-var HOMEBREW_GITHUB_API_TOKEN { 1pass:get-password "github api token for homebrew" }
+lazy-vars:add-alias brew [ HOMEBREW_GITHUB_API_TOKEN ]
+
 use github.com/zzamboni/elvish-modules/alias
 
 alias:new dfc e:dfc -p -/dev/disk1s4,devfs,map,com.apple.TimeMachine
@@ -155,6 +162,7 @@ use github.com/zzamboni/elvish-modules/atlas
 use github.com/zzamboni/elvish-modules/opsgenie
 
 use github.com/zzamboni/elvish-modules/leanpub
+leanpub:api-key-fn = { 1pass:get-item leanpub &fields=["API key"] }
 
 use github.com/zzamboni/elvish-modules/tinytex
 

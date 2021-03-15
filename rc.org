@@ -25,6 +25,7 @@ This file is written in [[https://leanpub.com/lit-config][literate programming s
 - [[#package-installation][Package installation]]
 - [[#automatic-proxy-settings][Automatic proxy settings]]
 - [[#general-modules-and-settings][General modules and settings]]
+- [[#1password][1Password]]
 - [[#aliases-and-miscellaneous-functions][Aliases and miscellaneous functions]]
 - [[#completions][Completions]]
 - [[#prompt-theme][Prompt theme]]
@@ -194,6 +195,23 @@ edit:insert:binding[Alt-m] = $edit:-instant:start~
   #+begin_src elvish
 edit:max-height = 20
   #+end_src
+
+* 1Password
+
+My =1pass= module provides some wrappers for interacting with the [[https://support.1password.com/command-line/][1Password command line utility]].
+
+#+begin_src elvish
+use github.com/zzamboni/elvish-modules/1pass
+#+end_src
+
+I use this together with my =lazy-vars= module to read the GitHub token to use with the =brew= command.
+
+#+begin_src elvish
+use github.com/zzamboni/elvish-modules/lazy-vars
+
+lazy-vars:add-var HOMEBREW_GITHUB_API_TOKEN { 1pass:get-password "github api token for homebrew" }
+lazy-vars:add-alias brew [ HOMEBREW_GITHUB_API_TOKEN ]
+#+end_src
 
 * Aliases and miscellaneous functions
 
@@ -423,10 +441,11 @@ use github.com/zzamboni/elvish-modules/opsgenie
 
 * LeanPub
 
-I use [[https://leanpub.com/help/api][LeanPub]] for publishing my books, so I have written a few utility functions. I don't use this regularly, I have much better integration using Hammerspoon and CircleCI, I wrote about it in my blog: [[https://zzamboni.org/post/automating-leanpub-book-publishing-with-hammerspoon-and-circleci/][Automating Leanpub book publishing with Hammerspoon and CircleCI]].
+I use [[https://leanpub.com/help/api][LeanPub]] for publishing my books, so I have written a few utility functions. I don't use this regularly, I have much better integration using Hammerspoon and CircleCI, I wrote about it in my blog: [[https://zzamboni.org/post/automating-leanpub-book-publishing-with-hammerspoon-and-circleci/][Automating Leanpub book publishing with Hammerspoon and CircleCI]]. The Leanpub API key is fetched from 1Password when needed.
 
 #+begin_src elvish
 use github.com/zzamboni/elvish-modules/leanpub
+leanpub:api-key-fn = { 1pass:get-item leanpub &fields=["API key"] }
 #+end_src
 
 * TinyTeX
