@@ -301,9 +301,7 @@ Testing Starship for my prompt.
 eval (starship init elvish)
 #+end_src
 
-This is my current Starship config file:
-
-#+include: ~/.config/starship.toml src conf-toml
+You can find my current Starship config file at [[https://gitlab.com/zzamboni/mac-setup/-/blob/master/files/homefiles/.config/starship.toml]].
 
 ** Chain
 
