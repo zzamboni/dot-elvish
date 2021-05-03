@@ -29,6 +29,8 @@ This file is written in [[https://leanpub.com/lit-config][literate programming s
 - [[#aliases-and-miscellaneous-functions][Aliases and miscellaneous functions]]
 - [[#completions][Completions]]
 - [[#prompt-theme][Prompt theme]]
+  - [[#starship][Starship]]
+  - [[#chain][Chain]]
 - [[#iterm2-shell-integration-support][iTerm2 shell integration support]]
 - [[#long-running-command-notifications][Long-running-command notifications]]
 - [[#directory-and-command-navigation-and-history][Directory and command navigation and history]]
@@ -291,16 +293,30 @@ use github.com/zzamboni/elvish-completions/comp
 
 * Prompt theme
 
-I use the [[https://github.com/zzamboni/theme.elv/blob/master/chain.org][chain]] prompt theme, ported from the fish theme at https://github.com/oh-my-fish/theme-chain.
+** Starship
+
+Testing Starship for my prompt.
 
 #+begin_src elvish
+eval (starship init elvish)
+#+end_src
+
+This is my current Starship config file:
+
+#+include: ~/.config/starship.toml src conf-toml
+
+** Chain
+
+I use the [[https://github.com/zzamboni/theme.elv/blob/master/chain.org][chain]] prompt theme, ported from the fish theme at https://github.com/oh-my-fish/theme-chain (disabled for now while I test [[https://starship.rs/][Starship]]).
+
+#+begin_src elvish :tangle no
 use github.com/zzamboni/elvish-themes/chain
 chain:bold-prompt = $false
 #+end_src
 
 I set the color of the directory segment, the prompt chains and the prompt arrow in my prompt to a session-identifying color (a different color for each session).
 
-#+begin_src elvish
+#+begin_src elvish :tangle no
 chain:segment-style = [
   &dir=          session
   &chain=        session
@@ -312,7 +328,7 @@ chain:segment-style = [
 
 Customize some of the glyphs for the font I use in my terminal. I use the [[https://github.com/tonsky/FiraCode][Fira Code]] font which includes ligatures, so I disable the last chain, and set the =arrow= segment to a combination of characters which shows up as a nice arrow.
 
-#+begin_src elvish
+#+begin_src elvish :tangle no
 chain:glyph[arrow]  = "|>"
 chain:show-last-chain = $false
 #+end_src
@@ -518,7 +534,7 @@ use github.com/zzamboni/elvish-modules/tty
 
 Customize the command used for finding git repos for =chain:summary-status &all=, to ignore some uninteresting repos. List of directories to exclude is defined in =$chain-repos-to-exclude=.
 
-#+begin_src elvish
+#+begin_src elvish :tangle no
 chain-repos-to-exclude = [.emacs.d/ .emacs.d.mine/quelpa/ Library/Caches Dropbox/Personal/devel/go/src]
 chain-fd-exclude-opts = [(each [d]{ put -E $d } $chain-repos-to-exclude)]
 chain:find-all-user-repos = {

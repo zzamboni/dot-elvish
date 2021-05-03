@@ -102,19 +102,7 @@ git-completions:init
 
 use github.com/zzamboni/elvish-completions/comp
 
-use github.com/zzamboni/elvish-themes/chain
-chain:bold-prompt = $false
-
-chain:segment-style = [
-  &dir=          session
-  &chain=        session
-  &arrow=        session
-  &git-combined= session
-  &git-repo=     bright-blue
-]
-
-chain:glyph[arrow]  = "|>"
-chain:show-last-chain = $false
+eval (starship init elvish)
 
 edit:prompt-stale-transform = [x]{ styled $x "bright-black" }
 
@@ -186,11 +174,5 @@ util:electric-delimiters
 
 use github.com/zzamboni/elvish-modules/spinners
 use github.com/zzamboni/elvish-modules/tty
-
-chain-repos-to-exclude = [.emacs.d/ .emacs.d.mine/quelpa/ Library/Caches Dropbox/Personal/devel/go/src]
-chain-fd-exclude-opts = [(each [d]{ put -E $d } $chain-repos-to-exclude)]
-chain:find-all-user-repos = {
-  fd -H -I -t d $@chain-fd-exclude-opts '^.git$' ~ | each $path:dir~
-}
 
 use swisscom
