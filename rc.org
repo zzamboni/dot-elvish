@@ -31,6 +31,7 @@ This file is written in [[https://leanpub.com/lit-config][literate programming s
 - [[#prompt-theme][Prompt theme]]
   - [[#starship][Starship]]
   - [[#chain][Chain]]
+  - [[#other-prompt-settings][Other prompt settings]]
 - [[#iterm2-shell-integration-support][iTerm2 shell integration support]]
 - [[#long-running-command-notifications][Long-running-command notifications]]
 - [[#directory-and-command-navigation-and-history][Directory and command navigation and history]]
@@ -41,6 +42,7 @@ This file is written in [[https://leanpub.com/lit-config][literate programming s
 - [[#leanpub][LeanPub]]
 - [[#tinytex][TinyTeX]]
 - [[#environment-variables][Environment variables]]
+- [[#git-repository-summary][Git repository summary]]
 - [[#utility-functions][Utility functions]]
 - [[#work-specific-stuff][Work-specific stuff]]
 
@@ -331,6 +333,8 @@ chain:glyph[arrow]  = "|>"
 chain:show-last-chain = $false
 #+end_src
 
+** Other prompt settings
+
 Elvish has a [[https://elvish.io/ref/edit.html#prompts][comprehensive mechanism]] for displaying prompts with useful information while avoiding getting blocked by prompt functions which take too long to finish. For the most part the defaults work well. One change I like to make is to change the [[https://elvish.io/ref/edit.html#stale-prompt][stale prompt transformer]] function to make the prompt dim when stale (the default is to show the prompt in inverse video):
 
 #+begin_src elvish
@@ -495,6 +499,27 @@ PKG_CONFIG configuration
 E:PKG_CONFIG_PATH = "/usr/local/opt/icu4c/lib/pkgconfig"
 #+end_src
 
+* Git repository summary
+
+#+begin_src elvish
+use github.com/zzamboni/elvish-modules/git-summary
+#+end_src
+
+Stop =gitstatusd= from staying in the background, since it's only used for this purpose.
+
+#+begin_src elvish
+git-summary:stop-gitstatusd-after-use = $true
+#+end_src
+
+Customize the command used for finding git repos for =git-summary:summary-status &all=, to ignore some uninteresting repos. List of directories to exclude is defined in =$git-summary-repos-to-exclude=.
+
+#+begin_src elvish
+git-summary-repos-to-exclude = ['.emacs.d*' .cargo Library/Caches Dropbox/Personal/devel/go/src]
+git-summary-fd-exclude-opts = [(each [d]{ put -E $d } $git-summary-repos-to-exclude)]
+git-summary:find-all-user-repos-fn = {
+  fd -H -I -t d $@git-summary-fd-exclude-opts '^.git$' ~ | each $path:dir~
+}
+#+end_src
 * Utility functions
 
 The [[https://github.com/zzamboni/elvish-modules/blob/master/util.org][util]] module includes various utility functions.
@@ -530,15 +555,6 @@ use github.com/zzamboni/elvish-modules/spinners
 use github.com/zzamboni/elvish-modules/tty
 #+end_src
 
-Customize the command used for finding git repos for =chain:summary-status &all=, to ignore some uninteresting repos. List of directories to exclude is defined in =$chain-repos-to-exclude=.
-
-#+begin_src elvish :tangle no
-chain-repos-to-exclude = [.emacs.d/ .emacs.d.mine/quelpa/ Library/Caches Dropbox/Personal/devel/go/src]
-chain-fd-exclude-opts = [(each [d]{ put -E $d } $chain-repos-to-exclude)]
-chain:find-all-user-repos = {
-  fd -H -I -t d $@chain-fd-exclude-opts '^.git$' ~ | each $path:dir~
-}
-#+end_src
 * Work-specific stuff
 
 I have a private library which contains some work-specific functions.

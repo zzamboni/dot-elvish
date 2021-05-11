@@ -162,6 +162,16 @@ E:LC_ALL = "en_US.UTF-8"
 
 E:PKG_CONFIG_PATH = "/usr/local/opt/icu4c/lib/pkgconfig"
 
+use github.com/zzamboni/elvish-modules/git-summary
+
+git-summary:stop-gitstatusd-after-use = $true
+
+git-summary-repos-to-exclude = ['.emacs.d*' .cargo Library/Caches Dropbox/Personal/devel/go/src]
+git-summary-fd-exclude-opts = [(each [d]{ put -E $d } $git-summary-repos-to-exclude)]
+git-summary:find-all-user-repos-fn = {
+  fd -H -I -t d $@git-summary-fd-exclude-opts '^.git$' ~ | each $path:dir~
+}
+
 use github.com/zzamboni/elvish-modules/util
 
 use github.com/muesli/elvish-libs/git
