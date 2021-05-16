@@ -501,14 +501,16 @@ E:PKG_CONFIG_PATH = "/usr/local/opt/icu4c/lib/pkgconfig"
 
 * Git repository summary
 
+The =git-summary= module allows displaying the git status of multiple repositories in a single list. I use it to keep track of the status of my commonly-used repos. I load the module as =gs= to make it easier to call its functions.
+
 #+begin_src elvish
-use github.com/zzamboni/elvish-modules/git-summary
+use github.com/zzamboni/elvish-modules/git-summary gs
 #+end_src
 
 Stop =gitstatusd= from staying in the background, since it's only used for this purpose.
 
 #+begin_src elvish
-git-summary:stop-gitstatusd-after-use = $true
+gs:stop-gitstatusd-after-use = $true
 #+end_src
 
 Customize the command used for finding git repos for =git-summary:summary-status &all=, to ignore some uninteresting repos. List of directories to exclude is defined in =$git-summary-repos-to-exclude=.
@@ -516,7 +518,7 @@ Customize the command used for finding git repos for =git-summary:summary-status
 #+begin_src elvish
 git-summary-repos-to-exclude = ['.emacs.d*' .cargo Library/Caches Dropbox/Personal/devel/go/src]
 git-summary-fd-exclude-opts = [(each [d]{ put -E $d } $git-summary-repos-to-exclude)]
-git-summary:find-all-user-repos-fn = {
+gs:find-all-user-repos-fn = {
   fd -H -I -t d $@git-summary-fd-exclude-opts '^.git$' ~ | each $path:dir~
 }
 #+end_src
