@@ -547,7 +547,8 @@ update:check-commit &verbose
 Set up electric delimiters in the command line.
 
 #+begin_src elvish
-util:electric-delimiters
+use github.com/zzamboni/elvish-modules/util-edit
+util-edit:electric-delimiters
 #+end_src
 
 ASCII spinners and TTY escape code generation.

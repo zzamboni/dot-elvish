@@ -180,7 +180,8 @@ use github.com/iwoloschin/elvish-packages/update
 update:curl-timeout = 3
 update:check-commit &verbose
 
-util:electric-delimiters
+use github.com/zzamboni/elvish-modules/util-edit
+util-edit:electric-delimiters
 
 use github.com/zzamboni/elvish-modules/spinners
 use github.com/zzamboni/elvish-modules/tty
