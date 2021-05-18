@@ -217,6 +217,14 @@ lazy-vars:add-var HOMEBREW_GITHUB_API_TOKEN { 1pass:get-password "github api tok
 lazy-vars:add-alias brew [ HOMEBREW_GITHUB_API_TOKEN ]
 #+end_src
 
+Also for my [[https://github.com/zzamboni/750words-client][750words command-line client]].
+
+#+begin_src elvish
+E:USER_750WORDS = diego@zzamboni.org
+lazy-vars:add-var PASS_750WORDS { 1pass:get-password "750words.com" }
+lazy-vars:add-alias 750words-client.py [ PASS_750WORDS ]
+#+end_src
+
 * Aliases and miscellaneous functions
 
 Elvish does not have built-in alias functionality, but this is implemented easily using the [[https://github.com/zzamboni/modules.elv/blob/master/alias.org][alias]] module, which stores the alias definitions as functions under [[https://github.com/zzamboni/dot-elvish/tree/master/aliases][~/.elvish/aliases/]] and loads them automatically.

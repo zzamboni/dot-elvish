@@ -73,6 +73,10 @@ use github.com/zzamboni/elvish-modules/lazy-vars
 lazy-vars:add-var HOMEBREW_GITHUB_API_TOKEN { 1pass:get-password "github api token for homebrew" }
 lazy-vars:add-alias brew [ HOMEBREW_GITHUB_API_TOKEN ]
 
+E:USER_750WORDS = diego@zzamboni.org
+lazy-vars:add-var PASS_750WORDS { 1pass:get-password "750words.com" }
+lazy-vars:add-alias 750words-client.py [ PASS_750WORDS ]
+
 use github.com/zzamboni/elvish-modules/alias
 
 alias:new dfc e:dfc -p -/dev/disk1s4,devfs,map,com.apple.TimeMachine
