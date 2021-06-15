@@ -50,13 +50,13 @@ This file is written in [[https://leanpub.com/lit-config][literate programming s
 
 Load a number of commonly-used modules so that they are available in my interactive session.
 
-Load the bundled [[https://elvish.io/ref/re.html][re]] module to have access to regular expression functions.
+Load the bundled [[https://elv.sh/ref/re.html][re]] module to have access to regular expression functions.
 
 #+begin_src elvish
 use re
 #+end_src
 
-The bundled [[https://elvish.io/ref/bundled.html][readline-binding]] module associates some Emacs-like keybindings for manipulation of the command line.
+The bundled [[https://elv.sh/ref/readline-binding.html][readline-binding]] module associates some Emacs-like keybindings for manipulation of the command line.
 
 #+begin_src elvish
 use readline-binding
@@ -112,7 +112,7 @@ each [p]{
 #+end_src
 * Package installation
 
-The bundled [[https://elvish.io/ref/epm.html][epm]] module allows us to install and manage Elvish packages.
+The bundled [[https://elv.sh/ref/epm.html][epm]] module allows us to install and manage Elvish packages.
 
 #+begin_src elvish
 use epm
@@ -343,7 +343,7 @@ chain:show-last-chain = $false
 
 ** Other prompt settings
 
-Elvish has a [[https://elvish.io/ref/edit.html#prompts][comprehensive mechanism]] for displaying prompts with useful information while avoiding getting blocked by prompt functions which take too long to finish. For the most part the defaults work well. One change I like to make is to change the [[https://elvish.io/ref/edit.html#stale-prompt][stale prompt transformer]] function to make the prompt dim when stale (the default is to show the prompt in inverse video):
+Elvish has a [[https://elv.sh/ref/edit.html#prompts][comprehensive mechanism]] for displaying prompts with useful information while avoiding getting blocked by prompt functions which take too long to finish. For the most part the defaults work well. One change I like to make is to change the [[https://elv.sh/ref/edit.html#stale-prompt][stale prompt transformer]] function to make the prompt dim when stale (the default is to show the prompt in inverse video):
 
 #+begin_src elvish
 edit:prompt-stale-transform = [x]{ styled $x "bright-black" }

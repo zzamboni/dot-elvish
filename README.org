@@ -1,6 +1,6 @@
-* My configuration files for [[https://elvish.io/][Elvish]]
+* My configuration files for [[https://elv.sh/][Elvish]]
 
-These are my documented configuration files for [[https://elvish.io/][Elvish]], which is now my default shell on macOS. You can find the full documentation in the [[file:rc.org][rc.org file]]. That file uses several external packages which are installed automatically when needed using the Elvish [[https://elvish.io/ref/epm.html][epm package manager]]. These are the packages I have written:
+These are my documented configuration files for [[https://elv.sh/][Elvish]], which is now my default shell on macOS. You can find the full documentation in the [[file:rc.org][rc.org file]]. That file uses several external packages which are installed automatically when needed using the Elvish [[https://elv.sh/ref/epm.html][epm package manager]]. These are the packages I have written:
 
 - [[https://github.com/zzamboni/elvish-modules][github.com/zzamboni/elvish-modules]] contains all my modules except completions and themes.
 - [[https://github.com/zzamboni/elvish-themes][github.com/zzamboni/elvish-themes]] contains my prompt themes (only [[https://github.com/zzamboni/elvish-themes/blob/master/chain.org][chain]] for now).
