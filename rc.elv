@@ -158,6 +158,11 @@ leanpub:api-key-fn = { 1pass:get-item leanpub &fields=["API key"] }
 
 use github.com/zzamboni/elvish-modules/tinytex
 
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+eval (/Users/taazadi1/Dropbox/Personal/devel/conda/devenv/bin/conda "shell.elvish" "hook" | slurp)
+# <<< conda initialize <<<
+
 E:LESS = "-i -R"
 
 E:EDITOR = "vim"

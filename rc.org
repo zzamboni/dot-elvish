@@ -41,6 +41,7 @@ This file is written in [[https://leanpub.com/lit-config][literate programming s
 - [[#opsgenie][OpsGenie]]
 - [[#leanpub][LeanPub]]
 - [[#tinytex][TinyTeX]]
+- [[#conda-integration][Conda integration]]
 - [[#environment-variables][Environment variables]]
 - [[#git-repository-summary][Git repository summary]]
 - [[#utility-functions][Utility functions]]
@@ -480,6 +481,19 @@ Tiny module with some utility functions for using [[https://yihui.org/tinytex/][
 
 #+begin_src elvish
 use github.com/zzamboni/elvish-modules/tinytex
+#+end_src
+
+* Conda integration
+
+Conda integration for Elvish. This is not yet in the main Conda distribution, but in a PR: https://github.com/conda/conda/pull/10731
+
+The following block will get added to =rc.elv= by =conda init elvish=. Having it tangled out allows me to control where in the file it appears, since Conda only replaces it if it's already in the file.
+
+#+begin_src elvish
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+eval (/Users/taazadi1/Dropbox/Personal/devel/conda/devenv/bin/conda "shell.elvish" "hook" | slurp)
+# <<< conda initialize <<<
 #+end_src
 
 * Environment variables
