@@ -22,7 +22,6 @@ paths = [
   /usr/local/opt/coreutils/libexec/gnubin
   /usr/local/opt/texinfo/bin
   /usr/local/opt/python/libexec/bin
-  ~/Library/Python/3.8/bin
   /usr/local/opt/ruby@2.6/bin
   /usr/local/bin
   /usr/local/sbin
@@ -160,7 +159,7 @@ use github.com/zzamboni/elvish-modules/tinytex
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-eval (/Users/taazadi1/Dropbox/Personal/devel/conda/devenv/bin/conda "shell.elvish" "hook" | slurp)
+eval (~/Dropbox/Personal/devel/conda/devenv/bin/conda "shell.elvish" "hook" | slurp)
 # <<< conda initialize <<<
 
 E:LESS = "-i -R"
