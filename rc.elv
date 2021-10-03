@@ -30,6 +30,8 @@ paths = [
   /bin
 ]
 
+E:GONOPROXY = "*"
+
 each [p]{
   if (not (path:is-dir &follow-symlink $p)) {
     echo (styled "Warning: directory "$p" in $paths no longer exists." red)
@@ -192,5 +194,3 @@ util-edit:electric-delimiters
 
 use github.com/zzamboni/elvish-modules/spinners
 use github.com/zzamboni/elvish-modules/tty
-
-use swisscom

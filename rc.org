@@ -100,6 +100,12 @@ paths = [
 ]
 #+end_src
 
+My work machine setup blocks =proxy.golang.org=, so I configure for all modules to be downloaded directly from their source.
+
+#+begin_src elvish
+E:GONOPROXY = "*"
+#+end_src
+
 I have a quick sanity check because sometimes certain paths disappear depending on new versions, etc. This prints a warning when opening a new shell, if there are any non-existing directories in =$paths=. We need some wrapping around =path:eval-symlinks= to avoid seeing warnings when the directory does not exist.
 
 #+begin_src elvish
@@ -485,7 +491,7 @@ use github.com/zzamboni/elvish-modules/tinytex
 
 Conda integration for Elvish. This is not yet in the main Conda distribution, but in a PR: https://github.com/conda/conda/pull/10731
 
-The following block will get added to =rc.elv= by =conda init elvish=. Having it tangled out allows me to control where in the file it appears, since Conda only replaces it if it's already in the file.
+The following block will get added to =rc.elv= by =conda init elvish=. Having it tangled out allows me to control where in the file it appears, since Conda only replaces/updates it instead of adding it again.
 
 #+begin_src elvish
 # >>> conda initialize >>>
@@ -581,10 +587,6 @@ use github.com/zzamboni/elvish-modules/tty
 * Work-specific stuff
 
 I have a private library which contains some work-specific functions.
-
-#+begin_src elvish :exports none
-use swisscom
-#+end_src
 
 #+begin_src elvish :tangle no
 use work
