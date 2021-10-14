@@ -82,9 +82,9 @@ First we set up the executable paths. We set the =GOPATH= environment variable w
 
 #+begin_src elvish
 # Where all the Go stuff is
-E:GOPATH = ~/Dropbox/Personal/devel/go
+set E:GOPATH = ~/Dropbox/Personal/devel/go
 
-paths = [
+set paths = [
   ~/bin
   ~/.emacs.d/bin
   $E:GOPATH/bin
@@ -103,7 +103,7 @@ paths = [
 My work machine setup blocks =proxy.golang.org=, so I configure for all modules to be downloaded directly from their source.
 
 #+begin_src elvish
-E:GONOPROXY = "*"
+set E:GONOPROXY = "*"
 #+end_src
 
 I have a quick sanity check because sometimes certain paths disappear depending on new versions, etc. This prints a warning when opening a new shell, if there are any non-existing directories in =$paths=. We need some wrapping around =path:eval-symlinks= to avoid seeing warnings when the directory does not exist.
@@ -152,13 +152,13 @@ First, we load the module and set the proxy host.
 
 #+begin_src elvish
 use github.com/zzamboni/elvish-modules/proxy
-proxy:host = "http://aproxy.corproot.net:8080"
+set proxy:host = "http://aproxy.corproot.net:8080"
 #+end_src
 
 Next, we set the test function to enable proxy auto-setting. In my case, the =/etc/resolv.conf= file contains the =corproot.net= domain (set through DHCP) when I'm in the corporate network, so I can check for that.
 
 #+begin_src elvish :exports none
-proxy:test = {
+set proxy:test = {
   and ?(test -f /etc/resolv.conf) ^
   ?(egrep -q '^(search|domain).*(corproot.net|swissptt.ch)' /etc/resolv.conf)
 }
@@ -184,25 +184,25 @@ I add a couple of keybindings which are missing from the default =readline-bindi
 - =Alt-backspace= to delete small-word
 
   #+begin_src elvish
-edit:insert:binding[Alt-Backspace] = $edit:kill-small-word-left~
+set edit:insert:binding[Alt-Backspace] = $edit:kill-small-word-left~
   #+end_src
 
 - =Alt-d= to delete the small-word under the cursor
 
   #+begin_src elvish
-edit:insert:binding[Alt-d] = $edit:kill-small-word-right~
+set edit:insert:binding[Alt-d] = $edit:kill-small-word-right~
   #+end_src
 
 - I also bind "[[https://elv.sh/ref/edit.html#edit-instantstart][instant preview mode]]" to ~Alt-m~. This is useful to see the results of a command while you are typing it.
 
   #+begin_src elvish
-edit:insert:binding[Alt-m] = $edit:-instant:start~
+set edit:insert:binding[Alt-m] = $edit:-instant:start~
   #+end_src
 
 - Limit the height of location and history mode so that they don't cover the whole screen.
 
   #+begin_src elvish
-edit:max-height = 20
+set edit:max-height = 20
   #+end_src
 
 * 1Password
@@ -225,7 +225,7 @@ lazy-vars:add-alias brew [ HOMEBREW_GITHUB_API_TOKEN ]
 Also for my [[https://github.com/zzamboni/750words-client][750words command-line client]].
 
 #+begin_src elvish
-E:USER_750WORDS = diego@zzamboni.org
+set E:USER_750WORDS = diego@zzamboni.org
 lazy-vars:add-var PASS_750WORDS { 1pass:get-password "750words.com" }
 lazy-vars:add-alias 750words-client.py [ PASS_750WORDS ]
 #+end_src
@@ -251,7 +251,7 @@ alias:new git hub
 =bat= =man= ([[https://github.com/sharkdp/bat#man][using =bat= as the pager for =man= pages]]).
 
 #+begin_src elvish
-E:MANPAGER = "sh -c 'col -bx | bat -l man -p'"
+set E:MANPAGER = "sh -c 'col -bx | bat -l man -p'"
 #+end_src
 
 Open man pages as PDF, I gathered this tip from https://twitter.com/MrAhmadAwais/status/1279066968981635075. Neat but not very useful for daily use, particularly with the =bat= integration above.
@@ -296,7 +296,7 @@ I configure the git completer to use =hub= instead of =git= (if you use plain gi
 
 #+begin_src elvish
 use github.com/zzamboni/elvish-completions/git git-completions
-git-completions:git-command = hub
+set git-completions:git-command = hub
 git-completions:init
 #+end_src
 
@@ -351,7 +351,7 @@ chain:show-last-chain = $false
 Elvish has a [[https://elv.sh/ref/edit.html#prompts][comprehensive mechanism]] for displaying prompts with useful information while avoiding getting blocked by prompt functions which take too long to finish. For the most part the defaults work well. One change I like to make is to change the [[https://elv.sh/ref/edit.html#stale-prompt][stale prompt transformer]] function to make the prompt dim when stale (the default is to show the prompt in inverse video):
 
 #+begin_src elvish
-edit:prompt-stale-transform = [x]{ styled $x "bright-black" }
+set edit:prompt-stale-transform = [x]{ styled $x "bright-black" }
 #+end_src
 
 Another possibility is to make the prompt stay the same when stale - useful to avoid distractions (disabled for now):
@@ -363,7 +363,7 @@ Another possibility is to make the prompt stay the same when stale - useful to a
 I also like the continuous update of the prompt as I type (by default it only updates on Enter and on =$pwd= changes, but I like also git status changes to be updated automatically), so I increase its eagerness.
 
 #+begin_src elvish
-edit:-prompt-eagerness = 10
+set edit:-prompt-eagerness = 10
 #+end_src
 
 * iTerm2 shell integration support
@@ -373,7 +373,7 @@ The =iterm2= module provides support for iTerm2's [[https://iterm2.com/documenta
 #+begin_src elvish
 use github.com/zzamboni/elvish-modules/iterm2
 iterm2:init
-edit:insert:binding[Ctrl-L] = $iterm2:clear-screen~
+set edit:insert:binding[Ctrl-L] = $iterm2:clear-screen~
 #+end_src
 
 * Long-running-command notifications
@@ -405,20 +405,20 @@ alias:new cdb &use=[github.com/zzamboni/elvish-modules/dir] dir:cdb
 =dir= also implements a custom directory history chooser, which I bind to ~Alt-i~ (I have found I don't use this as much as I thought I would - the built-in location mode works nicely).
 
 #+begin_src elvish
-edit:insert:binding[Alt-i] = $dir:history-chooser~
+set edit:insert:binding[Alt-i] = $dir:history-chooser~
 #+end_src
 
 I bind =Alt-b/f= to =dir:left-small-word-or-prev-dir= and =dir:right-small-word-or-next-dir= respectively, which "do the right thing" depending on the current content of the command prompt: if it's empty, they move back/forward in the directory history, otherwise they move through the words of the current command. In my Terminal.app setup, =Alt-left/right= also produce =Alt-b/f=, so these bindings work for those keys as well.
 
 #+begin_src elvish
-edit:insert:binding[Alt-b] = $dir:left-small-word-or-prev-dir~
-edit:insert:binding[Alt-f] = $dir:right-small-word-or-next-dir~
+set edit:insert:binding[Alt-b] = $dir:left-small-word-or-prev-dir~
+set edit:insert:binding[Alt-f] = $dir:right-small-word-or-next-dir~
 #+end_src
 
 The following makes the location and history modes be case-insensitive by default:
 
 #+begin_src elvish
-edit:insert:binding[Ctrl-R] = {
+set edit:insert:binding[Ctrl-R] = {
   edit:histlist:start
   edit:histlist:toggle-case-sensitivity
 }
@@ -451,7 +451,7 @@ use github.com/zzamboni/elvish-modules/terminal-title
 The =private= module sets up some private settings such as authentication tokens. This is not on github :) The =$private-loaded= variable gets set to =$ok= if the module was loaded correctly.
 
 #+begin_src elvish
-private-loaded = ?(use private)
+var private-loaded = ?(use private)
 #+end_src
 
 * O'Reilly Atlas
@@ -476,7 +476,7 @@ I use [[https://leanpub.com/help/api][LeanPub]] for publishing my books, so I ha
 
 #+begin_src elvish
 use github.com/zzamboni/elvish-modules/leanpub
-leanpub:api-key-fn = { 1pass:get-item leanpub &fields=["API key"] }
+set leanpub:api-key-fn = { 1pass:get-item leanpub &fields=["API key"] }
 #+end_src
 
 * TinyTeX
@@ -505,24 +505,24 @@ eval (~/Dropbox/Personal/devel/conda/devenv/bin/conda "shell.elvish" "hook" | sl
 Default options to =less=.
 
 #+begin_src elvish
-E:LESS = "-i -R"
+set E:LESS = "-i -R"
 #+end_src
 
 Use vim as the editor from the command line (although I am an [[https://github.com/zzamboni/dot-emacs/blob/master/init.org][Emacs]] fan, I still sometimes use vim for quick editing).
 
 #+begin_src elvish
-E:EDITOR = "vim"
+set E:EDITOR = "vim"
 #+end_src
 
 Locale setting.
 
 #+begin_src elvish
-E:LC_ALL = "en_US.UTF-8"
+set E:LC_ALL = "en_US.UTF-8"
 #+end_src
 
 PKG_CONFIG configuration
 #+begin_src elvish
-E:PKG_CONFIG_PATH = "/usr/local/opt/icu4c/lib/pkgconfig"
+set E:PKG_CONFIG_PATH = "/usr/local/opt/icu4c/lib/pkgconfig"
 #+end_src
 
 * Git repository summary
@@ -536,15 +536,15 @@ use github.com/zzamboni/elvish-modules/git-summary gs
 Stop =gitstatusd= from staying in the background, since it's only used for this purpose.
 
 #+begin_src elvish
-gs:stop-gitstatusd-after-use = $true
+set gs:stop-gitstatusd-after-use = $true
 #+end_src
 
 Customize the command used for finding git repos for =git-summary:summary-status &all=, to ignore some uninteresting repos. List of directories to exclude is defined in =$git-summary-repos-to-exclude=.
 
 #+begin_src elvish
-git-summary-repos-to-exclude = ['.emacs.d*' .cargo Library/Caches Dropbox/Personal/devel/go/src]
-git-summary-fd-exclude-opts = [(each [d]{ put -E $d } $git-summary-repos-to-exclude)]
-gs:find-all-user-repos-fn = {
+var git-summary-repos-to-exclude = ['.emacs.d*' .cargo Library/Caches Dropbox/Personal/devel/go/src]
+var git-summary-fd-exclude-opts = [(each [d]{ put -E $d } $git-summary-repos-to-exclude)]
+set gs:find-all-user-repos-fn = {
   fd -H -I -t d $@git-summary-fd-exclude-opts '^.git$' ~ | each $path:dir~
 }
 #+end_src
@@ -566,7 +566,7 @@ The [[https://github.com/iwoloschin/elvish-packages/blob/master/update.elv][upda
 
 #+begin_src elvish
 use github.com/iwoloschin/elvish-packages/update
-update:curl-timeout = 3
+set update:curl-timeout = 3
 update:check-commit &verbose
 #+end_src
 

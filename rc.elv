@@ -13,9 +13,9 @@ use str
 use math
 
 # Where all the Go stuff is
-E:GOPATH = ~/Dropbox/Personal/devel/go
+set E:GOPATH = ~/Dropbox/Personal/devel/go
 
-paths = [
+set paths = [
   ~/bin
   ~/.emacs.d/bin
   $E:GOPATH/bin
@@ -30,7 +30,7 @@ paths = [
   /bin
 ]
 
-E:GONOPROXY = "*"
+set E:GONOPROXY = "*"
 
 each [p]{
   if (not (path:is-dir &follow-symlink $p)) {
@@ -49,22 +49,22 @@ epm:install &silent-if-installed         ^
   github.com/iwoloschin/elvish-packages
 
 use github.com/zzamboni/elvish-modules/proxy
-proxy:host = "http://aproxy.corproot.net:8080"
+set proxy:host = "http://aproxy.corproot.net:8080"
 
-proxy:test = {
+set proxy:test = {
   and ?(test -f /etc/resolv.conf) ^
   ?(egrep -q '^(search|domain).*(corproot.net|swissptt.ch)' /etc/resolv.conf)
 }
 
 proxy:autoset
 
-edit:insert:binding[Alt-Backspace] = $edit:kill-small-word-left~
+set edit:insert:binding[Alt-Backspace] = $edit:kill-small-word-left~
 
-edit:insert:binding[Alt-d] = $edit:kill-small-word-right~
+set edit:insert:binding[Alt-d] = $edit:kill-small-word-right~
 
-edit:insert:binding[Alt-m] = $edit:-instant:start~
+set edit:insert:binding[Alt-m] = $edit:-instant:start~
 
-edit:max-height = 20
+set edit:max-height = 20
 
 use github.com/zzamboni/elvish-modules/1pass
 
@@ -73,7 +73,7 @@ use github.com/zzamboni/elvish-modules/lazy-vars
 lazy-vars:add-var HOMEBREW_GITHUB_API_TOKEN { 1pass:get-password "github api token for homebrew" }
 lazy-vars:add-alias brew [ HOMEBREW_GITHUB_API_TOKEN ]
 
-E:USER_750WORDS = diego@zzamboni.org
+set E:USER_750WORDS = diego@zzamboni.org
 lazy-vars:add-var PASS_750WORDS { 1pass:get-password "750words.com" }
 lazy-vars:add-alias 750words-client.py [ PASS_750WORDS ]
 
@@ -85,7 +85,7 @@ alias:new more bat --paging always
 alias:new v vagrant
 alias:new git hub
 
-E:MANPAGER = "sh -c 'col -bx | bat -l man -p'"
+set E:MANPAGER = "sh -c 'col -bx | bat -l man -p'"
 
 fn manpdf [@cmds]{
   each [c]{
@@ -101,20 +101,20 @@ use github.com/zzamboni/elvish-completions/ssh
 use github.com/zzamboni/elvish-completions/builtins
 
 use github.com/zzamboni/elvish-completions/git git-completions
-git-completions:git-command = hub
+set git-completions:git-command = hub
 git-completions:init
 
 use github.com/zzamboni/elvish-completions/comp
 
 eval (starship init elvish)
 
-edit:prompt-stale-transform = [x]{ styled $x "bright-black" }
+set edit:prompt-stale-transform = [x]{ styled $x "bright-black" }
 
-edit:-prompt-eagerness = 10
+set edit:-prompt-eagerness = 10
 
 use github.com/zzamboni/elvish-modules/iterm2
 iterm2:init
-edit:insert:binding[Ctrl-L] = $iterm2:clear-screen~
+set edit:insert:binding[Ctrl-L] = $iterm2:clear-screen~
 
 use github.com/zzamboni/elvish-modules/long-running-notifications
 
@@ -124,12 +124,12 @@ use github.com/zzamboni/elvish-modules/dir
 alias:new cd &use=[github.com/zzamboni/elvish-modules/dir] dir:cd
 alias:new cdb &use=[github.com/zzamboni/elvish-modules/dir] dir:cdb
 
-edit:insert:binding[Alt-i] = $dir:history-chooser~
+set edit:insert:binding[Alt-i] = $dir:history-chooser~
 
-edit:insert:binding[Alt-b] = $dir:left-small-word-or-prev-dir~
-edit:insert:binding[Alt-f] = $dir:right-small-word-or-next-dir~
+set edit:insert:binding[Alt-b] = $dir:left-small-word-or-prev-dir~
+set edit:insert:binding[Alt-f] = $dir:right-small-word-or-next-dir~
 
-edit:insert:binding[Ctrl-R] = {
+set edit:insert:binding[Ctrl-R] = {
   edit:histlist:start
   edit:histlist:toggle-case-sensitivity
 }
@@ -147,14 +147,14 @@ fn ls [@_args]{
 
 use github.com/zzamboni/elvish-modules/terminal-title
 
-private-loaded = ?(use private)
+var private-loaded = ?(use private)
 
 use github.com/zzamboni/elvish-modules/atlas
 
 use github.com/zzamboni/elvish-modules/opsgenie
 
 use github.com/zzamboni/elvish-modules/leanpub
-leanpub:api-key-fn = { 1pass:get-item leanpub &fields=["API key"] }
+set leanpub:api-key-fn = { 1pass:get-item leanpub &fields=["API key"] }
 
 use github.com/zzamboni/elvish-modules/tinytex
 
@@ -163,21 +163,21 @@ use github.com/zzamboni/elvish-modules/tinytex
 eval (~/Dropbox/Personal/devel/conda/devenv/bin/conda "shell.elvish" "hook" | slurp)
 # <<< conda initialize <<<
 
-E:LESS = "-i -R"
+set E:LESS = "-i -R"
 
-E:EDITOR = "vim"
+set E:EDITOR = "vim"
 
-E:LC_ALL = "en_US.UTF-8"
+set E:LC_ALL = "en_US.UTF-8"
 
-E:PKG_CONFIG_PATH = "/usr/local/opt/icu4c/lib/pkgconfig"
+set E:PKG_CONFIG_PATH = "/usr/local/opt/icu4c/lib/pkgconfig"
 
 use github.com/zzamboni/elvish-modules/git-summary gs
 
-gs:stop-gitstatusd-after-use = $true
+set gs:stop-gitstatusd-after-use = $true
 
-git-summary-repos-to-exclude = ['.emacs.d*' .cargo Library/Caches Dropbox/Personal/devel/go/src]
-git-summary-fd-exclude-opts = [(each [d]{ put -E $d } $git-summary-repos-to-exclude)]
-gs:find-all-user-repos-fn = {
+var git-summary-repos-to-exclude = ['.emacs.d*' .cargo Library/Caches Dropbox/Personal/devel/go/src]
+var git-summary-fd-exclude-opts = [(each [d]{ put -E $d } $git-summary-repos-to-exclude)]
+set gs:find-all-user-repos-fn = {
   fd -H -I -t d $@git-summary-fd-exclude-opts '^.git$' ~ | each $path:dir~
 }
 
@@ -186,7 +186,7 @@ use github.com/zzamboni/elvish-modules/util
 use github.com/muesli/elvish-libs/git
 
 use github.com/iwoloschin/elvish-packages/update
-update:curl-timeout = 3
+set update:curl-timeout = 3
 update:check-commit &verbose
 
 use github.com/zzamboni/elvish-modules/util-edit
