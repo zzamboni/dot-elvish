@@ -313,7 +313,7 @@ I configure the git completer to use =hub= instead of =git= (if you use plain gi
 
 #+begin_src elvish
 use github.com/zzamboni/elvish-completions/git git-completions
-set git-completions:git-command = hub
+only-when-external hub { set git-completions:git-command = hub }
 git-completions:init
 #+end_src
 

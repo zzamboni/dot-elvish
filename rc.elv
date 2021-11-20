@@ -116,7 +116,7 @@ use github.com/zzamboni/elvish-completions/ssh
 use github.com/zzamboni/elvish-completions/builtins
 
 use github.com/zzamboni/elvish-completions/git git-completions
-set git-completions:git-command = hub
+only-when-external hub { set git-completions:git-command = hub }
 git-completions:init
 
 use github.com/zzamboni/elvish-completions/comp
