@@ -238,14 +238,31 @@ Elvish does not have built-in alias functionality, but this is implemented easil
 use github.com/zzamboni/elvish-modules/alias
 #+end_src
 
-For reference, I define here a few of my commonly-used aliases:
+For reference, I define here a few of my commonly-used aliases. Some of them are defined only if the corresponding external binary exists, I define a couple of functions to help with this.
 
 #+begin_src elvish
-alias:new dfc e:dfc -p -/dev/disk1s4,devfs,map,com.apple.TimeMachine
-alias:new cat bat
-alias:new more bat --paging always
-alias:new v vagrant
-alias:new git hub
+fn have-external { |prog|
+  put ?(which $prog >/dev/null 2>&1)
+}
+fn only-when-external { |prog lambda|
+  if (have-external $prog) { put ($lambda) }
+}
+#+end_src
+
+#+begin_src elvish
+only-when-external dfc {
+  alias:new dfc e:dfc -p -/dev/disk1s4,devfs,map,com.apple.TimeMachine
+}
+only-when-external bat {
+  alias:new cat bat
+  alias:new more bat --paging always
+}
+only-when-external vagrant {
+  alias:new v vagrant
+}
+only-when-external hub {
+  alias:new git hub
+}
 #+end_src
 
 =bat= =man= ([[https://github.com/sharkdp/bat#man][using =bat= as the pager for =man= pages]]).

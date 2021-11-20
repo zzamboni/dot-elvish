@@ -79,11 +79,26 @@ lazy-vars:add-alias 750words-client.py [ PASS_750WORDS ]
 
 use github.com/zzamboni/elvish-modules/alias
 
-alias:new dfc e:dfc -p -/dev/disk1s4,devfs,map,com.apple.TimeMachine
-alias:new cat bat
-alias:new more bat --paging always
-alias:new v vagrant
-alias:new git hub
+fn have-external { |prog|
+  put ?(which $prog >/dev/null 2>&1)
+}
+fn only-when-external { |prog lambda|
+  if (have-external $prog) { put ($lambda) }
+}
+
+only-when-external dfc {
+  alias:new dfc e:dfc -p -/dev/disk1s4,devfs,map,com.apple.TimeMachine
+}
+only-when-external bat {
+  alias:new cat bat
+  alias:new more bat --paging always
+}
+only-when-external vagrant {
+  alias:new v vagrant
+}
+only-when-external hub {
+  alias:new git hub
+}
 
 set E:MANPAGER = "sh -c 'col -bx | bat -l man -p'"
 
