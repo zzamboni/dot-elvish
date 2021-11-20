@@ -226,3 +226,88 @@ fn capture [f]{
   }
   put $out $err
 }
+
+# Convert POSIX env assignments to Elvish
+fn read-posix-envvars {
+  each [l]{
+    var _ key val = (re:split &max=3 '[ =]' $l)
+    set-env $key $val
+  }
+}
+
+# Emulate the POSIX export command
+fn export [s]{
+  set-env (str:split &max=2 '=' $s)
+}
+edit:add-var export~ $export~
+
+# Run the auto-mute-spotify script and convert its output into notifications
+fn auto-mute-spotify {
+  cd ~/bin/mute-spotify-ads-mac-osx
+  sh NoAdsSpotify.sh | each { |l|
+    echo $l
+    if (re:match '^>>' $l) {
+      terminal-notifier -title "NoAdsSpotify" -message $l
+    }
+  }
+}
+edit:add-var auto-mute-spotify~ $auto-mute-spotify~
+
+# Generate sample outputs for starship remote_url prompt segment.
+# I use this to generate the screenshot for uploading to
+# https://github.com/starship/starship/discussions/1252#discussioncomment-838901
+fn starship-remote-url-samples {
+  var set-url = [ remote set-url origin ]
+  var samples = [
+    [ [ init ] "Repo without remote" ]
+    [ [ remote add origin  https://github.com/zzamboni/dot-elvish.git ] "GitHub HTTPS remote" ]
+    [ [ $@set-url git@github.com:zzamboni/dot-elvish.git ]     "GitHub SSH remote" ]
+    [ [ $@set-url https://gitlab.com/zzamboni/dot-elvish.git ] "GitLab HTTPS remote" ]
+    [ [ $@set-url https://bitbucket.org/zzamboni/dot-emacs ]   "BitBucket HTTPS remote" ]
+    [ [ $@set-url codecommit::eu-west-1://repo-name ]          "AWS CodeCommit remote"]
+    [ [ $@set-url ssh://git@git.k8s.lan:2222/ttys3/tekton-golang-demo.git ] "SSH remote with port number" ]
+    [ [ $@set-url https://some-random-remote.com ]            "Some other remote" ]
+  ]
+  # Compute space filler to align messages
+  var fill-length = 0
+  each [p]{
+    var str = "git "(str:join " " $p[0])
+    if (> (count $str) $fill-length) {
+      set fill-length = (count $str)
+    }
+  } $samples
+  var padding = 1
+  set fill-length = (+ $fill-length $padding)
+  var filler = (str:join '' [(repeat $fill-length ' ')])
+
+  var show~ = [cmd msg]{
+    starship prompt
+    if $cmd {
+      var str = "git "(str:join " " $cmd)
+      print (styled git green) $@cmd $filler[..(- $fill-length (count $str))]
+    }
+    if $msg {
+      print (styled " # "$msg cyan)
+    }
+    echo ""
+  }
+
+  cd ~
+  rm -rf testrepo
+  mkdir testrepo
+  cd testrepo
+  echo ""
+  each [pair]{
+    show $@pair
+    var output = (git (all $pair[0]) | slurp)
+    if (!=s $output "") {
+      print $output
+    }
+  } $samples
+  starship prompt
+
+  echo ""
+  echo ""
+  cd ..
+  rm -rf testrepo
+}

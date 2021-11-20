@@ -408,7 +408,7 @@ alias:new cdb &use=[github.com/zzamboni/elvish-modules/dir] dir:cdb
 set edit:insert:binding[Alt-i] = $dir:history-chooser~
 #+end_src
 
-I bind =Alt-b/f= to =dir:left-small-word-or-prev-dir= and =dir:right-small-word-or-next-dir= respectively, which "do the right thing" depending on the current content of the command prompt: if it's empty, they move back/forward in the directory history, otherwise they move through the words of the current command. In my Terminal.app setup, =Alt-left/right= also produce =Alt-b/f=, so these bindings work for those keys as well.
+I bind =Alt-b/f= to =dir:left-small-word-or-prev-dir= and =dir:right-small-word-or-next-dir= respectively, which "do the right thing" depending on the current content of the command prompt: if it's empty, they move back/forward in the directory history, otherwise they move through the words of the current command. In my terminal setup, =Alt-left/right= also produce =Alt-b/f=, so these bindings work for those keys as well.
 
 #+begin_src elvish
 set edit:insert:binding[Alt-b] = $dir:left-small-word-or-prev-dir~
@@ -500,6 +500,20 @@ eval (~/Dropbox/Personal/devel/conda/devenv/bin/conda "shell.elvish" "hook" | sl
 # <<< conda initialize <<<
 #+end_src
 
+I can configure Conda to deactivate itself, or to set a default environment, through some files in my home directory.
+
+#+begin_src elvish :tangle no
+conda-deactivate = ~/.conda-deactivate
+conda-default-env = ~/.conda-default-env
+
+if (path:is-regular $conda-deactivate) {
+  conda deactivate
+} else {
+  if (path:is-regular $conda-default-env) {
+    conda activate (cat $conda-default-env)
+  }
+}
+#+end_src
 * Environment variables
 
 Default options to =less=.
