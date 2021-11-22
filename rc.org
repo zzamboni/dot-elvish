@@ -514,10 +514,12 @@ Conda integration for Elvish. This is not yet in the main Conda distribution, bu
 The following block will get added to =rc.elv= by =conda init elvish=. Having it tangled out allows me to control where in the file it appears, since Conda only replaces/updates it instead of adding it again.
 
 #+begin_src elvish
+only-when-external conda {
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 eval (~/Dropbox/Personal/devel/conda/devenv/bin/conda "shell.elvish" "hook" | slurp)
 # <<< conda initialize <<<
+}
 #+end_src
 
 I can configure Conda to deactivate itself, or to set a default environment, through some files in my home directory.

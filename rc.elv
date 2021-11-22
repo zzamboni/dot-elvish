@@ -176,10 +176,12 @@ set leanpub:api-key-fn = { 1pass:get-item leanpub &fields=["API key"] }
 
 use github.com/zzamboni/elvish-modules/tinytex
 
+only-when-external conda {
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 eval (~/Dropbox/Personal/devel/conda/devenv/bin/conda "shell.elvish" "hook" | slurp)
 # <<< conda initialize <<<
+}
 
 set E:LESS = "-i -R"
 
