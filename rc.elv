@@ -149,15 +149,18 @@ set edit:insert:binding[Ctrl-R] = {
   edit:histlist:toggle-case-sensitivity
 }
 
-fn ls [@_args]{
-  use github.com/zzamboni/elvish-modules/util
-  e:exa --color-scale --git --group-directories-first (each [o]{
-      util:cond [
-        { eq $o "-lrt" }  "-lsnew"
-        { eq $o "-lrta" } "-alsnew"
-        :else             $o
-      ]
-  } $_args)
+only-when-external exa {
+  var exa-ls~ = { |@_args|
+    use github.com/zzamboni/elvish-modules/util
+    e:exa --color-scale --git --group-directories-first (each [o]{
+        util:cond [
+          { eq $o "-lrt" }  "-lsnew"
+          { eq $o "-lrta" } "-alsnew"
+          :else             $o
+        ]
+    } $_args)
+  }
+  edit:add-var ls~ $exa-ls~
 }
 
 use github.com/zzamboni/elvish-modules/terminal-title
