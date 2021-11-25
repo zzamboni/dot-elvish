@@ -514,10 +514,14 @@ Conda integration for Elvish. This is not yet in the main Conda distribution, bu
 The following block will get added to =rc.elv= by =conda init elvish=. Having it tangled out allows me to control where in the file it appears, since Conda only replaces/updates it instead of adding it again.
 
 #+begin_src elvish
+if (path:is-dir ~/Dropbox/Personal/devel/conda/devenv/bin) {
+  @paths = ~/Dropbox/Personal/devel/conda/devenv/bin $@paths
+}
 only-when-external conda {
+conda config --set auto_activate_base false
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-eval (~/Dropbox/Personal/devel/conda/devenv/bin/conda "shell.elvish" "hook" | slurp)
+eval (~/Dropbox/Personal/devel/conda/devenv/bin/conda "shell.elvish" "hook" | slurp)"; conda activate aws"
 # <<< conda initialize <<<
 }
 #+end_src
