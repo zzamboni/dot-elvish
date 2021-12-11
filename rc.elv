@@ -32,7 +32,7 @@ set paths = [
 
 set E:GONOPROXY = "*"
 
-each [p]{
+each {|p|
   if (not (path:is-dir &follow-symlink $p)) {
     echo (styled "Warning: directory "$p" in $paths no longer exists." red)
   }
@@ -102,8 +102,8 @@ only-when-external bat {
   set E:MANPAGER = "sh -c 'col -bx | bat -l man -p'"
 }
 
-fn manpdf [@cmds]{
-  each [c]{
+fn manpdf {|@cmds|
+  each {|c|
     man -t $c | open -f -a /System/Applications/Preview.app
   } $cmds
 }
@@ -121,9 +121,9 @@ git-completions:init
 
 use github.com/zzamboni/elvish-completions/comp
 
-eval (starship init elvish)
+eval (starship init elvish --print-full-init | upgrade-scripts-for-0.17 -lambda | slurp)
 
-set edit:prompt-stale-transform = [x]{ styled $x "bright-black" }
+set edit:prompt-stale-transform = {|x| styled $x "bright-black" }
 
 set edit:-prompt-eagerness = 10
 
@@ -152,7 +152,7 @@ set edit:insert:binding[Ctrl-R] = {
 only-when-external exa {
   var exa-ls~ = { |@_args|
     use github.com/zzamboni/elvish-modules/util
-    e:exa --color-scale --git --group-directories-first (each [o]{
+    e:exa --color-scale --git --group-directories-first (each {|o|
         util:cond [
           { eq $o "-lrt" }  "-lsnew"
           { eq $o "-lrta" } "-alsnew"
@@ -177,13 +177,13 @@ set leanpub:api-key-fn = { 1pass:get-item leanpub &fields=["API key"] }
 use github.com/zzamboni/elvish-modules/tinytex
 
 if (path:is-dir ~/Dropbox/Personal/devel/conda/devenv/bin) {
-  @paths = ~/Dropbox/Personal/devel/conda/devenv/bin $@paths
+  set @paths = ~/Dropbox/Personal/devel/conda/devenv/bin $@paths
 }
 only-when-external conda {
 conda config --set auto_activate_base false
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-eval (~/Dropbox/Personal/devel/conda/devenv/bin/conda "shell.elvish" "hook" | slurp)"; conda activate aws"
+eval (~/Dropbox/Personal/devel/conda/devenv/bin/conda "shell.elvish" "hook" | upgrade-scripts-for-0.17 -lambda | slurp)"; conda activate aws"
 # <<< conda initialize <<<
 }
 
@@ -200,7 +200,7 @@ use github.com/zzamboni/elvish-modules/git-summary gs
 set gs:stop-gitstatusd-after-use = $true
 
 var git-summary-repos-to-exclude = ['.emacs.d*' .cargo Library/Caches Dropbox/Personal/devel/go/src]
-var git-summary-fd-exclude-opts = [(each [d]{ put -E $d } $git-summary-repos-to-exclude)]
+var git-summary-fd-exclude-opts = [(each {|d| put -E $d } $git-summary-repos-to-exclude)]
 set gs:find-all-user-repos-fn = {
   fd -H -I -t d $@git-summary-fd-exclude-opts '^.git$' ~ | each $path:dir~
 }
