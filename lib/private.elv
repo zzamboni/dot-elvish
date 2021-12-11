@@ -9,7 +9,7 @@ use github.com/zzamboni/elvish-modules/util
 # directories
 
 fn maildir-cleanup {
-  du -cka | sort -rn | tail -n +3 | eawk [line size f]{
+  du -cka | sort -rn | tail -n +3 | eawk {|line size f|
     echo $f
     less -p Subject: -i $f
     if (util:y-or-n &style=yellow "Remove "$f"?") {
@@ -18,8 +18,8 @@ fn maildir-cleanup {
   }
 }
 
-fn search-remove [s]{
-  ag -l $s | each [f]{ echo "Removing "$f; rm $f }
+fn search-remove {|s|
+  ag -l $s | each {|f| echo "Removing "$f; rm $f }
 }
 
 ######################################################################
@@ -39,13 +39,13 @@ fn search-remove [s]{
 
 # List filenames invalid for myCloud, according to https://help.mycloud.ch/hc/en-us/articles/115001201914-Technical-limitations
 # Optional args: directories to search, defaults to current directory
-fn mycloud-invalid [@p]{
-  if (eq $p []) { p = [ . ] }
+fn mycloud-invalid {|@p|
+  if (eq $p []) { set p = [ . ] }
   put (find $@p -name '.*' -o -name '*[<>:"|?*/\]*' | all)
 }
 
-fn onedrive-invalid [@p]{
-  if (eq $p []) { p = [ . ] }
+fn onedrive-invalid {|@p|
+  if (eq $p []) { set p = [ . ] }
   put (find $@p -name '*["*:<>?/\|]*' | all)
 }
 
@@ -53,7 +53,7 @@ fn onedrive-invalid [@p]{
 
 # Generate between 750 and 1000 words and copy them to the clipboard
 fn words {
-  slipsum = "Normally, both your asses would be dead as fucking fried
+  var slipsum = "Normally, both your asses would be dead as fucking fried
   chicken, but you happen to pull this shit while I'm in a
   transitional period so I don't wanna kill you, I wanna help you. But
   I can't give you this case, it don't belong to me. Besides, I've
@@ -114,9 +114,9 @@ fn words {
   listen: we go in there, and that nigga Winston or anybody else is in
   there, you the first motherfucker to get shot. You understand?"
 
-  lorem-options = [ lorem boccaccio faust fleurs strindberg spook poe strandberg bible walden slipsum ]
+  var lorem-options = [ lorem boccaccio faust fleurs strindberg spook poe strandberg bible walden slipsum ]
 
-  option = $lorem-options[(randint 0 (count $lorem-options))]
+  var option = $lorem-options[(randint 0 (count $lorem-options))]
 
   if (eq $option slipsum) {
     echo $slipsum | lorem --words (randint 750 1000) --stdin
@@ -131,7 +131,7 @@ fn words-copy {
 
 # Filter the command history through the fzf program. This is normally bound
 # to Ctrl-R.
-fn history []{
+fn history {||
   var new-cmd = (
     edit:command-history &dedup &newest-first &cmd-only |
     to-terminated "\x00" |
@@ -144,19 +144,19 @@ fn history []{
       return
     }
   )
-  edit:current-command = $new-cmd
+  set edit:current-command = $new-cmd
 }
 
-edit:insert:binding[Ctrl-R] = []{ history >/dev/tty 2>&1 }
+set edit:insert:binding[Ctrl-R] = {|| history >/dev/tty 2>&1 }
 
 fn update-emacs {
-  app-dir = ~/Applications
-  build-tool-dir = $app-dir/build-emacs-for-macos
-  builds-dir = $build-tool-dir/builds
+  var app-dir = ~/Applications
+  var build-tool-dir = $app-dir/build-emacs-for-macos
+  var builds-dir = $build-tool-dir/builds
   cd $build-tool-dir
   echo (styled "==> Building Emacs" green)
   ./build-emacs-for-macos --rsvg feature/native-comp
-  build = [(/bin/ls -rt $builds-dir)][-1]
+  var build = [(/bin/ls -rt $builds-dir)][-1]
   echo (styled "==> Found new build: "$build green)
   echo (styled "==> Backing up current Emacs.app" green)
   cd $app-dir
@@ -166,12 +166,12 @@ fn update-emacs {
   tar jxvf $builds-dir/$build
 }
 
-fn qst-request [params]{
-  params = [(keys $params | each [k]{ put "--data-urlencode" $k"="$params[$k] })]
+fn qst-request {|params|
+  set params = [(keys $params | each {|k| put "--data-urlencode" $k"="$params[$k] })]
   curl -G -s $@params https://www.accurity.ch/qst/json.jsp | from-json
 }
 
-fn qst-data [income &kanton=zh &rateCode=B &nrDependents=2 &churchTax=$true]{
+fn qst-data {|income &kanton=zh &rateCode=B &nrDependents=2 &churchTax=$true|
   var data = [
     &taxableIncome= $income
     &kanton= $kanton
@@ -182,25 +182,25 @@ fn qst-data [income &kanton=zh &rateCode=B &nrDependents=2 &churchTax=$true]{
   qst-request $data
 }
 
-fn qst-rate [income &kanton=zh &rateCode=B &nrDependents=2 &churchTax=$true]{
+fn qst-rate {|income &kanton=zh &rateCode=B &nrDependents=2 &churchTax=$true|
   put (qst-data $income &kanton=$kanton &rateCode=$rateCode &nrDependents=$nrDependents &churchTax=$churchTax)[taxPercent]
 }
 
-fn qst-line [min max rate]{
+fn qst-line {|min max rate|
   echo $min,$max,$rate
 }
 
-fn qst-table [&kanton=zh &rateCode=B &nrDependents=2 &churchTax=$true]{
+fn qst-table {|&kanton=zh &rateCode=B &nrDependents=2 &churchTax=$true|
   qst-line 0 800 (qst-rate 800 &kanton=$kanton &rateCode=$rateCode &nrDependents=$nrDependents &churchTax=$churchTax)
-  range &step=50 850 16001 | each [n]{
+  range &step=50 850 16001 | each {|n|
     qst-line (- $n 49) $n (qst-rate $n &kanton=$kanton &rateCode=$rateCode &nrDependents=$nrDependents &churchTax=$churchTax)
     sleep 0.1
   }
-  range &step=2000 18000 20001 | each [n]{
+  range &step=2000 18000 20001 | each {|n|
     qst-line (- $n 1999) $n (qst-rate $n &kanton=$kanton &rateCode=$rateCode &nrDependents=$nrDependents &churchTax=$churchTax)
     sleep 0.1
   }
-  range &step=2000 25000 50001 | each [n]{
+  range &step=2000 25000 50001 | each {|n|
     qst-line (- $n 4999) $n (qst-rate $n &kanton=$kanton &rateCode=$rateCode &nrDependents=$nrDependents &churchTax=$churchTax)
     sleep 0.1
   }
@@ -209,7 +209,7 @@ fn qst-table [&kanton=zh &rateCode=B &nrDependents=2 &churchTax=$true]{
   qst-line 100000 "" (qst-rate 100001 &kanton=$kanton &rateCode=$rateCode &nrDependents=$nrDependents &churchTax=$churchTax)
 }
 
-fn capture [f]{
+fn capture {|f|
   var pout = (file:pipe)
   var perr = (file:pipe)
   var out err
@@ -229,14 +229,14 @@ fn capture [f]{
 
 # Convert POSIX env assignments to Elvish
 fn read-posix-envvars {
-  each [l]{
+  each {|l|
     var _ key val = (re:split &max=3 '[ =]' $l)
     set-env $key $val
   }
 }
 
 # Emulate the POSIX export command
-fn export [s]{
+fn export {|s|
   set-env (str:split &max=2 '=' $s)
 }
 edit:add-var export~ $export~
@@ -270,7 +270,7 @@ fn starship-remote-url-samples {
   ]
   # Compute space filler to align messages
   var fill-length = 0
-  each [p]{
+  each {|p|
     var str = "git "(str:join " " $p[0])
     if (> (count $str) $fill-length) {
       set fill-length = (count $str)
@@ -280,7 +280,7 @@ fn starship-remote-url-samples {
   set fill-length = (+ $fill-length $padding)
   var filler = (str:join '' [(repeat $fill-length ' ')])
 
-  var show~ = [cmd msg]{
+  var show~ = {|cmd msg|
     starship prompt
     if $cmd {
       var str = "git "(str:join " " $cmd)
@@ -297,7 +297,7 @@ fn starship-remote-url-samples {
   mkdir testrepo
   cd testrepo
   echo ""
-  each [pair]{
+  each {|pair|
     show $@pair
     var output = (git (all $pair[0]) | slurp)
     if (!=s $output "") {
@@ -310,4 +310,29 @@ fn starship-remote-url-samples {
   echo ""
   cd ..
   rm -rf testrepo
+}
+
+# Tangle/detangle Org files from the command line
+#
+fn detangle-file { |f|
+  echo "### "$f
+  emacs --batch --eval "(require 'org)" --eval '(progn (setq-default indent-tabs-mode nil) (org-babel-detangle "'$f'") (save-some-buffers t))'
+}
+
+fn tangle-file { |f2|
+  echo "### "$f2
+  emacs --batch -l org --eval '(progn (setq-default comment-start "# ") (org-babel-tangle-file "'$f2'"))'
+}
+
+use path
+
+fn convert-org-files-to-v17 {
+  echo (styled "Modifying org files to include link comments..." blue)
+  sed -i.bak 's/:comments no/:comments link/' *.org
+  echo (styled "Tangling all org files with link comments..." blue)
+  put *.elv | each {|f| var f2 = (basename $f .elv).org; if (path:is-regular $f2) { tangle-file $f2 } }
+  echo (styled "Upgrading scripts for Elvish v0.17..." blue)
+  upgrade-scripts-for-0.17 -lambda -w **[type:regular].elv
+  echo (styled "Untangling elv files back into the org files..." blue)
+  put *.elv | each {|f| detangle-file $f }
 }
