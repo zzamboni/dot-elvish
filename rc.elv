@@ -13,7 +13,11 @@ use str
 use math
 
 # Where all the Go stuff is
-set E:GOPATH = ~/Dropbox/Personal/devel/go
+if (path:is-dir ~/Dropbox/Personal/devel/go) {
+  set E:GOPATH = ~/Dropbox/Personal/devel/go
+} else {
+  set E:GOPATH = ~/go
+}
 
 set paths = [
   ~/bin

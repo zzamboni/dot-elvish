@@ -86,23 +86,27 @@ The bundled =str= and =math= modules for string manipulation and math operations
 First we set up the executable paths. We set the =GOPATH= environment variable while we are at it, since we need to use it as part of the path.
 
 #+begin_src elvish
-  # Where all the Go stuff is
+# Where all the Go stuff is
+if (path:is-dir ~/Dropbox/Personal/devel/go) {
   set E:GOPATH = ~/Dropbox/Personal/devel/go
+} else {
+  set E:GOPATH = ~/go
+}
 
-  set paths = [
-    ~/bin
-    ~/.emacs.d/bin
-    $E:GOPATH/bin
-    /usr/local/opt/coreutils/libexec/gnubin
-    /usr/local/opt/texinfo/bin
-    /usr/local/opt/python/libexec/bin
-    /usr/local/bin
-    /usr/local/sbin
-    /usr/sbin
-    /sbin
-    /usr/bin
-    /bin
-  ]
+set paths = [
+  ~/bin
+  ~/.emacs.d/bin
+  $E:GOPATH/bin
+  /usr/local/opt/coreutils/libexec/gnubin
+  /usr/local/opt/texinfo/bin
+  /usr/local/opt/python/libexec/bin
+  /usr/local/bin
+  /usr/local/sbin
+  /usr/sbin
+  /sbin
+  /usr/bin
+  /bin
+]
 #+end_src
 
 My work machine setup blocks =proxy.golang.org=, so I configure for all modules to be downloaded directly from their source.
