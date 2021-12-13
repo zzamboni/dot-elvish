@@ -92,14 +92,22 @@ if (path:is-dir ~/Dropbox/Personal/devel/go) {
 } else {
   set E:GOPATH = ~/go
 }
-
-set paths = [
-  ~/bin
+# Optional paths, add only those that exist
+var optpaths = [
   ~/.emacs.d/bin
-  $E:GOPATH/bin
   /usr/local/opt/coreutils/libexec/gnubin
   /usr/local/opt/texinfo/bin
   /usr/local/opt/python/libexec/bin
+  /usr/local/go/bin
+]
+var optpaths-filtered = [(each {|p|
+    if (path:is-dir $p) { put $p }
+} $optpaths)]
+
+set paths = [
+  ~/bin
+  $E:GOPATH/bin
+  $@optpaths-filtered
   /usr/local/bin
   /usr/local/sbin
   /usr/sbin
