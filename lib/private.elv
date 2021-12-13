@@ -326,13 +326,23 @@ fn tangle-file { |f2|
 
 use path
 
+fn tangle-all-org-files {
+  echo (styled "Tangling all org files with link comments..." blue)
+  put *.elv | each {|f| var f2 = (basename $f .elv).org; if (path:is-regular $f2) { tangle-file $f2 } }
+}
+
 fn convert-org-files-to-v17 {
   echo (styled "Modifying org files to include link comments..." blue)
   sed -i.bak 's/:comments no/:comments link/' *.org
-  echo (styled "Tangling all org files with link comments..." blue)
-  put *.elv | each {|f| var f2 = (basename $f .elv).org; if (path:is-regular $f2) { tangle-file $f2 } }
+  tangle-all-org-files
   echo (styled "Upgrading scripts for Elvish v0.17..." blue)
   upgrade-scripts-for-0.17 -lambda -w **[type:regular].elv
   echo (styled "Untangling elv files back into the org files..." blue)
   put *.elv | each {|f| detangle-file $f }
+}
+
+fn finish-convert-org-files-to-v17 {
+  echo (styled "Modifying org files to not include link comments..." blue)
+  sed -i.bak 's/:comments link/:comments no/' *.org
+  tangle-all-org-files
 }
