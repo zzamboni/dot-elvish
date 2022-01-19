@@ -133,7 +133,7 @@ git-completions:init
 
 use github.com/zzamboni/elvish-completions/comp
 
-eval (starship init elvish --print-full-init | upgrade-scripts-for-0.17 -lambda | slurp)
+eval (starship init elvish)
 
 set edit:prompt-stale-transform = {|x| styled $x "bright-black" }
 
