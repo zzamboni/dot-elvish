@@ -133,7 +133,9 @@ git-completions:init
 
 use github.com/zzamboni/elvish-completions/comp
 
-eval (starship init elvish)
+#   eval (starship init elvish | sed 's/except/catch/')
+# Temporary fix for use of except in the output of the Starship init code
+eval (/usr/local/bin/starship init elvish --print-full-init | sed 's/except/catch/' | slurp)
 
 set edit:prompt-stale-transform = {|x| styled $x "bright-black" }
 

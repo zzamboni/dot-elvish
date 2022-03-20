@@ -138,7 +138,7 @@ fn history {||
     try {
       fzf --no-sort --read0 --layout=reverse --info=hidden --exact ^
         --query=$edit:current-command
-    } except {
+    } catch {
       # If the user presses [Escape] to cancel the fzf operation it will exit
       # with a non-zero status. Ignore that we ran this function in that case.
       return
