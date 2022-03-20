@@ -532,7 +532,7 @@ Conda integration for Elvish. This is not yet in the main Conda distribution, bu
 
 The following block will get added to =rc.elv= by =conda init elvish=. Having it tangled out allows me to control where in the file it appears, since Conda only replaces/updates it instead of adding it again.
 
-#+begin_src elvish
+#+begin_src elvish :tangle no
   if (path:is-dir ~/Dropbox/Personal/devel/conda/devenv/bin) {
     set @paths = ~/Dropbox/Personal/devel/conda/devenv/bin $@paths
   }

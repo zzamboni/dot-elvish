@@ -190,17 +190,6 @@ set leanpub:api-key-fn = { 1pass:get-item leanpub &fields=["API key"] }
 
 use github.com/zzamboni/elvish-modules/tinytex
 
-if (path:is-dir ~/Dropbox/Personal/devel/conda/devenv/bin) {
-  set @paths = ~/Dropbox/Personal/devel/conda/devenv/bin $@paths
-}
-only-when-external conda {
-conda config --set auto_activate_base false
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-eval (~/Dropbox/Personal/devel/conda/devenv/bin/conda "shell.elvish" "hook" | upgrade-scripts-for-0.17 -lambda | slurp)"; conda activate aws"
-# <<< conda initialize <<<
-}
-
 set E:LESS = "-i -R"
 
 set E:EDITOR = "vim"
