@@ -25,6 +25,8 @@ var optpaths = [
   /usr/local/opt/texinfo/bin
   /usr/local/opt/python/libexec/bin
   /usr/local/go/bin
+  ~/Work/automated-security-helper
+  ~/Work/prowler
 ]
 var optpaths-filtered = [(each {|p|
     if (path:is-dir $p) { put $p }
@@ -189,6 +191,11 @@ use github.com/zzamboni/elvish-modules/leanpub
 set leanpub:api-key-fn = { 1pass:get-item leanpub &fields=["API key"] }
 
 use github.com/zzamboni/elvish-modules/tinytex
+
+only-when-external pyenv {
+  set paths = [ ~/.pyenv/shims $@paths ]
+  set-env PYENV_SHELL elvish
+}
 
 set E:LESS = "-i -R"
 
