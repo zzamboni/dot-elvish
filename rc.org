@@ -233,20 +233,17 @@ My =1pass= module provides some wrappers for interacting with the [[https://supp
 use github.com/zzamboni/elvish-modules/1pass
 #+end_src
 
-I use this together with my =lazy-vars= module to read the GitHub token to use with the =brew= command.
+Read aliases defined by the =op plugin= command. See https://blog.1password.com/shell-plugins/ for more details about  =op= shell plugins.
+
+#+begin_src elvish
+1pass:read-aliases
+#+end_src
+
+I haven't gotten around to write an =op= plugin for this, so I still use my =lazy-vars= module to read the credentials for my [[https://github.com/zzamboni/750words-client][750words command-line client]].
 
 #+begin_src elvish
 use github.com/zzamboni/elvish-modules/lazy-vars
 
-# These have been replaced by 1password shell plugins:
-# https://blog.1password.com/shell-plugins/
-# lazy-vars:add-var HOMEBREW_GITHUB_API_TOKEN { 1pass:get-password "github api token for homebrew" }
-# lazy-vars:add-alias brew [ HOMEBREW_GITHUB_API_TOKEN ]
-#+end_src
-
-Also for my [[https://github.com/zzamboni/750words-client][750words command-line client]].
-
-#+begin_src elvish
 set E:USER_750WORDS = diego@zzamboni.org
 lazy-vars:add-var PASS_750WORDS { 1pass:get-password "750words.com" }
 lazy-vars:add-alias 750words-client.py [ PASS_750WORDS ]

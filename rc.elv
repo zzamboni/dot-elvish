@@ -82,12 +82,9 @@ proxy:autoset
 
 use github.com/zzamboni/elvish-modules/1pass
 
-use github.com/zzamboni/elvish-modules/lazy-vars
+1pass:read-aliases
 
-# These have been replaced by 1password shell plugins:
-# https://blog.1password.com/shell-plugins/
-# lazy-vars:add-var HOMEBREW_GITHUB_API_TOKEN { 1pass:get-password "github api token for homebrew" }
-# lazy-vars:add-alias brew [ HOMEBREW_GITHUB_API_TOKEN ]
+use github.com/zzamboni/elvish-modules/lazy-vars
 
 set E:USER_750WORDS = diego@zzamboni.org
 lazy-vars:add-var PASS_750WORDS { 1pass:get-password "750words.com" }
