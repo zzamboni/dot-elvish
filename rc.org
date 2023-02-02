@@ -236,10 +236,12 @@ My =1pass= module provides some wrappers for interacting with the [[https://supp
 I use this together with my =lazy-vars= module to read the GitHub token to use with the =brew= command.
 
 #+begin_src elvish
-  use github.com/zzamboni/elvish-modules/lazy-vars
+use github.com/zzamboni/elvish-modules/lazy-vars
 
-  lazy-vars:add-var HOMEBREW_GITHUB_API_TOKEN { 1pass:get-password "github api token for homebrew" }
-  lazy-vars:add-alias brew [ HOMEBREW_GITHUB_API_TOKEN ]
+# These have been replaced by 1password shell plugins:
+# https://blog.1password.com/shell-plugins/
+# lazy-vars:add-var HOMEBREW_GITHUB_API_TOKEN { 1pass:get-password "github api token for homebrew" }
+# lazy-vars:add-alias brew [ HOMEBREW_GITHUB_API_TOKEN ]
 #+end_src
 
 Also for my [[https://github.com/zzamboni/750words-client][750words command-line client]].
