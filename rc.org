@@ -101,7 +101,6 @@ var optpaths = [
   /usr/local/opt/python/libexec/bin
   /usr/local/go/bin
   ~/Work/automated-security-helper
-  ~/Work/prowler
 ]
 var optpaths-filtered = [(each {|p|
       if (path:is-dir $p) { put $p }
