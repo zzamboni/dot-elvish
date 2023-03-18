@@ -123,19 +123,15 @@ fn manpdf {|@cmds|
 use github.com/xiaq/edit.elv/smart-matcher
 smart-matcher:apply
 
-use github.com/zzamboni/elvish-completions/cd
-use github.com/zzamboni/elvish-completions/ssh
-use github.com/zzamboni/elvish-completions/builtins
-
-use github.com/zzamboni/elvish-completions/git git-completions
-only-when-external hub { set git-completions:git-command = hub }
-git-completions:init
-
-use github.com/zzamboni/elvish-completions/comp
+# Enable the universal command completer if available.
+# See https://github.com/rsteube/carapace-bin
+if (has-external carapace) {
+  eval (carapace _carapace | slurp)
+}
 
 #   eval (starship init elvish | sed 's/except/catch/')
 # Temporary fix for use of except in the output of the Starship init code
-eval (/usr/local/bin/starship init elvish --print-full-init | sed 's/except/catch/' | slurp)
+eval (/usr/local/bin/starship init elvish --print-full-init | slurp)
 
 set edit:prompt-stale-transform = {|x| styled $x "bright-black" }
 

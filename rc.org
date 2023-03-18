@@ -310,54 +310,32 @@ smart-matcher:apply
 
 Other possible values for =edit:completion:matcher= are =[p]{ edit:match-prefix &smart-case $p }= for smart-case completion (if your pattern is entirely lower case it ignores case, otherwise it's case sensitive).  =&smart-case= can be replaced with =&ignore-case= to make it always case-insensitive.
 
-I also configure ~Tab~ to trigger completion mode, but also to automatically enter "filter mode", so I can keep typing the filename I want, without having to use the arrow keys. Disabled as this is the default behavior starting with commit [[https://github.com/elves/elvish/commit/b24e4a73ccd948b8c08d4081c2bcfb7cf603a02b][b24e4a7]], but you may need it if you are running an older version for any reason and want this behavior.
-
-#+begin_src elvish :tangle no
-# edit:insert:binding[Tab] = {
-#   edit:completion:smart-start
-#   edit:completion:trigger-filter
-# }
-#+end_src
-
-I load some command-specific completions from the  [[https://github.com/zzamboni/elvish-completions][elvish-completions]] package:
+I now use the universal Carapace completer module instead of custom-built Elvish completions:
 
 #+begin_src elvish
-use github.com/zzamboni/elvish-completions/cd
-use github.com/zzamboni/elvish-completions/ssh
-use github.com/zzamboni/elvish-completions/builtins
+# Enable the universal command completer if available.
+# See https://github.com/rsteube/carapace-bin
+if (has-external carapace) {
+  eval (carapace _carapace | slurp)
+}
 #+end_src
-
-I configure the git completer to use =hub= instead of =git= (if you use plain git, you don't need to call =git:init=)
-
-#+begin_src elvish
-use github.com/zzamboni/elvish-completions/git git-completions
-only-when-external hub { set git-completions:git-command = hub }
-git-completions:init
-#+end_src
-
-This is not usually necessary, but I load the =comp= library specifically since I do a lot of tests and development of completions.
-
-#+begin_src elvish
-use github.com/zzamboni/elvish-completions/comp
-#+end_src
-
 * Prompt theme
 
 ** Starship
 
-Testing Starship for my prompt.
+I now use  [[https://starship.rs/][Starship]] for my prompt.
 
 #+begin_src elvish
 #   eval (starship init elvish | sed 's/except/catch/')
 # Temporary fix for use of except in the output of the Starship init code
-eval (/usr/local/bin/starship init elvish --print-full-init | sed 's/except/catch/' | slurp)
+eval (/usr/local/bin/starship init elvish --print-full-init | slurp)
 #+end_src
 
 You can find my current Starship config file at [[https://gitlab.com/zzamboni/mac-setup/-/blob/master/files/homefiles/.config/starship.toml]].
 
 ** Chain
 
-I use the [[https://github.com/zzamboni/theme.elv/blob/master/chain.org][chain]] prompt theme, ported from the fish theme at https://github.com/oh-my-fish/theme-chain (disabled for now while I test [[https://starship.rs/][Starship]]).
+I developed the [[https://github.com/zzamboni/theme.elv/blob/master/chain.org][chain]] prompt theme, ported from the fish theme at https://github.com/oh-my-fish/theme-chain. This whole section is disabled since I switched to [[https://starship.rs/][Starship]], but left here for reference.
 
 #+begin_src elvish :tangle no
 use github.com/zzamboni/elvish-themes/chain
