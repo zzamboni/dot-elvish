@@ -310,7 +310,7 @@ smart-matcher:apply
 
 Other possible values for =edit:completion:matcher= are =[p]{ edit:match-prefix &smart-case $p }= for smart-case completion (if your pattern is entirely lower case it ignores case, otherwise it's case sensitive).  =&smart-case= can be replaced with =&ignore-case= to make it always case-insensitive.
 
-I now use the universal Carapace completer module instead of custom-built Elvish completions:
+I now use the universal Carapace completer module for most commends instead of custom-built Elvish completions:
 
 #+begin_src elvish
 # Enable the universal command completer if available.
@@ -319,6 +319,13 @@ if (has-external carapace) {
   eval (carapace _carapace | slurp)
 }
 #+end_src
+
+One exception is the =ssh= completer, I like my custom version from the  [[https://github.com/zzamboni/elvish-completions][elvish-completions]] package better, because it completes hostnames from =~/.ssh/config= instead of from =~/.ssh/known_hosts=.
+
+#+begin_src elvish
+use github.com/zzamboni/elvish-completions/ssh
+#+end_src
+
 * Prompt theme
 
 ** Starship

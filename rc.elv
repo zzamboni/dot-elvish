@@ -129,6 +129,8 @@ if (has-external carapace) {
   eval (carapace _carapace | slurp)
 }
 
+use github.com/zzamboni/elvish-completions/ssh
+
 #   eval (starship init elvish | sed 's/except/catch/')
 # Temporary fix for use of except in the output of the Starship init code
 eval (/usr/local/bin/starship init elvish --print-full-init | slurp)
