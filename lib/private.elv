@@ -231,6 +231,7 @@ fn capture {|f|
 fn read-posix-envvars {
   each {|l|
     var _ key val = (re:split &max=3 '[ =]' $l)
+    set val = (re:replace '^"' '' (re:replace '"$' '' $val))
     set-env $key $val
   }
 }
