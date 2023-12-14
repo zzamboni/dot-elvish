@@ -26,6 +26,7 @@ var optpaths = [
   /usr/local/opt/python/libexec/bin
   /usr/local/go/bin
   ~/Work/automated-security-helper
+  ~/.toolbox/bin
 ]
 var optpaths-filtered = [(each {|p|
       if (path:is-dir $p) { put $p }
@@ -161,10 +162,10 @@ set edit:insert:binding[Ctrl-R] = {
   edit:histlist:toggle-case-sensitivity
 }
 
-only-when-external exa {
-  var exa-ls~ = { |@_args|
+only-when-external eza {
+  var eza-ls~ = { |@_args|
     use github.com/zzamboni/elvish-modules/util
-    e:exa --color-scale --git --group-directories-first (each {|o|
+    e:eza --color-scale --git --group-directories-first (each {|o|
         util:cond [
           { eq $o "-lrt" }  "-lsnew"
           { eq $o "-lrta" } "-alsnew"
@@ -172,7 +173,7 @@ only-when-external exa {
         ]
     } $_args)
   }
-  edit:add-var ls~ $exa-ls~
+  edit:add-var ls~ $eza-ls~
 }
 
 use github.com/zzamboni/elvish-modules/terminal-title
