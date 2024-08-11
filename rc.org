@@ -156,7 +156,6 @@ For now I use these packages:
 epm:install &silent-if-installed         ^
 github.com/zzamboni/elvish-modules     ^
 github.com/zzamboni/elvish-completions ^
-github.com/zzamboni/elvish-themes      ^
 github.com/xiaq/edit.elv               ^
 github.com/muesli/elvish-libs          ^
 github.com/iwoloschin/elvish-packages
@@ -346,6 +345,7 @@ You can find my current Starship config file at [[https://gitlab.com/zzamboni/ma
 I developed the [[https://github.com/zzamboni/theme.elv/blob/master/chain.org][chain]] prompt theme, ported from the fish theme at https://github.com/oh-my-fish/theme-chain. This whole section is disabled since I switched to [[https://starship.rs/][Starship]], but left here for reference.
 
 #+begin_src elvish :tangle no
+epm:install &silent-if-installed github.com/zzamboni/elvish-themes
 use github.com/zzamboni/elvish-themes/chain
 chain:bold-prompt = $false
 #+end_src
