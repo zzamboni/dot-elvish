@@ -57,7 +57,6 @@ use epm
 epm:install &silent-if-installed         ^
 github.com/zzamboni/elvish-modules     ^
 github.com/zzamboni/elvish-completions ^
-github.com/zzamboni/elvish-themes      ^
 github.com/xiaq/edit.elv               ^
 github.com/muesli/elvish-libs          ^
 github.com/iwoloschin/elvish-packages
