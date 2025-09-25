@@ -82,26 +82,57 @@ use str
 use math
 #+end_src
 
+Some code runs only if certain external binary exists, I define a couple of functions to help with this.
+
+#+begin_src elvish
+fn have-external { |prog|
+  put ?(which $prog >/dev/null 2>&1)
+}
+fn only-when-external { |prog lambda|
+  if (have-external $prog) { $lambda }
+}
+# Convert POSIX env assignments to Elvish
+fn read-posix-envvars {
+  each {|l|
+    var _ key val = (re:split &max=3 '[ =]' $l)
+    set val = (re:replace '^"' '' (re:replace '"$' '' $val))
+    set-env $key $val
+  }
+}
+#+end_src
+
 * Paths
 
 First we set up the executable paths. We set the =GOPATH= environment variable while we are at it, since we need to use it as part of the path.
 
 #+begin_src elvish
 # Where all the Go stuff is
-if (path:is-dir ~/Dropbox/Personal/devel/go) {
-  set E:GOPATH = ~/Dropbox/Personal/devel/go
-} else {
+#if (path:is-dir ~/Dropbox/Personal/devel/go) {
+#  set E:GOPATH = ~/Dropbox/Personal/devel/go
+#} else {
   set E:GOPATH = ~/go
+#}
+var brew-paths = []
+only-when-external /home/linuxbrew/.linuxbrew/bin/brew {
+  /home/linuxbrew/.linuxbrew/bin/brew shellenv | grep -v PATH | sed 's/;$//;' | read-posix-envvars
+  set brew-paths = [$E:HOMEBREW_PREFIX/bin $E:HOMEBREW_PREFIX/sbin]
 }
+
 # Optional paths, add only those that exist
 var optpaths = [
+  $E:GOPATH/bin
+  $@brew-paths
+  ~/bin/(uname -s | tr '[:upper:]' '[:lower:]')-(uname -m)
   ~/.emacs.d/bin
   /usr/local/opt/coreutils/libexec/gnubin
   /usr/local/opt/texinfo/bin
   /usr/local/opt/python/libexec/bin
   /usr/local/go/bin
+  /snap/bin
   ~/Work/automated-security-helper
   ~/.toolbox/bin
+  ~/.local/bin
+  ~/.local/share/omakub/bin
 ]
 var optpaths-filtered = [(each {|p|
       if (path:is-dir $p) { put $p }
@@ -109,7 +140,6 @@ var optpaths-filtered = [(each {|p|
 
 set paths = [
   ~/bin
-  $E:GOPATH/bin
   $@optpaths-filtered
   /usr/local/bin
   /usr/local/sbin
@@ -157,8 +187,8 @@ epm:install &silent-if-installed         ^
 github.com/zzamboni/elvish-modules     ^
 github.com/zzamboni/elvish-completions ^
 github.com/xiaq/edit.elv               ^
-github.com/muesli/elvish-libs          ^
-github.com/iwoloschin/elvish-packages
+github.com/muesli/elvish-libs
+# github.com/iwoloschin/elvish-packages
 #+end_src
 
 The modules within each package get loaded individually below.
@@ -256,16 +286,7 @@ Elvish does not have built-in alias functionality, but this is implemented easil
 use github.com/zzamboni/elvish-modules/alias
 #+end_src
 
-For reference, I define here a few of my commonly-used aliases. Some of them are defined only if the corresponding external binary exists, I define a couple of functions to help with this.
-
-#+begin_src elvish
-fn have-external { |prog|
-  put ?(which $prog >/dev/null 2>&1)
-}
-fn only-when-external { |prog lambda|
-  if (have-external $prog) { $lambda }
-}
-#+end_src
+For reference, I define here a few of my commonly-used aliases.
 
 #+begin_src elvish
 only-when-external dfc {
@@ -279,16 +300,34 @@ only-when-external hub {
 }
 #+end_src
 
-Use =bat= as my default pager, if installed. I love the =bat= =man= configuration for [[https://github.com/sharkdp/bat#man][using =bat= as the pager for =man= pages]].
+Use =bat= as my default pager, if installed.
 
 #+begin_src elvish
 only-when-external bat {
   alias:new cat bat
   alias:new more bat --paging always
-  set E:MANPAGER = "sh -c 'col -bx | bat -l man -p'"
+  #set E:MANPAGER = "sh -c 'col -bx | bat -l man -p'"
+}
+only-when-external batcat {
+  alias:new cat batcat
+  alias:new more batcat --paging always
+  #set E:MANPAGER = "sh -c 'col -bx | batcat -l man -p'"
 }
 #+end_src
 
+If available, use the scripts from =bat-extras= to replace some other commands, like =man=.
+
+#+begin_src elvish
+only-when-external batman {
+  alias:new man batman
+}
+only-when-external batgrep {
+  alias:new rg batgrep
+}
+only-when-external batdiff {
+  alias:new diff batdiff
+}
+#+end_src
 Open man pages as PDF, I gathered this tip from https://twitter.com/MrAhmadAwais/status/1279066968981635075. Neat but not very useful for daily use, particularly with the =bat= integration above.
 
 #+begin_src elvish
@@ -299,6 +338,11 @@ fn manpdf {|@cmds|
 }
 #+end_src
 
+#+begin_src elvish
+only-when-external fdfind {
+  alias:new fd fdfind
+}
+#+end_src
 * Completions
 
 The [[https://github.com/xiaq/edit.elv/blob/master/smart-matcher.elv][smart-matcher]] module tries prefix match, smart-case prefix match, substring match, smart-case substring match, subsequence match and smart-case subsequence match automatically.
@@ -335,7 +379,7 @@ I now use  [[https://starship.rs/][Starship]] for my prompt.
 #+begin_src elvish
 #   eval (starship init elvish | sed 's/except/catch/')
 # Temporary fix for use of except in the output of the Starship init code
-eval (/usr/local/bin/starship init elvish --print-full-init | slurp)
+eval (starship init elvish --print-full-init | slurp)
 #+end_src
 
 You can find my current Starship config file at [[https://gitlab.com/zzamboni/mac-setup/-/blob/master/files/homefiles/.config/starship.toml]].
@@ -438,12 +482,29 @@ set edit:insert:binding[Alt-b] = $dir:left-small-word-or-prev-dir~
 set edit:insert:binding[Alt-f] = $dir:right-small-word-or-next-dir~
 #+end_src
 
-The following makes the location and history modes be case-insensitive by default:
+If =fzf= is installed, then we can have a fancier history search instead of the default bound to =Ctrl-R=.
 
 #+begin_src elvish
-set edit:insert:binding[Ctrl-R] = {
-  edit:histlist:start
-  edit:histlist:toggle-case-sensitivity
+# Filter the command history through the fzf program. This is normally bound
+# to Ctrl-R.
+fn fzf_history {
+  var new-cmd = (
+    edit:command-history &dedup &newest-first &cmd-only |
+    to-terminated "\x00" |
+    try {
+      fzf --no-sort --read0 --info=hidden --exact ^
+      --query=$edit:current-command
+    } catch {
+      # If the user presses [Escape] to cancel the fzf operation it will exit
+      # with a non-zero status. Ignore that we ran this function in that case.
+      return
+    }
+  )
+  set edit:current-command = $new-cmd
+}
+
+only-when-external fzf {
+  set edit:insert:binding[Ctrl-R] = { fzf_history >/dev/tty 2>&1 }
 }
 #+end_src
 
@@ -453,7 +514,7 @@ I use [[https://github.com/eza-community/eza][eza]] as a replacement for the =ls
 only-when-external eza {
   var eza-ls~ = { |@_args|
     use github.com/zzamboni/elvish-modules/util
-    e:eza --color-scale --git --group-directories-first (each {|o|
+    e:eza --color-scale --git --group-directories-first --header --group-directories-first --icons=auto (each {|o|
         util:cond [
           { eq $o "-lrt" }  "-lsnew"
           { eq $o "-lrta" } "-alsnew"
@@ -462,6 +523,7 @@ only-when-external eza {
     } $_args)
   }
   edit:add-var ls~ $eza-ls~
+  alias:new lt eza --tree --level=2 --long --icons --git
 }
 #+end_src
 * Dynamic terminal title
@@ -622,7 +684,7 @@ use github.com/muesli/elvish-libs/git
 
 The [[https://github.com/iwoloschin/elvish-packages/blob/master/update.elv][update.elv]] package prints a message if there are new commits in Elvish after the running version.
 
-#+begin_src elvish
+#+begin_src elvish :tangle no
 use github.com/iwoloschin/elvish-packages/update
 set update:curl-timeout = 3
 update:check-commit &verbose

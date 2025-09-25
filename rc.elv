@@ -12,21 +12,48 @@ use path
 use str
 use math
 
-# Where all the Go stuff is
-if (path:is-dir ~/Dropbox/Personal/devel/go) {
-  set E:GOPATH = ~/Dropbox/Personal/devel/go
-} else {
-  set E:GOPATH = ~/go
+fn have-external { |prog|
+  put ?(which $prog >/dev/null 2>&1)
 }
+fn only-when-external { |prog lambda|
+  if (have-external $prog) { $lambda }
+}
+# Convert POSIX env assignments to Elvish
+fn read-posix-envvars {
+  each {|l|
+    var _ key val = (re:split &max=3 '[ =]' $l)
+    set val = (re:replace '^"' '' (re:replace '"$' '' $val))
+    set-env $key $val
+  }
+}
+
+# Where all the Go stuff is
+#if (path:is-dir ~/Dropbox/Personal/devel/go) {
+#  set E:GOPATH = ~/Dropbox/Personal/devel/go
+#} else {
+  set E:GOPATH = ~/go
+#}
+var brew-paths = []
+only-when-external /home/linuxbrew/.linuxbrew/bin/brew {
+  /home/linuxbrew/.linuxbrew/bin/brew shellenv | grep -v PATH | sed 's/;$//;' | read-posix-envvars
+  set brew-paths = [$E:HOMEBREW_PREFIX/bin $E:HOMEBREW_PREFIX/sbin]
+}
+
 # Optional paths, add only those that exist
 var optpaths = [
+  $E:GOPATH/bin
+  $@brew-paths
+  ~/bin/(uname -s | tr '[:upper:]' '[:lower:]')-(uname -m)
   ~/.emacs.d/bin
   /usr/local/opt/coreutils/libexec/gnubin
   /usr/local/opt/texinfo/bin
   /usr/local/opt/python/libexec/bin
   /usr/local/go/bin
+  /snap/bin
   ~/Work/automated-security-helper
   ~/.toolbox/bin
+  ~/.local/bin
+  ~/.local/share/omakub/bin
 ]
 var optpaths-filtered = [(each {|p|
       if (path:is-dir $p) { put $p }
@@ -34,7 +61,6 @@ var optpaths-filtered = [(each {|p|
 
 set paths = [
   ~/bin
-  $E:GOPATH/bin
   $@optpaths-filtered
   /usr/local/bin
   /usr/local/sbin
@@ -58,8 +84,8 @@ epm:install &silent-if-installed         ^
 github.com/zzamboni/elvish-modules     ^
 github.com/zzamboni/elvish-completions ^
 github.com/xiaq/edit.elv               ^
-github.com/muesli/elvish-libs          ^
-github.com/iwoloschin/elvish-packages
+github.com/muesli/elvish-libs
+# github.com/iwoloschin/elvish-packages
 
 use github.com/zzamboni/elvish-modules/proxy
 set proxy:host = "http://aproxy.corproot.net:8080"
@@ -91,13 +117,6 @@ lazy-vars:add-alias 750words-client.py [ PASS_750WORDS ]
 
 use github.com/zzamboni/elvish-modules/alias
 
-fn have-external { |prog|
-  put ?(which $prog >/dev/null 2>&1)
-}
-fn only-when-external { |prog lambda|
-  if (have-external $prog) { $lambda }
-}
-
 only-when-external dfc {
   alias:new dfc e:dfc -p -/dev/disk1s4,devfs,map,com.apple.TimeMachine
 }
@@ -111,13 +130,32 @@ only-when-external hub {
 only-when-external bat {
   alias:new cat bat
   alias:new more bat --paging always
-  set E:MANPAGER = "sh -c 'col -bx | bat -l man -p'"
+  #set E:MANPAGER = "sh -c 'col -bx | bat -l man -p'"
+}
+only-when-external batcat {
+  alias:new cat batcat
+  alias:new more batcat --paging always
+  #set E:MANPAGER = "sh -c 'col -bx | batcat -l man -p'"
+}
+
+only-when-external batman {
+  alias:new man batman
+}
+only-when-external batgrep {
+  alias:new rg batgrep
+}
+only-when-external batdiff {
+  alias:new diff batdiff
 }
 
 fn manpdf {|@cmds|
   each {|c|
     man -t $c | open -f -a /System/Applications/Preview.app
   } $cmds
+}
+
+only-when-external fdfind {
+  alias:new fd fdfind
 }
 
 use github.com/xiaq/edit.elv/smart-matcher
@@ -133,7 +171,7 @@ use github.com/zzamboni/elvish-completions/ssh
 
 #   eval (starship init elvish | sed 's/except/catch/')
 # Temporary fix for use of except in the output of the Starship init code
-eval (/usr/local/bin/starship init elvish --print-full-init | slurp)
+eval (starship init elvish --print-full-init | slurp)
 
 set edit:prompt-stale-transform = {|x| styled $x "bright-black" }
 
@@ -156,15 +194,32 @@ set edit:insert:binding[Alt-i] = $dir:history-chooser~
 set edit:insert:binding[Alt-b] = $dir:left-small-word-or-prev-dir~
 set edit:insert:binding[Alt-f] = $dir:right-small-word-or-next-dir~
 
-set edit:insert:binding[Ctrl-R] = {
-  edit:histlist:start
-  edit:histlist:toggle-case-sensitivity
+# Filter the command history through the fzf program. This is normally bound
+# to Ctrl-R.
+fn fzf_history {
+  var new-cmd = (
+    edit:command-history &dedup &newest-first &cmd-only |
+    to-terminated "\x00" |
+    try {
+      fzf --no-sort --read0 --info=hidden --exact ^
+      --query=$edit:current-command
+    } catch {
+      # If the user presses [Escape] to cancel the fzf operation it will exit
+      # with a non-zero status. Ignore that we ran this function in that case.
+      return
+    }
+  )
+  set edit:current-command = $new-cmd
+}
+
+only-when-external fzf {
+  set edit:insert:binding[Ctrl-R] = { fzf_history >/dev/tty 2>&1 }
 }
 
 only-when-external eza {
   var eza-ls~ = { |@_args|
     use github.com/zzamboni/elvish-modules/util
-    e:eza --color-scale --git --group-directories-first (each {|o|
+    e:eza --color-scale --git --group-directories-first --header --group-directories-first --icons=auto (each {|o|
         util:cond [
           { eq $o "-lrt" }  "-lsnew"
           { eq $o "-lrta" } "-alsnew"
@@ -173,6 +228,7 @@ only-when-external eza {
     } $_args)
   }
   edit:add-var ls~ $eza-ls~
+  alias:new lt eza --tree --level=2 --long --icons --git
 }
 
 use github.com/zzamboni/elvish-modules/terminal-title
@@ -214,10 +270,6 @@ set gs:find-all-user-repos-fn = {
 use github.com/zzamboni/elvish-modules/util
 
 use github.com/muesli/elvish-libs/git
-
-use github.com/iwoloschin/elvish-packages/update
-set update:curl-timeout = 3
-update:check-commit &verbose
 
 use github.com/zzamboni/elvish-modules/util-edit
 util-edit:electric-delimiters

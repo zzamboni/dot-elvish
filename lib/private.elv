@@ -129,26 +129,6 @@ fn words-copy {
   words | pbcopy
 }
 
-# Filter the command history through the fzf program. This is normally bound
-# to Ctrl-R.
-fn history {||
-  var new-cmd = (
-    edit:command-history &dedup &newest-first &cmd-only |
-    to-terminated "\x00" |
-    try {
-      fzf --no-sort --read0 --layout=reverse --info=hidden --exact ^
-        --query=$edit:current-command
-    } catch {
-      # If the user presses [Escape] to cancel the fzf operation it will exit
-      # with a non-zero status. Ignore that we ran this function in that case.
-      return
-    }
-  )
-  set edit:current-command = $new-cmd
-}
-
-set edit:insert:binding[Ctrl-R] = {|| history >/dev/tty 2>&1 }
-
 fn update-emacs {
   var app-dir = ~/Applications
   var build-tool-dir = $app-dir/build-emacs-for-macos
@@ -225,15 +205,6 @@ fn capture {|f|
     file:close $perr[r]
   }
   put $out $err
-}
-
-# Convert POSIX env assignments to Elvish
-fn read-posix-envvars {
-  each {|l|
-    var _ key val = (re:split &max=3 '[ =]' $l)
-    set val = (re:replace '^"' '' (re:replace '"$' '' $val))
-    set-env $key $val
-  }
 }
 
 # Emulate the POSIX export command
