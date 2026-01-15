@@ -195,23 +195,18 @@ The modules within each package get loaded individually below.
 
 * Automatic proxy settings
 
+(this whole section is disabled since I don't need this for now, but kept here for reference)
+
 When I am in the office, I need to use a proxy to access the Internet. For macOS applications, the proxy is set automatically using a company-provided PAC file. For the environment variables =http_proxy= and =https_proxy=, commonly used by command-line programs, the [[https://github.com/zzamboni/modules.elv/blob/master/proxy.org][proxy]] module allows me to define a test which determines when the proxy should be used, so that the change is done automatically. We load this early on so that other modules which need to access the network get the correct settings already.
 
 First, we load the module and set the proxy host.
 
-#+begin_src elvish
+#+begin_src elvish :tangle no
 use github.com/zzamboni/elvish-modules/proxy
 set proxy:host = "http://aproxy.corproot.net:8080"
 #+end_src
 
 Next, we set the test function to enable proxy auto-setting. In my case, the =/etc/resolv.conf= file contains the =corproot.net= domain (set through DHCP) when I'm in the corporate network, so I can check for that.
-
-#+begin_src elvish :exports none
-set proxy:test = {
-  and ?(test -f /etc/resolv.conf) ^
-  ?(egrep -q '^(search|domain).*(corproot.net|swissptt.ch)' /etc/resolv.conf)
-}
-#+end_src
 
 #+begin_src elvish :tangle no
 proxy:test = {
@@ -222,7 +217,7 @@ proxy:test = {
 
 We run an initial check so that other commands in rc.org get the correctd settings already, even before the first prompt.
 
-#+begin_src elvish
+#+begin_src elvish :tangle no
 proxy:autoset
 #+end_src
 

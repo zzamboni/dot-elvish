@@ -87,16 +87,6 @@ github.com/xiaq/edit.elv               ^
 github.com/muesli/elvish-libs
 # github.com/iwoloschin/elvish-packages
 
-use github.com/zzamboni/elvish-modules/proxy
-set proxy:host = "http://aproxy.corproot.net:8080"
-
-set proxy:test = {
-  and ?(test -f /etc/resolv.conf) ^
-  ?(egrep -q '^(search|domain).*(corproot.net|swissptt.ch)' /etc/resolv.conf)
-}
-
-proxy:autoset
-
   set edit:insert:binding[Alt-Backspace] = $edit:kill-small-word-left~
 
   set edit:insert:binding[Alt-d] = $edit:kill-small-word-right~
