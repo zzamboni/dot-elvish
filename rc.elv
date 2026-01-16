@@ -106,7 +106,6 @@ lazy-vars:add-var PASS_750WORDS { 1pass:get-password "750words.com" }
 lazy-vars:add-alias 750words-client.py [ PASS_750WORDS ]
 
 use github.com/zzamboni/elvish-modules/alias
-set alias:dir = ~/.config/elvish/aliases
 
 only-when-external dfc {
   alias:new dfc e:dfc -p -/dev/disk1s4,devfs,map,com.apple.TimeMachine
