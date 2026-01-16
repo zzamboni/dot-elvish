@@ -279,6 +279,7 @@ Elvish does not have built-in alias functionality, but this is implemented easil
 
 #+begin_src elvish
 use github.com/zzamboni/elvish-modules/alias
+set alias:dir = ~/.config/elvish/aliases
 #+end_src
 
 For reference, I define here a few of my commonly-used aliases.
