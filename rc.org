@@ -323,6 +323,7 @@ only-when-external batdiff {
   alias:new diff batdiff
 }
 #+end_src
+
 Open man pages as PDF, I gathered this tip from https://twitter.com/MrAhmadAwais/status/1279066968981635075. Neat but not very useful for daily use, particularly with the =bat= integration above.
 
 #+begin_src elvish
@@ -338,6 +339,25 @@ only-when-external fdfind {
   alias:new fd fdfind
 }
 #+end_src
+
+If [[https://www.chezmoi.io/][chezmoi]] is installed, define an alias for it.
+
+#+begin_src elvish
+only-when-external chezmoi {
+  alias:new cm chezmoi
+}
+#+end_src
+
+I've started using [[https://just.systems/][Just]] to automate setup tasks, with the task file stored in =~/.config/just/Justfile=. If this file exists and =just= is installed, I define an alias to invoke its tasks.
+
+#+begin_src elvish
+only-when-external just {
+  if (path:is-regular ~/.config/just/Justfile) {
+    alias:new zjust just -f ~/.config/just/Justfile 
+  }
+}
+#+end_src
+
 * Completions
 
 The [[https://github.com/xiaq/edit.elv/blob/master/smart-matcher.elv][smart-matcher]] module tries prefix match, smart-case prefix match, substring match, smart-case substring match, subsequence match and smart-case subsequence match automatically.

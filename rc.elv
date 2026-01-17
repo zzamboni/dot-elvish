@@ -148,6 +148,16 @@ only-when-external fdfind {
   alias:new fd fdfind
 }
 
+only-when-external chezmoi {
+  alias:new cm chezmoi
+}
+
+only-when-external just {
+  if (path:is-regular ~/.config/just/Justfile) {
+    alias:new zjust just -f ~/.config/just/Justfile 
+  }
+}
+
 use github.com/xiaq/edit.elv/smart-matcher
 smart-matcher:apply
 
