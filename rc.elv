@@ -158,6 +158,10 @@ only-when-external just {
   }
 }
 
+only-when-external xdg-open {
+  alias:new open xdg-open
+}
+
 use github.com/xiaq/edit.elv/smart-matcher
 smart-matcher:apply
 

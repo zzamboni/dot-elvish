@@ -358,6 +358,13 @@ only-when-external just {
 }
 #+end_src
 
+Alias open to the correct command.
+
+#+begin_src elvish
+only-when-external xdg-open {
+  alias:new open xdg-open
+}
+#+end_src
 * Completions
 
 The [[https://github.com/xiaq/edit.elv/blob/master/smart-matcher.elv][smart-matcher]] module tries prefix match, smart-case prefix match, substring match, smart-case substring match, subsequence match and smart-case subsequence match automatically.
