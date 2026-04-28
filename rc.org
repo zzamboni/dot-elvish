@@ -13,7 +13,6 @@ This is my main config file for [[http://elv.sh][Elvish]].
 This file is written in [[https://leanpub.com/lit-config][literate programming style]] using [[https://orgmode.org/][org-mode]]. See [[https://gitlab.com/zzamboni/dot-elvish/-/blob/master/rc.elv][rc.elv]] for the generated file. You can see this in a nicer format on my blog post [[http://zzamboni.org/post/my-elvish-configuration-with-commentary/][My Elvish Configuration With Commentary]].
 
 * Table of Contents :TOC_3:noexport:
-- [[#file-header][File header]]
 - [[#module-loading][Module loading]]
 - [[#paths][Paths]]
 - [[#package-installation][Package installation]]
@@ -42,7 +41,7 @@ This file is written in [[https://leanpub.com/lit-config][literate programming s
 - [[#utility-functions][Utility functions]]
 - [[#work-specific-stuff][Work-specific stuff]]
 
-* File header
+* File header :noexport:
 
 A header to advise people who view the tangled file about where it comes from.
 
@@ -586,7 +585,7 @@ I use [[https://leanpub.com/help/api][LeanPub]] for publishing my books, so I ha
 
 #+begin_src elvish
 use github.com/zzamboni/elvish-modules/leanpub
-set leanpub:api-key-fn = { 1pass:get-item leanpub &fields=["API key"] }
+set leanpub:api-key-fn = { str:trim-space (1pass:get-item leanpub &fields=["API key"]) }
 #+end_src
 
 * TinyTeX

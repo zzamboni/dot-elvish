@@ -244,7 +244,7 @@ use github.com/zzamboni/elvish-modules/atlas
 use github.com/zzamboni/elvish-modules/opsgenie
 
 use github.com/zzamboni/elvish-modules/leanpub
-set leanpub:api-key-fn = { 1pass:get-item leanpub &fields=["API key"] }
+set leanpub:api-key-fn = { str:trim-space (1pass:get-item leanpub &fields=["API key"]) }
 
 use github.com/zzamboni/elvish-modules/tinytex
 
