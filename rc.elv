@@ -131,9 +131,6 @@ only-when-external batcat {
 only-when-external batman {
   alias:new man batman
 }
-only-when-external batgrep {
-  alias:new rg batgrep
-}
 only-when-external batdiff {
   alias:new diff batdiff
 }
@@ -251,6 +248,14 @@ use github.com/zzamboni/elvish-modules/tinytex
 only-when-external pyenv {
   set paths = [ ~/.pyenv/shims $@paths ]
   set-env PYENV_SHELL elvish
+}
+
+only-when-external mise {
+  var mise: = (ns [&])
+  eval (mise activate elvish | slurp) &ns=$mise: &on-end={|ns| set mise: = $ns }
+  mise:activate
+
+  edit:add-var mise~ {|@args| mise:mise $@args }
 }
 
 set E:LESS = "-i -R"

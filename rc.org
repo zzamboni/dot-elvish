@@ -36,6 +36,7 @@ This file is written in [[https://leanpub.com/lit-config][literate programming s
 - [[#tinytex][TinyTeX]]
 - [[#conda-integration][Conda integration]]
 - [[#pyenv][PyEnv]]
+- [[#mise][Mise]]
 - [[#environment-variables][Environment variables]]
 - [[#git-repository-summary][Git repository summary]]
 - [[#utility-functions][Utility functions]]
@@ -314,9 +315,6 @@ If available, use the scripts from =bat-extras= to replace some other commands, 
 #+begin_src elvish
 only-when-external batman {
   alias:new man batman
-}
-only-when-external batgrep {
-  alias:new rg batgrep
 }
 only-when-external batdiff {
   alias:new diff batdiff
@@ -640,6 +638,19 @@ only-when-external pyenv {
 }
 #+end_src
 
+* Mise
+
+I use [[https://mise.jdx.dev/installing-mise.html#elvish][Mise]] for some of my projects so I activate its Elvish integration.
+
+#+begin_src elvish
+only-when-external mise {
+  var mise: = (ns [&])
+  eval (mise activate elvish | slurp) &ns=$mise: &on-end={|ns| set mise: = $ns }
+  mise:activate
+
+  edit:add-var mise~ {|@args| mise:mise $@args }
+}
+#+end_src
 * Environment variables
 
 Default options to =less=.
