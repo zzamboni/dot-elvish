@@ -359,7 +359,10 @@ Alias open to the correct command.
 
 #+begin_src elvish
 only-when-external xdg-open {
-  alias:new open xdg-open
+  var open-without-errors~ = { |@files|
+    xdg-open $@files 2> /dev/null
+  }
+  edit:add-var open~ $open-without-errors~
 }
 #+end_src
 * Completions

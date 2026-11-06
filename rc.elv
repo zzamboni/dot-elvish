@@ -156,7 +156,10 @@ only-when-external just {
 }
 
 only-when-external xdg-open {
-  alias:new open xdg-open
+  var open-without-errors~ = { |@files|
+    xdg-open $@files 2> /dev/null
+  }
+  edit:add-var open~ $open-without-errors~
 }
 
 use github.com/xiaq/edit.elv/smart-matcher
